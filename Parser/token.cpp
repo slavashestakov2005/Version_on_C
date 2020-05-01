@@ -2,12 +2,12 @@
 #include <sstream>
 namespace{
     std::string mas[] = {
-        "Number", "HEX_NUMBER", "WORD", "TEXT",
+        "NUMBER", "HEX_NUMBER", "WORD", "TEXT",
         "PRINT", "PRINTLN", "IF", "ELIF", "ELSE", "WHILE", "FOR", "DO",
-        "BREAK", "CONTINUE", "DEF", "RETURN", "IMPORT", "SWITCH", "CASE", "DEFAULT",
+        "BREAK", "CONTINUE", "DEF", "RETURN", "IMPORT", "AS", "SWITCH", "CASE", "DEFAULT",
         "TRY", "THROW", "CATCH",
-        "PlUS", "MINUS", "STAR", "SLASH", "PERCENT",
-        "PlUSEQ", "MINUSEQ", "STAREQ", "SLASHEQ", "PERCENTEQ",
+        "PlUS", "MINUS", "STAR", "SLASH", "PERCENT", "STARSTAR",
+        "PlUSEQ", "MINUSEQ", "STAREQ", "SLASHEQ", "PERCENTEQ", "STARSTAREQ",
         "PLUSPLUS", "MINUSMINUS",
         "EQ", "EQEQ", "EXCL", "EXCLEQ", "LT", "LTEQ", "GT", "GTEQ",
         "BAR", "BARBAR", "AMP", "AMPAMP", "XOR", "TILDA",

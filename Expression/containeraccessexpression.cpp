@@ -23,7 +23,7 @@ Value* ContainerAccessExpression::get(){
     Value* lastindex = lastIndex();
     bool lastdot = lastDot();
     switch(container -> type){
-        case (Values::ARRAY):
+        case Values::ARRAY:
             if (lastdot) throw new std::logic_error("Cannot used DOT for array");
             return ((Array*) container) -> access(lastindex);
         case Values::MAP:
@@ -45,22 +45,23 @@ Value* ContainerAccessExpression::set(Value* value){
     Value* lastindex = lastIndex();
     bool lastdot = lastDot();
     switch(container -> type){
-        case (Values::ARRAY) : {
+        case Values::ARRAY : {
             if (lastdot) throw new std::logic_error("Cannot used DOT for array");
             int arrayIndex = (int) lastindex -> getDouble();
             ((Array*) container) -> set(arrayIndex, value);
             break;
         }
-        case (Values::MAP) :
+        case Values::MAP : {
             if (lastdot && !((Map*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
             ((Map*) container) -> set(lastindex, value);
             break;
-        case Values::CLASS :
+        }
+        case Values::CLASS : {
             if (!lastdot) throw new std::logic_error("Cannot used [] for class");
             ((ClassValue*) container) -> set(lastindex, value);
             break;
-        default:
-            throw new TypeException("Array, map or class expected");
+        }
+        default: throw new TypeException("Array, map or class expected");
     }
     return value;
 }
@@ -81,24 +82,23 @@ Value* ContainerAccessExpression::getContainer(){
         Value* ind = index(i);
         bool isdot = isDot(i);
         switch(container -> type){
-            case (Values::ARRAY): {
+            case Values::ARRAY : {
                 if (isdot) throw new std::logic_error("Cannot used DOT for array");
                 int arrayIndex = (int) ind -> getDouble();
                 container = ((Array*) container) -> get(arrayIndex);
                 break;
             }
-            case Values::MAP: {
+            case Values::MAP : {
                 if (isdot && !((Map*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
                 container = ((Map*) container) -> get(ind);
                 break;
             }
-            case Values::CLASS: {
+            case Values::CLASS : {
                 if (!isdot) throw new std::logic_error("Cannot used [] for class");
                 container = ((ClassValue*) container) -> get(ind);
                 break;
             }
-            default:
-                throw new TypeException("Array or map expected");
+            default: throw new TypeException("Array or map expected");
         }
     }
     return container;
@@ -122,7 +122,7 @@ bool ContainerAccessExpression::isDot(int index){
 
 ContainerAccessExpression::operator std::string(){
     std::string result = std::string(*root);
-    for(unsigned i = 0; i < indices.size() - 1; ++i){
+    for(unsigned i = 0; i < indices.size(); ++i){
         result += std::string(indices[i]);
     }
     return result;

@@ -4,10 +4,8 @@ void BlockStatement::add(Statement* statement){
     statements.push_back(statement);
 }
 
-#include <iostream>
 void BlockStatement::execute(){
     for(int i = 0; i < statements.size(); ++i){
-        std::cout << "Block :: execute()\n";
         statements[i] -> execute();
     }
 }

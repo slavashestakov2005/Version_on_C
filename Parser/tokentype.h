@@ -21,6 +21,7 @@ enum class TokenType{
     DEF,
     RETURN,
     IMPORT,
+    AS,
     SWITCH,
     CASE,
     DEFAULT,
@@ -35,12 +36,14 @@ enum class TokenType{
     STAR,       /// *
     SLASH,      /// /
     PERCENT,    /// %
+    STARSTAR,   /// **
 
     PLUSEQ,     /// +=
     MINUSEQ,    /// -=
     STAREQ,     /// *=
     SLASHEQ,    /// /=
     PERCENTEQ,  /// %=
+    STARSTAREQ, /// **=
 
     LTLT,       /// <<
     LTLTEQ,     /// <<=
@@ -52,7 +55,7 @@ enum class TokenType{
 
     EQ,         /// =
     EQEQ,       /// ==
-    EXCL,       /// ОТРИЦАНИЕ
+    EXCL,       /// !
     EXCLEQ,     /// !=
     LT,         /// <
     LTEQ,       /// <=

@@ -8,7 +8,7 @@ void ClassDeclaration::clear(){
 }
 
 bool ClassDeclaration::isExists(std::string key){
-    return declarations.find(key) != declarations.end();
+    return declarations.find(key) != declarations.cend();
 }
 
 ClassDeclarationsStatement* ClassDeclaration::get(std::string key){

@@ -12,6 +12,7 @@ enum class AssignmentOperator{
     MULTIPLY,
     DIVIDE,
     REMAINDER,
+    POWER,
 
     AND,
     OR,

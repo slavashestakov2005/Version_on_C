@@ -1,17 +1,20 @@
 #include "lexer.h"
 #include <stdexcept>
+
 std::map<std::string, TokenType> Lexer::OPERATORS = {
     std::make_pair("+", TokenType::PLUS),
     std::make_pair("-", TokenType::MINUS),
     std::make_pair("*", TokenType::STAR),
     std::make_pair("/", TokenType::SLASH),
     std::make_pair("%", TokenType::PERCENT),
+    std::make_pair("**", TokenType::STARSTAR),
 
     std::make_pair("+=", TokenType::PLUSEQ),
     std::make_pair("-=", TokenType::MINUSEQ),
     std::make_pair("*=", TokenType::STAREQ),
     std::make_pair("/=", TokenType::SLASHEQ),
     std::make_pair("%=", TokenType::PERCENTEQ),
+    std::make_pair("**=", TokenType::STARSTAREQ),
 
     std::make_pair("<<", TokenType::LTLT),
     std::make_pair(">>", TokenType::GTGT),
@@ -55,6 +58,32 @@ std::map<std::string, TokenType> Lexer::OPERATORS = {
     std::make_pair(":", TokenType::COLON),
     std::make_pair("::", TokenType::COLONCOLON),
 };
+
+std::map<std::string, TokenType> Lexer::KEYWORDS = {
+    std::make_pair("print", TokenType::PRINT),
+    std::make_pair("println", TokenType::PRINTLN),
+    std::make_pair("if", TokenType::IF),
+    std::make_pair("elif", TokenType::ELIF),
+    std::make_pair("else", TokenType::ELSE),
+    std::make_pair("while", TokenType::WHILE),
+    std::make_pair("for", TokenType::FOR),
+    std::make_pair("do", TokenType::DO),
+    std::make_pair("break", TokenType::BREAK),
+    std::make_pair("continue", TokenType::CONTINUE),
+    std::make_pair("def", TokenType::DEF),
+    std::make_pair("return", TokenType::RETURN),
+    std::make_pair("import", TokenType::IMPORT),
+    std::make_pair("as", TokenType::AS),
+    std::make_pair("switch", TokenType::SWITCH),
+    std::make_pair("case", TokenType::CASE),
+    std::make_pair("default", TokenType::DEFAULT),
+    std::make_pair("try", TokenType::TRY),
+    std::make_pair("throw", TokenType::THROW),
+    std::make_pair("catch", TokenType::CATCH),
+    std::make_pair("class", TokenType::CLASS),
+    std::make_pair("new", TokenType::NEW),
+};
+
 std::string Lexer::OPERATOR_CHARS = "+-*/%(){}[]=<>!&|.,?:^~";
 
 Lexer::Lexer(std::string input){
@@ -76,9 +105,7 @@ std::vector<Token*> Lexer::tokenize(){
         }
         else if (current == '"') tokenizeText();
         else if (current == '\'') tokenizeExtendedWord();
-        else if (Lexer::OPERATOR_CHARS.find(current) != -1){
-            tokenizeOperator();
-        }
+        else if (Lexer::OPERATOR_CHARS.find(current) != -1) tokenizeOperator();
         else next();
     }
     return tokens;
@@ -186,27 +213,7 @@ void Lexer::tokenizeWord(){
         str += current;
         current = next();
     }
-    if (str == "print") addToken(TokenType::PRINT);
-    else if (str == "println") addToken(TokenType::PRINTLN);
-    else if (str == "if") addToken(TokenType::IF);
-    else if (str == "elif") addToken(TokenType::ELIF);
-    else if (str == "else") addToken(TokenType::ELSE);
-    else if (str == "while") addToken(TokenType::WHILE);
-    else if (str == "for") addToken(TokenType::FOR);
-    else if (str == "do") addToken(TokenType::DO);
-    else if (str == "break") addToken(TokenType::BREAK);
-    else if (str == "continue") addToken(TokenType::CONTINUE);
-    else if (str == "def") addToken(TokenType::DEF);
-    else if (str == "return") addToken(TokenType::RETURN);
-    else if (str == "import") addToken(TokenType::IMPORT);
-    else if (str == "switch") addToken(TokenType::SWITCH);
-    else if (str == "case") addToken(TokenType::CASE);
-    else if (str == "default") addToken(TokenType::DEFAULT);
-    else if (str == "try") addToken(TokenType::TRY);
-    else if (str == "throw") addToken(TokenType::THROW);
-    else if (str == "catch") addToken(TokenType::CATCH);
-    else if (str == "class") addToken(TokenType::CLASS);
-    else if (str == "new") addToken(TokenType::NEW);
+    if (KEYWORDS.find(str) != KEYWORDS.cend()) addToken(KEYWORDS[str]);
     else addToken(TokenType::WORD, str);
 }
 

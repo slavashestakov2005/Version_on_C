@@ -222,6 +222,8 @@
 		<Unit filename="Visitor/variableprinter.h" />
 		<Unit filename="Visitor/visitor.cpp" />
 		<Unit filename="Visitor/visitor.h" />
+		<Unit filename="callstack.cpp" />
+		<Unit filename="callstack.h" />
 		<Unit filename="icon.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>

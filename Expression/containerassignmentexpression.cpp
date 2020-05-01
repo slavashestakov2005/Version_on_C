@@ -22,10 +22,12 @@ Value* ContainerAssignmentExpression::eval(){
 ContainerAssignmentExpression::operator std::string(){
     return std::string(*containerExpr) + mas[int(operation)] + std::string(*expression);
 }
+
 ContainerAssignmentExpression::~ContainerAssignmentExpression(){
     delete expression;
     expression = nullptr;
 }
+
 void ContainerAssignmentExpression::accept(Visitor* visitor){
     visitor -> visit(this);
 }

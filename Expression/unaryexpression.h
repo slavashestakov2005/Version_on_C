@@ -4,6 +4,7 @@
 #include "expression.h"
 
 enum class UnaryOperator{
+    PLUS,           /// +
     NEGATIVE,       /// -
     NOT,            /// !
     COMPLEMENT,     /// ~
@@ -18,6 +19,7 @@ private:
 public:
     UnaryExpression(UnaryOperator operation, Expression* expr1) : operation(operation), expr1(expr1) {}
     Expressions type(){ return Expressions::UnaryExpression; }
+    static Value* calculate(UnaryOperator operation, Value* value);
     Value* eval();
     operator std::string();
     ~UnaryExpression();

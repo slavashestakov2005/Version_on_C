@@ -2,7 +2,6 @@
 #include "../Exception/typeexception.h"
 #include "../Expression/valueexpression.h"
 
-
 Value* Map::get(Value* key){
     if (containsKey(key)) return map[key];
     else return Null::NULL_;
@@ -29,7 +28,7 @@ int Map::getSize(){
 }
 
 bool Map::containsKey(Value* key){
-    return map.find(key) != map.end();
+    return map.find(key) != map.cend();
 }
 
 Map* Map::getCopyElement(){

@@ -2,8 +2,13 @@
 #include "string.h"
 #include "../Exception/typeexception.h"
 
+ClassValue::ClassValue(std::string className) : className(className){
+    type = Values::CLASS;
+    thisMap -> setThisMap(true);
+};
+
 Map* ClassValue::getThisMap(){
-    return new Map(1);
+    return thisMap;
 }
 
 void ClassValue::addField(std::string name, Value* value){
@@ -55,9 +60,8 @@ Bignum ClassValue::getBignum(){
 ClassValue::operator std::string(){
     return getString();
 }
-#include <iostream>
+
 ClassValue::~ClassValue(){
-    std::cout << "delete ClassValue\n";
     delete thisMap;
     thisMap = nullptr;
     delete constructor;

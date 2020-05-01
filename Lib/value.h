@@ -6,12 +6,12 @@
 
 enum class Values{
     BOOL,
+    NUMBER,
     STRING,
     ARRAY,
     MAP,
-    FUNCTION,
-    NUMBER,
     NULL_,
+    FUNCTION,
     CLASS,
 };
 

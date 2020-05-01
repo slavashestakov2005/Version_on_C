@@ -6,11 +6,13 @@
 namespace{
     std::string mas[] = {
         "Bool",
+        "Number",
         "String",
         "Array",
         "Map",
+        "Null",
         "Function",
-        "Number"
+        "Class"
     };
     class Typeof : public Function{
     public:
@@ -56,14 +58,17 @@ namespace{
 }
 void Types::init(){
     Functions::set("typeof", new Typeof());
-    Functions::set("typeToString", new TypeToString());
+    Functions::set("type_to_string", new TypeToString());
     Functions::set("string", new _String());
     Functions::set("int", new _Int());
     Functions::set("float", new _Float());
-    Variables::set("BOOLEAN", new BigNumber(int(Values::BOOL)));
+
+    Variables::set("BOOL", new BigNumber(int(Values::BOOL)));
     Variables::set("NUMBER", new BigNumber(int(Values::NUMBER)));
     Variables::set("STRING", new BigNumber(int(Values::STRING)));
     Variables::set("ARRAY", new BigNumber(int(Values::ARRAY)));
     Variables::set("MAP", new BigNumber(int(Values::MAP)));
+    Variables::set("NULL", new BigNumber(int(Values::NULL_)));
     Variables::set("FUNCTION", new BigNumber(int(Values::FUNCTION)));
+    Variables::set("CLASS", new BigNumber(int(Values::CLASS)));
 }

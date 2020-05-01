@@ -11,12 +11,8 @@ void ClassDeclarationsStatement::addMethod(FunctionDefineStatement* statement){
     methods.push_back(new FunctionDefineStatement(*statement));
 }
 
-#include <iostream>
 void ClassDeclarationsStatement::execute(){
-    std::cout << "Class decl stat :: execute()";
-    system("pause");
     ClassDeclaration::set(name, this);
-    system("pause");
 }
 
 ClassDeclarationsStatement::operator std::string(){
@@ -38,7 +34,6 @@ ClassDeclarationsStatement::operator std::string(){
 }
 
 ClassDeclarationsStatement::~ClassDeclarationsStatement(){
-    std::cout << "Delete ClassDeclarationStatement\n";
     for(int i = 0; i < methods.size(); ++i){
         delete methods[i];
         methods[i] = nullptr;

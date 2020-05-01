@@ -4,12 +4,35 @@
 #include "null.h"
 #include "../Modules/global.h"
 #include <iostream>
+
 std::map<std::string, Value*> Variables::variables = {};
 
 std::vector<std::map<std::string, Value*>*> Variables::vec = {};
 
+bool Variables::insert = true;
+
+std::map<std::string, Value*> Variables::now = {};
+
+void Variables::start(){
+    variables.clear();
+    vec.clear();
+    now.clear();
+    insert = true;
+    Global::initVariables();
+}
+
+void Variables::setInsert(bool v){
+    insert = v;
+    now.clear();
+}
+
+std::map<std::string, Value*> Variables::getNow(){
+    return now;
+}
+
 void Variables::push(){
-    std::map<std::string, Value*>* cop = new std::map<std::string, Value*>(variables);
+    std::map<std::string, Value*>* cop = new std::map<std::string, Value*>();
+    for(auto x : variables) (*cop)[x.first] = x.second;
     vec.push_back(cop);
 }
 
@@ -18,23 +41,11 @@ void Variables::pop(){
     vec.pop_back();
 }
 
-void Variables::clear(){
-    variables.clear();
-    vec.clear();
-}
-
-void Variables::start(){
-    variables.clear();
-    vec.clear();
-    Global::initVariables();
-}
-
 bool Variables::isExists(std::string key){
     return variables.find(key) != variables.cend();
 }
 
 Value* Variables::get(std::string key){
-    std::cout << "Vars.get " << key << " is ? " << isExists(key) << std::endl;
     if (!isExists(key)) return new Null();
     else return variables[key];
 }

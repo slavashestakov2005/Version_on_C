@@ -6,7 +6,7 @@
 
 namespace {
     std::string mas[] = {
-        "Double", "String", "Array", "Boolean"
+        "Bool", "Number", "String", "Array", "Map", "Null", "Function", "Class"
     };
 
     class IsEmpty : public Function{

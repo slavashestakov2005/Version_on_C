@@ -221,4 +221,7 @@ void Functional::init(){
     Functions::set("flat_map", new Flatmap());
     Functions::set("sortby", new Sortby());
     Functions::set("chain", new Chain());
+    /// combine
+    /// take_while
+    /// drop_while
 }

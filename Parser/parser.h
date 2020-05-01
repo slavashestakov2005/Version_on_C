@@ -36,6 +36,7 @@ private:
     ForeachArrayStatement* foreachArrayStatement();
     ForeachMapStatement* foreachMapStatement();
     Statement* switchStatement();
+    Statement* importStatement();
     Statement* tryStatement();
     FunctionDefineStatement* functionDefine();
     Expression* functionChain(Expression* nameExpression);
@@ -59,6 +60,7 @@ private:
     Expression* multiplicative();
     Expression* objectCreation();
     Expression* unary();
+    Expression* exponential();
     Expression* primary();
     Expression* variable();
     Expression* value();

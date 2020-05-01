@@ -2,6 +2,7 @@
 #include "../Expression/assignmentexpression.h"
 #include "../Expression/variableexpression.h"
 #include <iostream>
+
 void VariablePrinter::visit(AssignmentExpression* v){
     v -> expression -> accept(this);
     std::cout << v -> variable << std::endl;

@@ -68,10 +68,7 @@ Statement* Parser::statement(){
     if (match(TokenType::CONTINUE)) return new ContinueStatement();
     if (match(TokenType::RETURN)) return new ReturnStatement(expression());
     if (match(TokenType::DEF)) return functionDefine();
-    if (match(TokenType::IMPORT)){
-        if (lookMatch(0, TokenType::WORD)) return new ImportStatement(consume(TokenType::WORD) -> getText());
-        else throw new ParseException("Unknown syntax for import");
-    }
+    if (match(TokenType::IMPORT)) return importStatement();
     if (match(TokenType::SWITCH)) return switchStatement();
     if (lookMatch(0, TokenType::WORD) && lookMatch(1, TokenType::LPAREN)){
         return new ExprToStat(functionChain(qualifiedName()));
@@ -181,6 +178,22 @@ Statement* Parser::switchStatement(){
     return new SwitchStatement(start, body, defaultCase);
 }
 
+Statement* Parser::importStatement(){
+    std::vector<std::string> modules;
+    if (lookMatch(0, TokenType::WORD)) modules.push_back(consume(TokenType::WORD) -> getText());
+    else if (match(TokenType::LBRACKET)){
+        while(true){
+            modules.push_back(consume(TokenType::WORD) -> getText());
+            if (match(TokenType::RBRACKET)) break;
+            consume(TokenType::COMMA);
+        }
+    }
+    if (modules.empty()) throw new ParseException("Unknown syntax for import");
+    std::string name;
+    if (match(TokenType::AS)) name = consume(TokenType::WORD) -> getText();
+    return new ImportStatement(modules, name);
+}
+
 Statement* Parser::tryStatement(){
     Statement* body = statementOrBlock();
     if(lookMatch(0, TokenType::CATCH) && lookMatch(1, TokenType::WORD)){
@@ -246,10 +259,12 @@ FunctionalExpression* Parser::function(Expression* nameExpression){
 Expression* Parser::array(){
     consume(TokenType::LBRACKET);
     std::vector<Expression*> elements;
-    while(true){
-        elements.push_back(expression());
-        if (match(TokenType::RBRACKET)) break;
-        consume(TokenType::COMMA);
+    if (!match(TokenType::RBRACKET)){
+        while(true){
+            elements.push_back(expression());
+            if (match(TokenType::RBRACKET)) break;
+            consume(TokenType::COMMA);
+        }
     }
     return new ArrayExpression(elements);
 }
@@ -257,17 +272,19 @@ Expression* Parser::array(){
 Expression* Parser::map(){
     consume(TokenType::LBRACE);
     std::map<Expression*, Expression*> elements;
-    while(true){
-        Expression* key = primary();
-        consume(TokenType::COLON);
-        Expression* value = expression();
-        elements[key] = value;
-        if (match(TokenType::RBRACE)) break;
-        consume(TokenType::COMMA);
+    if (!match(TokenType::RBRACE)){
+        while(true){
+            Expression* key = primary();
+            consume(TokenType::COLON);
+            Expression* value = expression();
+            elements[key] = value;
+            if (match(TokenType::RBRACE)) break;
+            consume(TokenType::COMMA);
+        }
     }
     return new MapExpression(elements);
 }
-#include <iostream>
+
 Statement* Parser::classDeclaration(){
     std::string name = consume(TokenType::WORD) -> getText();
     ClassDeclarationsStatement* classDeclaration = new ClassDeclarationsStatement(name);
@@ -325,6 +342,11 @@ Expression* Parser::assignmentStrict(){
             consume(TokenType::PERCENTEQ);
             return new AssignmentExpression(AssignmentOperator::REMAINDER, variable, expression());
         }
+        if(lookMatch(1, TokenType::STARSTAREQ)){
+            std::string variable = consume(TokenType::WORD) -> getText();
+            consume(TokenType::STARSTAREQ);
+            return new AssignmentExpression(AssignmentOperator::POWER, variable, expression());
+        }
         if(lookMatch(1, TokenType::LTLTEQ)){
             std::string variable = consume(TokenType::WORD) -> getText();
             consume(TokenType::LTLTEQ);
@@ -361,6 +383,7 @@ Expression* Parser::assignmentStrict(){
         if (match(TokenType::STAREQ)) return new ContainerAssignmentExpression(AssignmentOperator::MULTIPLY, (ContainerAccessExpression*)nameExpression, expression());
         if (match(TokenType::SLASHEQ)) return new ContainerAssignmentExpression(AssignmentOperator::DIVIDE, (ContainerAccessExpression*)nameExpression, expression());
         if (match(TokenType::PERCENTEQ)) return new ContainerAssignmentExpression(AssignmentOperator::REMAINDER, (ContainerAccessExpression*)nameExpression, expression());
+        if (match(TokenType::STARSTAREQ)) return new ContainerAssignmentExpression(AssignmentOperator::POWER, (ContainerAccessExpression*)nameExpression, expression());
         if (match(TokenType::LTLTEQ)) return new ContainerAssignmentExpression(AssignmentOperator::LSHIFT, (ContainerAccessExpression*)nameExpression, expression());
         if (match(TokenType::GTGTEQ)) return new ContainerAssignmentExpression(AssignmentOperator::RSHIFT, (ContainerAccessExpression*)nameExpression, expression());
         if (match(TokenType::BAREQ)) return new ContainerAssignmentExpression(AssignmentOperator::OR, (ContainerAccessExpression*)nameExpression, expression());
@@ -505,23 +528,29 @@ Expression* Parser::objectCreation(){
 }
 
 Expression* Parser::unary(){
-    if (match(TokenType::MINUS)) return new UnaryExpression(UnaryOperator::NEGATIVE, primary());
-    if (match(TokenType::PLUS)) return primary();
-    if (match(TokenType::EXCL)) return new UnaryExpression(UnaryOperator::NOT, primary());
-    if (match(TokenType::TILDE)) return new UnaryExpression(UnaryOperator::COMPLEMENT, primary());
+    if (match(TokenType::MINUS)) return new UnaryExpression(UnaryOperator::NEGATIVE, unary());
+    if (match(TokenType::PLUS)) return new UnaryExpression(UnaryOperator::PLUS, unary());
+    if (match(TokenType::EXCL)) return new UnaryExpression(UnaryOperator::NOT, unary());
+    if (match(TokenType::TILDE)) return new UnaryExpression(UnaryOperator::COMPLEMENT, unary());
     if (match(TokenType::PLUSPLUS)){
-        Expression* prim = primary();
+        Expression* prim = unary();
         if (prim -> type() == Expressions::ContainerAccessExpression) return new ContainerAssignmentExpression(AssignmentOperator::PLUSPLUS_, (ContainerAccessExpression*)prim, new ValueExpression(Bignum(1)));
         else if (prim -> type() == Expressions::VariableExpression) return new AssignmentExpression(AssignmentOperator::PLUSPLUS_, ((VariableExpression*) prim) -> name, new ValueExpression(Bignum(1)));
         return new UnaryExpression(UnaryOperator::PLUSPLUS, prim);
     }
     if (match(TokenType::MINUSMINUS)){
-        Expression* prim = primary();
+        Expression* prim = unary();
         if (prim -> type() == Expressions::ContainerAccessExpression) return new ContainerAssignmentExpression(AssignmentOperator::MINUSMINUS_, (ContainerAccessExpression*)prim, new ValueExpression(Bignum(1)));
         else if (prim -> type() == Expressions::VariableExpression) return new AssignmentExpression(AssignmentOperator::MINUSMINUS_, ((VariableExpression*) prim) -> name, new ValueExpression(Bignum(1)));
         return new UnaryExpression(UnaryOperator::MINUSMINUS, prim);
     }
-    return primary();
+    return exponential();
+}
+
+Expression* Parser::exponential(){
+    Expression* left = primary();
+    if (match(TokenType::STARSTAR)) return new BinaryExpression(BinaryOperator::POWER, left, expression());
+    return left;
 }
 
 Expression* Parser::primary(){

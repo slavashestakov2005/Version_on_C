@@ -9,7 +9,7 @@ private:
     Map* thisMap = new Map(1);
     ClassMethod* constructor = nullptr;
 public:
-    ClassValue(std::string className) : className(className) { type = Values::CLASS; };
+    ClassValue(std::string className);
     Map* getThisMap();
     void addField(std::string name, Value* value);
     void addMethod(std::string name, ClassMethod* method);

@@ -12,7 +12,7 @@
 **/
 class Lexer{
 private:
-    static std::map<std::string, TokenType> OPERATORS;
+    static std::map<std::string, TokenType> OPERATORS, KEYWORDS;
     static std::string OPERATOR_CHARS;
     int pos, length, row, col;
     std::string input;

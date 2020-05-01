@@ -6,6 +6,8 @@
 #include "../Lib/array.h"
 #include "../Lib/map.h"
 #include "containeracceselement.h"
+#include "../Visitor/assignvalidator.h"
+
 class ContainerAccessExpression : public Expression{
 private:
     Expression* root;
@@ -28,6 +30,7 @@ public:
     ~ContainerAccessExpression(){}
     void accept(Visitor* visitor);
     friend Visitor;
+    friend AssignValidator;
 };
 
 #endif // CONTAINERACCESSEXPRESSION_H_INCLUDED

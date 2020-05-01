@@ -1,6 +1,7 @@
 #include "functionadder.h"
 #include "../Statement/functiondefinestatement.h"
 #include "../Lib/functions.h"
+
 void FunctionAdder::visit(FunctionDefineStatement* v){
     v -> body -> accept(this);
     if (Functions::isExists(v -> getName())){

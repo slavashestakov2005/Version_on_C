@@ -6,9 +6,10 @@
 #include "../Visitor/importadder.h"
 class ImportStatement : public Statement{
 private:
-    std::string name;
+    std::vector<std::string> names;
+    std::string moduleName;
 public:
-    ImportStatement(std::string name) : name(name) {}
+    ImportStatement(std::vector<std::string> names, std::string moduleName) : names(names), moduleName(moduleName) {}
     Statements type(){ return Statements::ImportStatement; }
     void execute();
     operator std::string();

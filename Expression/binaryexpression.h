@@ -8,6 +8,7 @@ enum class BinaryOperator{
     MULTIPLY,   /// *
     DIVIDE,     /// /
     REMAINDER,  /// %
+    POWER,      /// **
 
     AND,        /// &
     OR,         /// |

@@ -5,7 +5,6 @@
 #include "variables.h"
 #include <sstream>
 #include "../Lib/array.h"
-#include <iostream>
 
 int UserDefinedFunction::getArgsCount(){
     return arguments.getSize();
@@ -17,8 +16,6 @@ std::string UserDefinedFunction::getArgsName(int index){
 }
 
 Value* UserDefinedFunction::execute(std::vector<Value*> values){
-    std::cout << "Call me\t" << std::string(*body) << " with " << values.size() << "\n";
-    std::cout << std::string(*Variables::get("this")) << "\n";
     int siz = values.size();
     int requiredArgsCount = arguments.getRequiredCounter();
     int total = getArgsCount();
@@ -38,10 +35,8 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
         result += is.str();
         throw new ArgumentsMismatchException(result);
     }
-    std::cout << "Start excute\n";
     try{
         Variables::push();
-        Variables::start();
         for(int i = 0; i < minimal; ++i){
             Variables::set(getArgsName(i), values[i]);
         }
@@ -55,9 +50,7 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
             if (arg.isArrayArgument()) Variables::set(arg.getName(), array);
             else Variables::set(arg.getName(), arg.getExpression() -> eval());
         }
-        std::cout << "OK1\n";
         body -> execute();
-        std::cout << "OK2\n";
     }
     catch(ReturnStatement* rs){
         Variables::pop();

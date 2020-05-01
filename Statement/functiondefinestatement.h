@@ -7,7 +7,6 @@
 #include "../Lib/arguments.h"
 class FunctionDefineStatement : public Statement{
 private:
-
 public:
     Arguments arguments;
     Statement* body;
@@ -16,6 +15,7 @@ public:
     : name(name), arguments(arguments), body(body) {}
     Statements type(){ return Statements::FunctionDefineStatement; }
     void execute();
+    void execute(bool set);
     std::string getName();
     operator std::string();
     ~FunctionDefineStatement();

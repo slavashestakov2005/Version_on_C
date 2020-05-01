@@ -8,9 +8,9 @@ private:
     Expression* expression = nullptr;
     bool arrayArgument = false;
 public:
-    Argument(std::string name) : name(name), expression(nullptr) {}
-    Argument(std::string name, Expression* expression) : name(name), expression(expression) {}
-    Argument(std::string name, bool array) : name(name), arrayArgument(array) {}
+    Argument(std::string name);
+    Argument(std::string name, Expression* expression);
+    Argument(std::string name, bool array);
     std::string getName();
     Expression* getExpression();
     bool isArrayArgument();

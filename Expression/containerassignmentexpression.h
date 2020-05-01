@@ -4,6 +4,8 @@
 #include "../Expression/expression.h"
 #include "../Expression/containeraccessexpression.h"
 #include "../Expression/assignmentexpression.h"
+#include "../Visitor/assignvalidator.h"
+
 class ContainerAssignmentExpression : public Expression{
 private:
     AssignmentOperator operation;
@@ -17,6 +19,7 @@ public:
     ~ContainerAssignmentExpression();
     void accept(Visitor* visitor);
     friend Visitor;
+    friend AssignValidator;
 };
 
 #endif // CONTAINERASSIGNMENTSTATEMENT_H_INCLUDED

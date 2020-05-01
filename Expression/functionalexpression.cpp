@@ -6,6 +6,7 @@
 #include "valueexpression.h"
 #include "../Exception/variabledoesnotexistsexception.h"
 #include "../Exception/unknownfunctionexception.h"
+#include "../callstack.h"
 
 void FunctionalExpression::addArguments(Expression* argument){
     arguments.push_back(argument);
@@ -14,7 +15,11 @@ void FunctionalExpression::addArguments(Expression* argument){
 Value* FunctionalExpression::eval(){
     std::vector<Value*> values;
     for(unsigned i = 0; i < arguments.size(); ++i) values.push_back(arguments[i] -> eval());
-    return consumeFunction(functionExpr) -> execute(values);
+    Function* f = consumeFunction(functionExpr);
+    CallStack::push(std::string(*functionExpr), f);
+    Value* result = f -> execute(values);
+    CallStack::pop();
+    return result;
 }
 
 Function* FunctionalExpression::consumeFunction(Expression* expr){
@@ -28,7 +33,8 @@ Function* FunctionalExpression::consumeFunction(Expression* expr){
 }
 
 Function* FunctionalExpression::getFunction(std::string name){
-    if (Functions::isExists(name)) return Functions::get(name);
+    if (Functions::find(name, arguments.size())) return Functions::get(name, arguments.size());
+    else if (Functions::isExists(name)) return Functions::get(name);
     else if (Variables::isExists(name)){
         if (Variables::get(name) -> type == Values::FUNCTION) return ((FunctionValue*)Variables::get(name)) -> getFunction();
     }

@@ -6,6 +6,13 @@ void FunctionDefineStatement::execute(){
     Functions::set(name, new UserDefinedFunction(arguments, body));
 }
 
+void FunctionDefineStatement::execute(bool set){
+    int start = arguments.getRequiredCounter();
+    int finish = arguments.getArrayCounter() == 1 ? 100 : arguments.getSize();
+    bool add = Functions::add(name, new UserDefinedFunction(arguments, body), start, finish);
+    if (!add) throw std::logic_error("Cannot redefinition user's function \"" + name + "\"");
+}
+
 std::string FunctionDefineStatement::getName(){
     return name;
 }

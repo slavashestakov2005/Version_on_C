@@ -7,6 +7,7 @@
 **/
 class AssignValidator : public Visitor{
     void visit(AssignmentExpression* v);
+    void visit(ContainerAssignmentExpression* v);
 };
 
 #endif // ASSIGNVALIDATOR_H_INCLUDED

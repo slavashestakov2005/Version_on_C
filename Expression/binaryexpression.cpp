@@ -8,6 +8,7 @@
 #include "../Exception/operationIsnotsupportedexception.h"
 #include "../Lib/functions.h"
 #include "../Lib/null.h"
+#include "../Lib/bignumbers/smath.h"
 #include <vector>
 
 namespace{
@@ -23,12 +24,13 @@ namespace{
         return a / b;
     }
     std::string mas[] = {
-        "+", "-", "*", "/", "%",
+        "+", "-", "*", "/", "%", "**",
         "&", "|", "^", "<<", ">>"
     };
 }
 
 Value* BinaryExpression::calculate(BinaryOperator operation, Value* left, Value* right){
+    if (left -> type == Values::CLASS || right -> type == Values::CLASS) throw new TypeException("Cannot used binary operation for class");
     if (left -> type == Values::FUNCTION || right -> type == Values::FUNCTION) throw new TypeException("Cannot used binary operation for function");
     if (left -> type == Values::NULL_ || right -> type == Values::NULL_) return new Null();
     if (left -> type == Values::MAP && right -> type != Values::MAP && right -> type != Values::STRING) throw new TypeException("Cannot used binary operation for map and not map and not string");
@@ -65,13 +67,15 @@ Value* BinaryExpression::calculate(BinaryOperator operation, Value* left, Value*
     }
     Bignum num1 = left -> getBignum();
     Bignum num2 = right -> getBignum();
+    Bignum result;
     ///long long lon1 = num1, lon2 = num2;
     switch(operation){
-        case BinaryOperator::ADD : return new BigNumber(num1 + num2);
-        case BinaryOperator::SUBSTRACT : return new BigNumber(num1 - num2);
-        case BinaryOperator::MULTIPLY : return new BigNumber(num1 * num2);
-        case BinaryOperator::DIVIDE : return new BigNumber(num1 / num2);
-        case BinaryOperator::REMAINDER : return new BigNumber(num1 % num2);
+        case BinaryOperator::ADD : result = BigNumber(num1 + num2); break;
+        case BinaryOperator::SUBSTRACT : result = BigNumber(num1 - num2); break;
+        case BinaryOperator::MULTIPLY : result = BigNumber(num1 * num2); break;
+        case BinaryOperator::DIVIDE : result = BigNumber(num1 / num2); break;
+        case BinaryOperator::REMAINDER : result = BigNumber(num1 % num2); break;
+        case BinaryOperator::POWER : result = pow(num1, num2); break;
 ///        case BinaryOperator::AND: return new BigNumber(lon1 & lon2);
 ///        case BinaryOperator::OR: return new BigNumber(lon1 | lon2);
 ///        case BinaryOperator::XOR: return new BigNumber(lon1 ^ lon2);
@@ -79,23 +83,27 @@ Value* BinaryExpression::calculate(BinaryOperator operation, Value* left, Value*
 ///        case BinaryOperator::RSHIFT: return new BigNumber(lon1 >> lon2);
         default: throw new OperationIsNotSupportedException(mas[(int)operation]);
     }
+    return new BigNumber(result);
 }
 
 Value* BinaryExpression::eval(){
     Value* value1 = expr1 -> eval();
     Value* value2 = expr2 -> eval();
-    if (Functions::isExists(mas[int(operation)])){
+    if (Functions::find(mas[int(operation)], 2)){
         std::vector<Value*> vec = {value1, value2};
-        return Functions::get(mas[int(operation)]) -> execute(vec);
+        return Functions::get(mas[int(operation)], 2) -> execute(vec);
     }
     return calculate(operation, value1, value2);
 }
+
 BinaryExpression::operator std::string(){
     return "[ " + std::string(*expr1) + " " + mas[int(operation)] + " " + std::string(*expr2) + " ]";
 }
+
 void BinaryExpression::accept(Visitor* visitor){
     visitor -> visit(this);
 }
+
 BinaryExpression::~BinaryExpression(){
     delete expr1;
     expr1 = nullptr;
