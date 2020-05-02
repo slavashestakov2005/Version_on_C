@@ -293,7 +293,8 @@ namespace{
         }
     };
 }
-void Chemistry::init(){
+
+void Chemistry::initFunctions(){
     Functions::set("mr", new Mr());
     Functions::set("omega", new Omega());
     Functions::set("electron", new Electron());

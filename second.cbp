@@ -154,6 +154,7 @@
 		<Unit filename="Modules/global.h" />
 		<Unit filename="Modules/math.cpp" />
 		<Unit filename="Modules/math.h" />
+		<Unit filename="Modules/module.h" />
 		<Unit filename="Modules/std.cpp" />
 		<Unit filename="Modules/std.h" />
 		<Unit filename="Modules/types.cpp" />

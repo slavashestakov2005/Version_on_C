@@ -8,7 +8,7 @@
 
 namespace {
     std::string mas[] = {
-        "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", "++_", "--_", "_++", "_--"
+        "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", "++", "--", "++", "--"
     };
 }
 
@@ -20,7 +20,10 @@ Value* ContainerAssignmentExpression::eval(){
 }
 
 ContainerAssignmentExpression::operator std::string(){
-    return std::string(*containerExpr) + mas[int(operation)] + std::string(*expression);
+    if (operation == AssignmentOperator::MINUSMINUS_ || operation == AssignmentOperator::PLUSPLUS_){
+        return mas[int(operation)] + " " + std::string(*containerExpr);
+    }
+    return std::string(*containerExpr) + " " + mas[int(operation)] + " " + std::string(*expression);
 }
 
 ContainerAssignmentExpression::~ContainerAssignmentExpression(){

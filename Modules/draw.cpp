@@ -204,8 +204,17 @@ namespace{
         }
     };
 }
-void Draw::init(){
-    std::cout << "In draw::init()\n";
+
+void Draw::initConstants(){
+    Variables::set("KB_ESCAPE", new BigNumber(int(Keys::ESCAPE)));
+    Variables::set("KB_UP", new BigNumber(int(Keys::UP)));
+    Variables::set("KB_DOWN", new BigNumber(int(Keys::DOWN)));
+    Variables::set("KB_LEFT", new BigNumber(int(Keys::LEFT)));
+    Variables::set("KB_RIGHT", new BigNumber(int(Keys::RIGHT)));
+    Variables::set("KB_SPACE", new BigNumber(int(Keys::SPACE)));
+}
+
+void Draw::initFunctions(){
     Functions::set("window", new Window());
     Functions::set("color", new Color());
     Functions::set("line", new Line());
@@ -219,10 +228,4 @@ void Draw::init(){
     Functions::set("keypressed", new KeyPressed());
     Functions::set("mousehover", new MouseHover());
     Functions::set("close", new Close());
-    Variables::set("KB_ESCAPE", new BigNumber(int(Keys::ESCAPE)));
-    Variables::set("KB_UP", new BigNumber(int(Keys::UP)));
-    Variables::set("KB_DOWN", new BigNumber(int(Keys::DOWN)));
-    Variables::set("KB_LEFT", new BigNumber(int(Keys::LEFT)));
-    Variables::set("KB_RIGHT", new BigNumber(int(Keys::RIGHT)));
-    Variables::set("KB_SPACE", new BigNumber(int(Keys::SPACE)));
 }

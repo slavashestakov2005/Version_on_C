@@ -10,22 +10,27 @@
 #include "../Expression/valueexpression.h"
 #include <iostream>
 #include "../Exception/argumentsmismatchexception.h"
+#include "../Exception/mathexception.h"
 #include "../Exception/typeexception.h"
 #include "../path.h"
 #include <ctime>
 #include <algorithm>
+
 namespace{
     std::vector<Value*> mas;
     Function* func;
+
     double modulo(double a, double b){
         if (a < 0) return std::max(b, -b) - modulo(-a, b);
         long long k = a / b;
         double res = a - k * b;
         return res;
     }
+
     bool comparator(Value* a, Value* b){
         return (*a) < (*b);
     }
+
     void qweek_sort(int l, int r){
         int i = l, j = r;
         std::vector<Value*> vec = { mas[(l + r) / 2] };
@@ -40,6 +45,7 @@ namespace{
         if (i < r) qweek_sort(i, r);
         if (l < j) qweek_sort(l, j);
     }
+
     class Rand : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -56,6 +62,7 @@ namespace{
             throw new ArgumentsMismatchException("Fewer arguments expected");
         }
     };
+
     class Echo : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -64,6 +71,7 @@ namespace{
             return new BigNumber(0);
         }
     };
+
     class Sleep : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -74,6 +82,7 @@ namespace{
             return new BigNumber(0);
         }
     };
+
     class NewArray : public Function{
     private:
         Array* createArray(std::vector<Value*> values, int index){
@@ -97,6 +106,7 @@ namespace{
             return createArray(values, 0);
         }
     };
+
     class Len : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -116,6 +126,7 @@ namespace{
             return new BigNumber(length);
         }
     };
+
     class Sort : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -134,6 +145,7 @@ namespace{
             return new Array(mas);
         }
     };
+
     class Split : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -157,6 +169,7 @@ namespace{
             return new Array(val);
         }
     };
+
     class Join : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -179,6 +192,7 @@ namespace{
             return new String(ans);
         }
     };
+
     class Find : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -190,6 +204,7 @@ namespace{
             else return new BigNumber(x);
         }
     };
+
     class Rfind : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -202,6 +217,7 @@ namespace{
             else return new BigNumber(x);
         }
     };
+
     class CharAt : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -212,6 +228,7 @@ namespace{
             return new String(str);
         }
     };
+
     class ToChar : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -221,6 +238,7 @@ namespace{
             return new String(str);
         }
     };
+
     class Substring : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -235,6 +253,7 @@ namespace{
             return new String(ans);
         }
     };
+
     class ToLower : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -244,6 +263,7 @@ namespace{
             return new String(ans);
         }
     };
+
     class ToUpper : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -253,6 +273,7 @@ namespace{
             return new String(ans);
         }
     };
+
     class Trim : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -269,6 +290,7 @@ namespace{
             return new String(str);
         }
     };
+
     class Replace : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -282,6 +304,7 @@ namespace{
             return new String(ans);
         }
     };
+
     class ReplaceFirst : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -297,6 +320,7 @@ namespace{
             return new String(ans);
         }
     };
+
     class Time : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -304,6 +328,7 @@ namespace{
             return new BigNumber(clock());
         }
     };
+
     class ArrayCombine : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -317,6 +342,7 @@ namespace{
             return map;
         }
     };
+
     class MapKeyExists : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -326,6 +352,7 @@ namespace{
             return new Bool(map -> containsKey(values[1]));
         }
     };
+
     class MapKeys : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -339,6 +366,7 @@ namespace{
             return new Array(keys);
         }
     };
+
     class MapValues : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -352,8 +380,45 @@ namespace{
             return new Array(keys);
         }
     };
+
+    class ParseNumber : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() < 1 || values.size() > 2) throw new ArgumentsMismatchException("One or two arguments expected");
+            int radix = values.size() == 2 ? values[1] -> getDouble() : 10;
+            int power = 1;
+            long long ans = 0;
+            std::string parsed = values[0] -> getString();
+            for(int i = parsed.size() - 1; i > -1; --i){
+                int current;
+                if (parsed[i] >= '0' && parsed[i] <= '9') current = parsed[i] - '0';
+                else current = tolower(parsed[i]) - 'a';
+                if (current < 0 || current >= radix) throw new MathException("Bad radix for parse string");
+                ans += current * power;
+                power *= radix;
+            }
+            return new BigNumber(ans);
+        }
+    };
+
+    class ToHexString : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
+            long long value = values[0] -> getDouble();
+            std::string ans;
+            while(value){
+                int current = value % 16;
+                ans += current < 10 ? '0' + current : 'a' + current - 10;
+                value /= 16;
+            }
+            reverse(ans.begin(), ans.end());
+            return new String(ans);
+        }
+    };
 }
-void Std::init(){
+
+void Std::initFunctions(){
     srand(time(0));
     Variables::set("ARGS", Path::getCommandArguments());
     Functions::set("echo", new Echo());
@@ -363,22 +428,26 @@ void Std::init(){
     Functions::set("time", new Time());
 
     Functions::set("split", new Split());
-    Functions::set("join", new Join());
     Functions::set("find", new Find());
     Functions::set("rfind", new Rfind());
-    Functions::set("charat", new CharAt());
-    Functions::set("tochar", new ToChar());
+    Functions::set("char_at", new CharAt());
+    Functions::set("to_char", new ToChar());
     Functions::set("substring", new Substring());
-    Functions::set("tolower", new ToLower());
-    Functions::set("toupper", new ToUpper());
+    Functions::set("to_lower", new ToLower());
+    Functions::set("to_upper", new ToUpper());
     Functions::set("trim", new Trim());
     Functions::set("replace", new Replace());
-    Functions::set("replacefirst", new ReplaceFirst());
+    /** replace_all **/
+    Functions::set("replace_first", new ReplaceFirst());
+
+    Functions::set("parse_number", new ParseNumber());
+    Functions::set("to_hex_string", new ToHexString());
 
     Functions::set("new_array", new NewArray());
+    Functions::set("join", new Join());
     Functions::set("sort", new Sort());
-    Functions::set("arraycombine", new ArrayCombine());
-    Functions::set("mapkeyexist", new MapKeyExists());
-    Functions::set("mapkeys", new MapKeys());
-    Functions::set("mapvalues", new MapValues());
+    Functions::set("array_combine", new ArrayCombine());
+    Functions::set("map_key_exists", new MapKeyExists());
+    Functions::set("map_keys", new MapKeys());
+    Functions::set("map_values", new MapValues());
 }

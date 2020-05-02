@@ -6,12 +6,16 @@
 #include "../Lib/array.h"
 #include "../Lib/map.h"
 #include "../Lib/bignumber.h"
+
 namespace{
     std::vector<Value*> mas;
+
     Function* func;
+
     bool comparator(Value* a, Value* b){
         return (*a) < (*b);
     }
+
     void qweek_sort(int l, int r){
         int i = l, j = r;
         std::vector<Value*> vec = { mas[(l + r) / 2] };
@@ -26,6 +30,7 @@ namespace{
         if (i < r) qweek_sort(i, r);
         if (l < j) qweek_sort(l, j);
     }
+
     Value* filterArray(Array* arr, Function* consumer){
         int size = arr -> getSize();
         std::vector<Value*> value;
@@ -36,6 +41,7 @@ namespace{
         }
         return new Array(value);
     }
+
     Value* filterMap(Map* map, Function* consumer){
         int i = 0;
         Map* value;
@@ -48,6 +54,7 @@ namespace{
         }
         return value;
     }
+
     class Filter : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -60,6 +67,7 @@ namespace{
             throw new TypeException("Invalid first argument. Array or map expected");
         }
     };
+
     Value* mapArray(Array* arr, Function* consumer){
         int size = arr -> getSize();
         std::vector<Value*> value;
@@ -70,6 +78,7 @@ namespace{
         }
         return new Array(value);
     }
+
     Value* mapMap(Map* map, Function* consumer, Function* consumer2){
         int i = 0;
         Map* value;
@@ -83,6 +92,7 @@ namespace{
         }
         return value;
     }
+
     class _Map : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -100,6 +110,7 @@ namespace{
             throw new TypeException("Invalid first argument. Array or map expected");
         }
     };
+
     class Foreach : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -129,6 +140,7 @@ namespace{
             return new BigNumber(0);
         }
     };
+
     class Reduce : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -161,6 +173,7 @@ namespace{
             throw new TypeException("Invalid first argument. Array or map expected");
         }
     };
+
     Value* FlatmapArray(Array* arr, Function* mapper){
         int siz = arr -> getSize();
         std::vector<Value*> values;
@@ -175,6 +188,7 @@ namespace{
         }
         return new Array(values);
     }
+
     class Flatmap : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -184,6 +198,7 @@ namespace{
             return FlatmapArray((Array*)values[0], ((FunctionValue*)values[1]) -> getFunction());
         }
     };
+
     class Sortby : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -199,6 +214,7 @@ namespace{
             return new Array(mas);
         }
     };
+
     class Chain : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -212,16 +228,91 @@ namespace{
             return result;
         }
     };
+
+    class Combine : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() < 1) throw new ArgumentsMismatchException("At least one arg expected");
+            Function* result = nullptr;
+            for(Value* arg : values){
+                if (arg -> type != Values::FUNCTION){
+                    throw new TypeException(std::string(*arg) + " is not a function");
+                }
+                Function* current = result;
+                Function* next = ((FunctionValue*) arg) -> getFunction();
+            }
+            throw new std::logic_error("Combine not defined :(");
+        }
+    };
+
+    class DropWhile : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 2) throw new ArgumentsMismatchException("Two arguments expected");
+            if (values[0] -> type != Values::ARRAY) throw new TypeException("Array expected in first argument");
+            if (values[1] -> type != Values::FUNCTION) throw new TypeException("Function expected in second argument");
+            Function* function = ((FunctionValue*) values[1]) -> getFunction();
+            Array* array = (Array*) values[0];
+            int skipCount = 0;
+            for(int i = 0; i < array -> getSize(); ++i){
+                Value* value = array -> get(i);
+                std::vector<Value*> vec = { value };
+                if (function -> execute(vec) -> getBool()) ++skipCount;
+                else break;
+            }
+            std::vector<Value*> vec;
+            for(int i = skipCount; i < array -> getSize(); ++i){
+                vec.push_back(array -> get(i));
+            }
+            return new Array(vec);
+        }
+    };
+
+    class TakeWhile : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 2) throw new ArgumentsMismatchException("Two arguments expected");
+            if (values[1] -> type != Values::FUNCTION) throw new TypeException("Function expected in second argument");
+            Value* container = values[0];
+            Function* function = ((FunctionValue*) values[1]) -> getFunction();
+            if (container -> type == Values::ARRAY) {
+                Array* array = (Array*) container;
+                int size = array -> getSize();
+                std::vector<Value*> vals;
+                for(int i = 0; i < size; ++i) {
+                    Value* value = array -> get(i);
+                    std::vector<Value*> vec = {value};
+                    if (function -> execute(vec) -> getBool()) {
+                        vals.push_back(value);
+                    } else break;
+                }
+                return new Array(vals);
+            }
+            if (container -> type == Values::MAP) {
+                Map* map = (Map*) container;
+                Map* result = new Map(map -> getSize());
+                for (auto x = map -> iter(); x != map -> end(); ++x) {
+                    std::vector<Value*> vals = {x -> first, x -> second};
+                    if (function -> execute(vals) != new BigNumber(0)){
+                        result -> set(x -> first, x -> second);
+                    } else break;
+                }
+                return result;
+            }
+            throw new TypeException("Invalid first argument. Array or map expected");
+        }
+    };
 }
-void Functional::init(){
-    Functions::set("foreach", new Foreach());
+
+void Functional::initFunctions(){
+    Functions::set("chain", new Chain());
+    Functions::set("combine", new Combine());
+    Functions::set("drop_while", new DropWhile());
     Functions::set("filter", new Filter());
+    Functions::set("flat_map", new Flatmap());
+    Functions::set("foreach", new Foreach());
     Functions::set("map", new _Map());
     Functions::set("reduce", new Reduce());
-    Functions::set("flat_map", new Flatmap());
     Functions::set("sortby", new Sortby());
-    Functions::set("chain", new Chain());
-    /// combine
-    /// take_while
-    /// drop_while
+    Functions::set("take_while", new TakeWhile());
 }

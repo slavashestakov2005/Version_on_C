@@ -138,7 +138,15 @@ namespace{
         }
     };
 }
-void Math::init(){
+
+void Math::initConstants(){
+    Variables::set("Pi", new BigNumber(3.1415926535));
+    Variables::set("Пи", new BigNumber(3.1415926535));
+    Variables::set("E", new BigNumber(2.7182818284));
+    Variables::set("GOLDEN_RATIO", new BigNumber(1.6180339887));
+}
+
+void Math::initFunctions(){
     Functions::set("sin", new Sin());
     Functions::set("cos", new Cos());
     Functions::set("tan", new Tan());
@@ -156,10 +164,6 @@ void Math::init(){
     Functions::set("sqrt", new Sqrt());
     Functions::set("abs", new Abs());
     Functions::set("factorial", new Factorial());
-    Variables::set("Pi", new BigNumber(3.1415926535));
-    Variables::set("Пи", new BigNumber(3.1415926535));
-    Variables::set("E", new BigNumber(2.7182818284));
-    Variables::set("GOLDEN_RATIO", new BigNumber(1.6180339887));
 }
 
 /*

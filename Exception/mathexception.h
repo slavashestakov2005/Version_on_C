@@ -7,7 +7,7 @@ private:
     std::string text;
 public:
     explicit MathException(std::string text) : text(text) {}
-    const char* what() const noexcept { return ("MatchError : " + text).c_str(); }
+    const char* what() const noexcept { return ("MathError : " + text).c_str(); }
     virtual ~MathException() noexcept {}
 };
 

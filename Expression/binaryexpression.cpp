@@ -12,17 +12,6 @@
 #include <vector>
 
 namespace{
-    double modulo(double a, double b){
-        if (!b) throw new MathException("Modulo by zero");
-        if (a < 0) return std::max(b, -b) - modulo(-a, b);
-        long long k = a / b;
-        double res = a - k * b;
-        return res;
-    }
-    double div(double a, double b){
-        if (!b) throw new MathException("Devision by zero");
-        return a / b;
-    }
     std::string mas[] = {
         "+", "-", "*", "/", "%", "**",
         "&", "|", "^", "<<", ">>"
@@ -97,7 +86,7 @@ Value* BinaryExpression::eval(){
 }
 
 BinaryExpression::operator std::string(){
-    return "[ " + std::string(*expr1) + " " + mas[int(operation)] + " " + std::string(*expr2) + " ]";
+    return "[" + std::string(*expr1) + " " + mas[int(operation)] + " " + std::string(*expr2) + "]";
 }
 
 void BinaryExpression::accept(Visitor* visitor){

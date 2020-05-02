@@ -357,7 +357,7 @@ Bignum& Bignum::operator*=(Bignum const& temp){
 }
 Bignum& Bignum::operator/=(Bignum const& temp){
     //if (temp.mas.size() == 1 && temp.mas[0] == 0) throw domain_error("Division by zero");
-    if (temp.mas.size() == 1 && temp.mas[0] == 0) throw new MathException("Devision by zero");
+    if (temp.mas.size() == 1 && temp.mas[0] == 0) throw new MathException("Division by zero");
     Bignum divisor = temp;
     int sh = max(exponent, divisor.exponent);
     int end_exponent = max(tochnost, temp.tochnost);

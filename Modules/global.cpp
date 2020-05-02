@@ -18,12 +18,12 @@ namespace{
     };
 }
 
-void Global::initFunction(){
-    Functions::set("input", new Input());
-}
-
-void Global::initVariables(){
+void Global::initConstants(){
     Variables::set("true", Bool::TRUE_);
     Variables::set("false", Bool::FALSE_);
     Variables::set("null", Null::NULL_);
+}
+
+void Global::initFunctions(){
+    Functions::set("input", new Input());
 }

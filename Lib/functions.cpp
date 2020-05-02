@@ -16,7 +16,7 @@ void Functions::start(){
     functions.clear();
     now.clear();
     insert = true;
-    Global::initFunction();
+    Global::initFunctions();
 }
 
 void Functions::setInsert(bool v){

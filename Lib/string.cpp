@@ -80,7 +80,7 @@ double String::getDouble(){
         is >> val;
         return val;
     }catch(...) {
-        throw new TypeException("Cannot cast string to double");
+        throw new TypeException("Cannot cast string to number");
     }
 }
 

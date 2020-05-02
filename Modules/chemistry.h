@@ -1,9 +1,12 @@
 #ifndef CHEMISTRY_H_INCLUDED
 #define CHEMISTRY_H_INCLUDED
 
-class Chemistry{
+#include "module.h"
+
+class Chemistry : public Module<Chemistry> {
 public:
-    static void init();
+    static void initConstants(){}
+    static void initFunctions();
 };
 
 #endif // CHEMISTRY_H_INCLUDED

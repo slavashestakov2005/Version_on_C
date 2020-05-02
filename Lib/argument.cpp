@@ -6,7 +6,6 @@ Argument::Argument(std::string name, Expression* expression) : name(name), expre
 
 Argument::Argument(std::string name, bool array) : name(name), expression(nullptr), arrayArgument(array) {}
 
-
 std::string Argument::getName(){
     return name;
 }

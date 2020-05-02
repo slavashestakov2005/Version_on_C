@@ -18,7 +18,7 @@ void Variables::start(){
     vec.clear();
     now.clear();
     insert = true;
-    Global::initVariables();
+    Global::initConstants();
 }
 
 void Variables::setInsert(bool v){
@@ -46,12 +46,13 @@ bool Variables::isExists(std::string key){
 }
 
 Value* Variables::get(std::string key){
-    if (!isExists(key)) return new Null();
+    if (!isExists(key)) return Null::NULL_;
     else return variables[key];
 }
 
 void Variables::set(std::string key, Value* value){
-    variables[key] = value;
+    if (insert) variables[key] = value;
+    else now[key] = value;
 }
 
 void Variables::print(){

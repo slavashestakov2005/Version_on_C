@@ -3,6 +3,7 @@
 #include "../Lib/functions.h"
 #include "../Lib/bignumber.h"
 #include "../Lib/string.h"
+
 namespace{
     std::string mas[] = {
         "Bool",
@@ -14,6 +15,7 @@ namespace{
         "Function",
         "Class"
     };
+
     class Typeof : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -21,6 +23,7 @@ namespace{
             else return new BigNumber(int(values[0] -> type));
         }
     };
+
     class TypeToString : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -28,6 +31,7 @@ namespace{
             else return new String(mas[int(values[0] -> type)]);
         }
     };
+
     class _String : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -35,6 +39,7 @@ namespace{
             else return new String(values[0] -> getString());
         }
     };
+
     class _Int : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -47,6 +52,7 @@ namespace{
             return new BigNumber(cop);
         }
     };
+
     class _Float : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -54,15 +60,9 @@ namespace{
             return new BigNumber(values[0] -> getBignum());
         }
     };
-
 }
-void Types::init(){
-    Functions::set("typeof", new Typeof());
-    Functions::set("type_to_string", new TypeToString());
-    Functions::set("string", new _String());
-    Functions::set("int", new _Int());
-    Functions::set("float", new _Float());
 
+void Types::initConstants(){
     Variables::set("BOOL", new BigNumber(int(Values::BOOL)));
     Variables::set("NUMBER", new BigNumber(int(Values::NUMBER)));
     Variables::set("STRING", new BigNumber(int(Values::STRING)));
@@ -71,4 +71,12 @@ void Types::init(){
     Variables::set("NULL", new BigNumber(int(Values::NULL_)));
     Variables::set("FUNCTION", new BigNumber(int(Values::FUNCTION)));
     Variables::set("CLASS", new BigNumber(int(Values::CLASS)));
+}
+
+void Types::initFunctions(){
+    Functions::set("typeof", new Typeof());
+    Functions::set("type_to_string", new TypeToString());
+    Functions::set("string", new _String());
+    Functions::set("int", new _Int());
+    Functions::set("float", new _Float());
 }

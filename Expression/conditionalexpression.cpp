@@ -72,7 +72,7 @@ Value* ConditionalExpression::eval(){
 }
 
 ConditionalExpression::operator std::string(){
-    return "[ " + std::string(*expr1) + " " + mas[int(operation)] + " " + std::string(*expr2) + " ]";
+    return "[" + std::string(*expr1) + " " + mas[int(operation)] + " " + std::string(*expr2) + "]";
 }
 
 ConditionalExpression::~ConditionalExpression(){

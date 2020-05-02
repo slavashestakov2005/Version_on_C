@@ -53,7 +53,8 @@ namespace{
         }
     };
 }
-void Files::init(){
+
+void Files::initFunctions(){
     Functions::set("fopen", new Fopen());
     Functions::set("fclose", new Fclose());
     Functions::set("readline", new ReadLine());

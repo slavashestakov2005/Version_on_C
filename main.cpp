@@ -3,10 +3,12 @@
 #include "repl.h"
 #include "path.h"
 using namespace std;
+
 /**
     1.  Все import происходят перед запуском интерпритатора
     2.  При нахождение импортированной константы или функции выбрасывается исключение
 **/
+
 namespace{
     const int N = 12;
     string mas[N] = {
@@ -18,6 +20,7 @@ namespace{
         "-m", "--showtime"
     };
 }
+
 int main(int argc, char* arg[])
 {
     setlocale(LC_CTYPE, "rus");
