@@ -16,13 +16,13 @@ void ImportStatement::execute(){
         Functions::setInsert(false);
     }
     for(std::string name : names){
-        if (name == "std") Std::init();
-        else if (name == "math") Math::init();
+        if (name == "chemistry") Chemistry::init();
         else if (name == "draw") Draw::init();
-        else if (name == "types") Types::init();
-        else if (name == "functional") Functional::init();
-        else if (name == "chemistry") Chemistry::init();
         else if (name == "files") Files::init();
+        else if (name == "functional") Functional::init();
+        else if (name == "math") Math::init();
+        else if (name == "std") Std::init();
+        else if (name == "types") Types::init();
         else{
             try{
                 if (name.find("\\") == std::string::npos && name.find("/") == std::string::npos) name = Path::getPath() + name;

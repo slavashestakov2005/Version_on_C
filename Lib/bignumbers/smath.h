@@ -16,10 +16,18 @@ Bignum log(const Bignum& x);
 Bignum log10(const Bignum& x);
 Bignum pow(const Bignum& x, const Bignum& y);
 Bignum sqrt(const Bignum& x);
+Bignum cbrt(const Bignum& x);
+Bignum hypot(const Bignum& x, const Bignum& y);
+Bignum to_degrees(const Bignum& x);
+Bignum to_radians(const Bignum& x);
+Bignum copy_sign(const Bignum& x, const Bignum& y);
+Bignum expm1(const Bignum& x);
+Bignum log1p(const Bignum& x);
 
 Bignum ceil(const Bignum& x);
 Bignum floor(const Bignum& x);
-Bignum fabs(const Bignum& x);
+Bignum round(const Bignum& x);
+Bignum abs(const Bignum& x);
 
 /*
 _CRTIMP double __cdecl sin (double);

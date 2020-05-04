@@ -209,6 +209,33 @@ namespace{
         }
         return -1;
     }
+
+    class Electron : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
+            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((String*)values[0]) -> getString();
+            int finded = -1;
+            for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
+            if (finded == -1) throw std::logic_error("First argument not element");
+            return new BigNumber(elements[finded].number);
+        }
+    };
+
+    class LatinRead : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
+            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((String*)values[0]) -> getString();
+            int finded = -1;
+            for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
+            if (finded == -1) throw std::logic_error("First argument not element");
+            return new String(elements[finded].latinRead);
+        }
+    };
+
     class Mr : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -218,6 +245,20 @@ namespace{
             return new BigNumber(mr(str));
         }
     };
+
+    class Neutron : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
+            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((String*)values[0]) -> getString();
+            int finded = -1;
+            for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
+            if (finded == -1) throw std::logic_error("First argument not element");
+            return new BigNumber(round(elements[finded].massa) - elements[finded].number);
+        }
+    };
+
     class Omega : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -232,30 +273,7 @@ namespace{
             return new BigNumber(omega(str2, str1));
         }
     };
-    class Electron : public Function{
-    public:
-        Value* execute(std::vector<Value*> values){
-            if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
-            int finded = -1;
-            for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
-            if (finded == -1) throw std::logic_error("First argument not element");
-            return new BigNumber(elements[finded].number);
-        }
-    };
-    class Neutron : public Function{
-    public:
-        Value* execute(std::vector<Value*> values){
-            if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
-            int finded = -1;
-            for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
-            if (finded == -1) throw std::logic_error("First argument not element");
-            return new BigNumber(round(elements[finded].massa) - elements[finded].number);
-        }
-    };
+
     class RussionRead : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -268,18 +286,7 @@ namespace{
             return new String(elements[finded].russionRead);
         }
     };
-    class LatinRead : public Function{
-    public:
-        Value* execute(std::vector<Value*> values){
-            if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
-            int finded = -1;
-            for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
-            if (finded == -1) throw std::logic_error("First argument not element");
-            return new String(elements[finded].latinRead);
-        }
-    };
+
     class Write : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -295,12 +302,12 @@ namespace{
 }
 
 void Chemistry::initFunctions(){
-    Functions::set("mr", new Mr());
-    Functions::set("omega", new Omega());
     Functions::set("electron", new Electron());
-    Functions::set("proton", new Electron());
-    Functions::set("neutron", new Neutron());
-    Functions::set("russian_read", new RussionRead());
     Functions::set("latin_read", new LatinRead());
+    Functions::set("mr", new Mr());
+    Functions::set("neutron", new Neutron());
+    Functions::set("omega", new Omega());
+    Functions::set("proton", new Electron());
+    Functions::set("russian_read", new RussionRead());
     Functions::set("write", new Write());
 }

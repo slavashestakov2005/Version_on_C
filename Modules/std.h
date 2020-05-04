@@ -10,7 +10,7 @@
 
 class Std : public Module<Std> {
 public:
-    static void initConstants(){}
+    static void initConstants();
     static void initFunctions();
 };
 

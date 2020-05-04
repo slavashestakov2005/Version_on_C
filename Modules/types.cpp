@@ -16,27 +16,11 @@ namespace{
         "Class"
     };
 
-    class Typeof : public Function{
+    class _Float : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            else return new BigNumber(int(values[0] -> type));
-        }
-    };
-
-    class TypeToString : public Function{
-    public:
-        Value* execute(std::vector<Value*> values){
-            if (values.size() != 1) throw std::logic_error("One argument expected");
-            else return new String(mas[int(values[0] -> type)]);
-        }
-    };
-
-    class _String : public Function{
-    public:
-        Value* execute(std::vector<Value*> values){
-            if (values.size() != 1) throw std::logic_error("One argument expected");
-            else return new String(values[0] -> getString());
+            return new BigNumber(values[0] -> getBignum());
         }
     };
 
@@ -53,11 +37,27 @@ namespace{
         }
     };
 
-    class _Float : public Function{
+    class _String : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            return new BigNumber(values[0] -> getBignum());
+            else return new String(values[0] -> getString());
+        }
+    };
+
+    class TypeToString : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 1) throw std::logic_error("One argument expected");
+            else return new String(mas[int(values[0] -> type)]);
+        }
+    };
+
+    class Typeof : public Function{
+    public:
+        Value* execute(std::vector<Value*> values){
+            if (values.size() != 1) throw std::logic_error("One argument expected");
+            else return new BigNumber(int(values[0] -> type));
         }
     };
 }
@@ -74,9 +74,9 @@ void Types::initConstants(){
 }
 
 void Types::initFunctions(){
-    Functions::set("typeof", new Typeof());
-    Functions::set("type_to_string", new TypeToString());
-    Functions::set("string", new _String());
-    Functions::set("int", new _Int());
     Functions::set("float", new _Float());
+    Functions::set("int", new _Int());
+    Functions::set("string", new _String());
+    Functions::set("type_to_string", new TypeToString());
+    Functions::set("typeof", new Typeof());
 }
