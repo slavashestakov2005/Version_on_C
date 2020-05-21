@@ -2,6 +2,7 @@
 #include "bool.h"
 #include "string.h"
 #include "../Exception/typeexception.h"
+#include "../Exception/unknownpropertyexception.h"
 #include "../Expression/valueexpression.h"
 
 namespace {
@@ -77,10 +78,14 @@ int Array::getSize() const{
     return elements -> size();
 }
 
-Value* Array::access(Value* property){
+Value* Array::accessDot(Value* property){
     std::string prop = property -> getString();
     if (prop == "length") return new FunctionValue(new Length());
     if (prop == "is_empty") return new FunctionValue(new IsEmpty());
+    throw new UnknownPropertyException(prop);
+}
+
+Value* Array::accessBracket(Value* property){
     return get((int)property -> getDouble());
 }
 

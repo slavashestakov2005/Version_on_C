@@ -124,6 +124,7 @@
 		<Unit filename="Lib/classmethod.h" />
 		<Unit filename="Lib/classvalue.cpp" />
 		<Unit filename="Lib/classvalue.h" />
+		<Unit filename="Lib/container.h" />
 		<Unit filename="Lib/function.h" />
 		<Unit filename="Lib/functions.cpp" />
 		<Unit filename="Lib/functions.h" />

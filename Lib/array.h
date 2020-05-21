@@ -2,11 +2,12 @@
 #define ARRAY_H_INCLUDED
 
 #include "value.h"
+#include "container.h"
 #include <vector>
 /**
     @throw std::logic_error("Cannot cast array to number")
 **/
-class Array : public Value{
+class Array : public Value, Container{
 private:
     std::vector<Value*>* elements;
 public:
@@ -19,7 +20,8 @@ public:
     static Array* add(Array* array, Value* value);
     static Array* add(Array* array1, Array* array2);
     int getSize() const;
-    Value* access(Value* property);
+    Value* accessDot(Value* property);
+    Value* accessBracket(Value* property);
     double getDouble();
     std::string getString();
     bool getBool();

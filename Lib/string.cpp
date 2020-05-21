@@ -63,7 +63,11 @@ int String::getSize(){
     return value.size();
 }
 
-Value* String::access(Value* property){
+void String::set(int index, Value* val){
+    value = value.substr(0, index) + val -> getString() + value.substr(index + 1);
+}
+
+Value* String::accessDot(Value* property){
     std::string prop = property -> getString();
     if (prop == "length") return new BigNumber(getSize());
     if (prop == "trim") return new FunctionValue(new Trim(value));
@@ -71,6 +75,10 @@ Value* String::access(Value* property){
     if (prop == "to_lower") return new FunctionValue(new To_lower(value));
     if (prop == "chars") return new FunctionValue(new Chars(value));
     throw new UnknownPropertyException(prop);
+}
+
+Value* String::accessBracket(Value* property){
+    return new String("" + value[(int) property -> getDouble()]);
 }
 
 double String::getDouble(){

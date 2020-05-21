@@ -1,5 +1,5 @@
 #include "userdefinedfunction.h"
-#include "bignumber.h"
+#include "null.h"
 #include "../Statement/returnstatement.h"
 #include "../Exception/argumentsmismatchexception.h"
 #include "variables.h"
@@ -57,7 +57,7 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
         return rs -> getResult();
     }
     Variables::pop();
-    return new BigNumber(0);
+    return Null::NULL_;
 }
 
 UserDefinedFunction::operator std::string(){

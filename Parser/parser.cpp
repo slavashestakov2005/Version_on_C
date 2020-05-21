@@ -158,7 +158,6 @@ Statement* Parser::switchStatement(){
     Statement* defaultCase = nullptr;
     while(true){
         if (match(TokenType::CASE)){
-            if (!openParen && body.size()) throw std::logic_error("Missing open tag for switch");
             Expression* condition = expression();
             consume(TokenType::COLON);
             Statement* casestatement = statementOrBlock();
@@ -174,6 +173,7 @@ Statement* Parser::switchStatement(){
         }
         else break;
     }
+    if (!openParen && (body.size() + (defaultCase != nullptr)) > 1) throw std::logic_error("Missing open tag for switch");
     if(openParen) consume(TokenType::RBRACE);
     return new SwitchStatement(start, body, defaultCase);
 }
@@ -549,7 +549,7 @@ Expression* Parser::unary(){
 
 Expression* Parser::exponential(){
     Expression* left = primary();
-    if (match(TokenType::STARSTAR)) return new BinaryExpression(BinaryOperator::POWER, left, expression());
+    if (match(TokenType::STARSTAR)) return new BinaryExpression(BinaryOperator::POWER, left, unary());
     return left;
 }
 
@@ -611,8 +611,18 @@ Expression* Parser::variable(){
         }
         return nameExpression;
     }
-    if (lookMatch(0, TokenType::LBRACKET)) return array();
-    if (lookMatch(0, TokenType::LBRACE)) return map();
+    if (lookMatch(0, TokenType::LBRACKET)){
+        Expression* _array = array();
+        std::vector<ContainerAccessElement> indices = variableSuffix();
+        if (indices.empty()) return _array;
+        return new ContainerAccessExpression(_array, indices);
+    }
+    if (lookMatch(0, TokenType::LBRACE)){
+        Expression* _map = map();
+        std::vector<ContainerAccessElement> indices = variableSuffix();
+        if (indices.empty()) return _map;
+        return new ContainerAccessExpression(_map, indices);
+    }
     return value();
 }
 
@@ -643,6 +653,11 @@ Expression* Parser::value(){
             if (!indices.size()){
                 return stringExpr;
             }
+            return new ContainerAccessExpression(stringExpr, indices);
+        }
+        if (lookMatch(0, TokenType::LBRACKET)){
+            std::vector<ContainerAccessElement> indices = variableSuffix();
+            if (indices.empty()) return stringExpr;
             return new ContainerAccessExpression(stringExpr, indices);
         }
         return stringExpr;

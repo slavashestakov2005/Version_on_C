@@ -1,4 +1,6 @@
 #include "switchstatement.h"
+#include "breakstatement.h"
+#include "continuestatement.h"
 
 namespace{
     bool equals(Value* val1, Value* val2){
@@ -13,13 +15,21 @@ namespace{
 void SwitchStatement::execute(){
     bool trueCase = false;
     Value* val = start -> eval();
-    for(unsigned i = 0; i < body.size(); ++i){
-        if (equals(val, body[i].first -> eval())){
-            trueCase = true;
-            body[i].second -> execute();
+    try{
+        for(unsigned i = 0; i < body.size(); ++i){
+            if (equals(val, body[i].first -> eval())){
+                trueCase = true;
+                try{
+                    body[i].second -> execute();
+                } catch(ContinueStatement* cs){
+                    // continue;
+                }
+            }
         }
+        if (!trueCase && defaultCase != nullptr) defaultCase -> execute();
+    } catch(BreakStatement* bs){
+        // break;
     }
-    if (!trueCase && defaultCase != nullptr) defaultCase -> execute();
 }
 
 SwitchStatement::operator std::string(){

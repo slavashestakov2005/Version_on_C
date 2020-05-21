@@ -2,13 +2,17 @@
 #define STRING_H_INCLUDED
 
 #include "value.h"
-class String : public Value{
+#include "container.h"
+
+class String : public Value, Container{
 private:
     std::string value;
 public:
     String(std::string value) : value(value) { type = Values::STRING; }
     int getSize();
-    Value* access(Value* property);
+    void set(int index, Value* val);
+    Value* accessDot(Value* property);
+    Value* accessBracket(Value* property);
     double getDouble();
     std::string getString();
     bool getBool();
