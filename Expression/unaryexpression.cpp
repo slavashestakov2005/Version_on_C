@@ -1,8 +1,8 @@
 #include "unaryexpression.h"
-#include "../Lib/bignumber.h"
+#include "../Value/bignumbervalue.h"
 #include "../Lib/variables.h"
-#include "../Lib/bool.h"
-#include "../Lib/null.h"
+#include "../Value/boolvalue.h"
+#include "../Value/nullvalue.h"
 #include "../Lib/functions.h"
 #include "variableexpression.h"
 #include "../Exception/typeexception.h"
@@ -15,14 +15,14 @@ namespace{
 }
 
 Value* UnaryExpression::calculate(UnaryOperator operation, Value* value){
-    if (value -> type == Values::NULL_) return Null::NULL_;
+    if (value -> type() == Values::NULL_) return NullValue::NULL_;
     switch(operation){
-        case UnaryOperator::PLUS : return new BigNumber(value -> getBignum());
-        case UnaryOperator::NEGATIVE : return new BigNumber(-(value -> getBignum()));
-        case UnaryOperator::NOT : return new Bool(!(value -> getBignum()));
-        /// case UnaryOperator::COMPLEMENT : return new BigNumber(~(value -> getBignum()));
-        case UnaryOperator::PLUSPLUS : return new BigNumber(++(value -> getBignum()));
-        case UnaryOperator::MINUSMINUS : return new BigNumber(--(value -> getBignum()));
+        case UnaryOperator::PLUS : return new BigNumberValue(value -> asBignum());
+        case UnaryOperator::NEGATIVE : return new BigNumberValue(-(value -> asBignum()));
+        case UnaryOperator::NOT : return new BoolValue(!(value -> asBignum()));
+        /// case UnaryOperator::COMPLEMENT : return new BigNumber(~(value -> asBignum()));
+        case UnaryOperator::PLUSPLUS : return new BigNumberValue(++(value -> asBignum()));
+        case UnaryOperator::MINUSMINUS : return new BigNumberValue(--(value -> asBignum()));
         default: throw new OperationIsNotSupportedException(mas[(int)operation]);
     }
 }
@@ -37,7 +37,7 @@ Value* UnaryExpression::eval(){
     return calculate(operation, val);
 }
 UnaryExpression::operator std::string(){
-    return mas[int(operation)] + " " + std::string(*expr1);
+    return "[" + mas[int(operation)] + " " + std::string(*expr1) + "]";
 }
 UnaryExpression::~UnaryExpression(){
     delete expr1;

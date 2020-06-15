@@ -29,6 +29,7 @@ int Arguments::getArrayCounter(){
 int Arguments::getSize(){
     return arguments.size();
 }
+
 Arguments::operator std::string(){
     std::string result = "(";
     for(int i = 0; i < arguments.size(); ++i){

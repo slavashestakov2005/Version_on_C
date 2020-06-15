@@ -2,6 +2,7 @@
 #define UNKNOWNMODULEEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class UnknownModuleException  : public std::exception{
 private:
     std::string text;

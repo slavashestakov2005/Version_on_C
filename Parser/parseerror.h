@@ -3,6 +3,7 @@
 
 #include <exception>
 #include <string>
+
 class ParseError{
 private:
     int line;

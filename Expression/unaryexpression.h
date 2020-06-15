@@ -2,15 +2,7 @@
 #define UNARYEXPRESSION_H_INCLUDED
 
 #include "expression.h"
-
-enum class UnaryOperator{
-    PLUS,           /// +
-    NEGATIVE,       /// -
-    NOT,            /// !
-    COMPLEMENT,     /// ~
-    PLUSPLUS,       /// ++
-    MINUSMINUS,     /// --
-};
+#include "unaryoperator.h"
 
 class UnaryExpression : public Expression{
 private:

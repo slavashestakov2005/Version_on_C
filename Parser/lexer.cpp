@@ -1,5 +1,5 @@
-#include "lexer.h"
 #include <stdexcept>
+#include "lexer.h"
 
 std::map<std::string, TokenType> Lexer::OPERATORS = {
     std::make_pair("+", TokenType::PLUS),
@@ -98,14 +98,14 @@ std::vector<Token*> Lexer::tokenize(){
     while(pos < length){
         char current = peek(0);
         if (isdigit(current)) tokenizeNumber();
-        else if (islower(current) || isupper(current) || current == '_' || current == '$'/* || current >= 'а' && current <= 'я' || current >= 'А' && current <= 'Я'*/) tokenizeWord();
+        else if (islower(current) || isupper(current) || current == '_' || current == '$') tokenizeWord();
         else if (current == '#'){
             next();
             tokenizeHexNumber();
         }
         else if (current == '"') tokenizeText();
         else if (current == '\'') tokenizeExtendedWord();
-        else if (Lexer::OPERATOR_CHARS.find(current) != -1) tokenizeOperator();
+        else if (Lexer::OPERATOR_CHARS.find(current) != std::string::npos) tokenizeOperator();
         else next();
     }
     return tokens;
@@ -116,7 +116,7 @@ void Lexer::tokenizeNumber(){
     char current = peek(0);
     while(true){
         if (current == '.'){
-            if (str.find(current) != -1) error("Invalid float number");
+            if (str.find(current) != std::string::npos) error("Invalid float number");
         } else if(!isdigit(current)) break;
         str += current;
         current = next();
@@ -135,7 +135,7 @@ void Lexer::tokenizeHexNumber(){
 }
 
 void Lexer::tokenizeText(){
-    next(); ///skip "
+    next();
     std::string str;
     char current = peek(0);
     while(true){
@@ -146,8 +146,6 @@ void Lexer::tokenizeText(){
                 case '"' : str += '"'; current = next(); continue;
                 case '0' : str += '\0'; current = next(); continue;
                 case 'r' : str += '\r'; current = next(); continue;
-                case 'v' : str += '\v'; current = next(); continue;
-                case 'a' : str += '\a'; current = next(); continue;
                 case 'n' : str += '\n'; current = next(); continue;
                 case 't' : str += '\t'; current = next(); continue;
             }
@@ -158,12 +156,12 @@ void Lexer::tokenizeText(){
         str += current;
         current = next();
     }
-    next(); /// skip "
+    next();
     addToken(TokenType::TEXT, str);
 }
 
 void Lexer::tokenizeExtendedWord(){
-    next(); ///skip '
+    next();
     std::string str;
     char current = peek(0);
     while(true){
@@ -173,7 +171,7 @@ void Lexer::tokenizeExtendedWord(){
         str += current;
         current = next();
     }
-    next(); /// skip '
+    next();
     addToken(TokenType::WORD, str);
 }
 
@@ -209,7 +207,7 @@ void Lexer::tokenizeWord(){
     std::string str;
     char current = peek(0);
     while(true){
-        if(!isdigit(current) && !islower(current) && !isupper(current) && current != '_' && current != '$' && !(current >= 'А' && current <= 'Я') && !(current >= 'а' && current <= 'я')) break;
+        if(!isdigit(current) && !islower(current) && !isupper(current) && current != '_' && current != '$') break;
         str += current;
         current = next();
     }
@@ -232,8 +230,8 @@ void Lexer::tokenizeMultilineComment(){
         if (current == '*' && peek(1) == '/') break;
         current = next();
     }
-    next(); /// *
-    next(); /// /
+    next();
+    next();
 }
 
 void Lexer::addToken(TokenType type){

@@ -1,9 +1,10 @@
 #ifndef FUNCTIONALEXPRESSION_H_INCLUDED
 #define FUNCTIONALEXPRESSION_H_INCLUDED
 
-#include "expression.h"
 #include <vector>
+#include "expression.h"
 #include "../Lib/function.h"
+
 class FunctionalExpression : public Expression{
 private:
     Expression* functionExpr;

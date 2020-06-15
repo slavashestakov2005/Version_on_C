@@ -1,6 +1,6 @@
 #include "classmethod.h"
 #include "variables.h"
-#include "classvalue.h"
+#include "../Value/classvalue.h"
 
 ClassMethod::ClassMethod(Arguments args, Statement* body, ClassValue* classInstance)
     : UserDefinedFunction(args, body), classInstance(classInstance) { }

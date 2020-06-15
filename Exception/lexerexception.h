@@ -2,6 +2,7 @@
 #define LEXEREXCEPTION_H_INCLUDED
 
 #include <string>
+
 class LexerException : public std::exception{
 private:
     std::string text;

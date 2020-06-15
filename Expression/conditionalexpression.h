@@ -1,19 +1,9 @@
 #ifndef CONDITIONALEXPRESSION_H_INCLUDED
 #define CONDITIONALEXPRESSION_H_INCLUDED
 
+#include "conditionaloperator.h"
 #include "expression.h"
-enum class ConditionalOperator{
-    EQUALS,     /// ==
-    NOT_EQUALS, /// !=
 
-    LT,         /// <
-    LTEQ,       /// <=
-    GT,         /// >
-    GTEQ,       /// >=
-
-    AND,        /// &&
-    OR          /// ||
-};
 class ConditionalExpression : public Expression{
 private:
     Expression* expr1, *expr2;

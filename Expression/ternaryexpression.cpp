@@ -1,7 +1,7 @@
 #include "ternaryexpression.h"
 
 Value* TernaryExpression::eval(){
-    if (condition -> eval() -> getDouble()) return trueExpr -> eval();
+    if (condition -> eval() -> asBool()) return trueExpr -> eval();
     else return falseExpr -> eval();
 }
 

@@ -1,9 +1,10 @@
 #ifndef USERDEFINEDFUNCTION_H_INCLUDED
 #define USERDEFINEDFUNCTION_H_INCLUDED
 
+#include "arguments.h"
 #include "function.h"
 #include "../Statement/statement.h"
-#include "arguments.h"
+
 class UserDefinedFunction : public Function{
 protected:
     Statement* body;

@@ -1,8 +1,8 @@
 #include "containeraccessexpression.h"
 #include "../Lib/variables.h"
-#include "../Lib/bignumber.h"
-#include "../Lib/string.h"
-#include "../Lib/classvalue.h"
+#include "../Value/bignumbervalue.h"
+#include "../Value/stringvalue.h"
+#include "../Value/classvalue.h"
 #include "../Exception/typeexception.h"
 #include "variableexpression.h"
 
@@ -10,9 +10,7 @@ ContainerAccessExpression::ContainerAccessExpression(std::string variable, std::
     (*this) = ContainerAccessExpression(new VariableExpression(variable), indices);
 }
 
-ContainerAccessExpression::ContainerAccessExpression(Expression* root, std::vector<ContainerAccessElement> indices) : root(root), indices(indices) {
-    rootVariable = root -> type() == Expressions::VariableExpression;
-}
+ContainerAccessExpression::ContainerAccessExpression(Expression* root, std::vector<ContainerAccessElement> indices) : root(root), indices(indices) {}
 
 Value* ContainerAccessExpression::eval(){
     return get();
@@ -22,16 +20,16 @@ Value* ContainerAccessExpression::get(){
     Value* container = getContainer();
     Value* lastindex = lastIndex();
     bool lastdot = lastDot();
-    switch(container -> type){
+    switch(container -> type()){
         case Values::ARRAY:
-            if (lastdot) return ((Array*) container) -> accessDot(lastindex);
-            else return ((Array*) container) -> accessBracket(lastindex);
+            if (lastdot) return ((ArrayValue*) container) -> accessDot(lastindex);
+            else return ((ArrayValue*) container) -> accessBracket(lastindex);
         case Values::MAP:
-            if (lastdot && !((Map*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
-            return ((Map*) container) -> get(lastindex);
+            if (lastdot && !((MapValue*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
+            return ((MapValue*) container) -> get(lastindex);
         case Values::STRING:
-            if (lastdot) return ((String*) container) -> accessDot(lastindex);
-            else return ((String*) container) -> accessBracket(lastindex);
+            if (lastdot) return ((StringValue*) container) -> accessDot(lastindex);
+            else return ((StringValue*) container) -> accessBracket(lastindex);
         case Values::CLASS:
             if (!lastdot) throw new std::logic_error("Cannot used [] for class");
             return ((ClassValue*) container) -> access(lastindex);
@@ -44,22 +42,22 @@ Value* ContainerAccessExpression::set(Value* value){
     Value* container = getContainer();
     Value* lastindex = lastIndex();
     bool lastdot = lastDot();
-    switch(container -> type){
+    switch(container -> type()){
         case Values::ARRAY : {
             if (lastdot) throw new std::logic_error("Cannot used DOT for array");
-            int arrayIndex = (int) lastindex -> getDouble();
-            ((Array*) container) -> set(arrayIndex, value);
+            int arrayIndex = (int) lastindex -> asDouble();
+            ((ArrayValue*) container) -> set(arrayIndex, value);
             break;
         }
         case Values::MAP : {
-            if (lastdot && !((Map*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
-            ((Map*) container) -> set(lastindex, value);
+            if (lastdot && !((MapValue*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
+            ((MapValue*) container) -> set(lastindex, value);
             break;
         }
         case Values::STRING : {
             if (lastdot) throw new std::logic_error("Cannot used DOT for string");
-            int stringIndex = (int) lastindex -> getDouble();
-            ((String*) container) -> set(stringIndex, value);
+            int stringIndex = (int) lastindex -> asDouble();
+            ((StringValue*) container) -> set(stringIndex, value);
             break;
         }
         case Values::CLASS : {
@@ -74,9 +72,9 @@ Value* ContainerAccessExpression::set(Value* value){
 
 Value* ContainerAccessExpression::getCopyElement(){
     Value* container = getContainer();
-    switch(container -> type){
-        case Values::ARRAY : return new Array(((Array*) container) -> getCopyElement());
-        case Values::MAP : return ((Map*) container) -> getCopyElement();
+    switch(container -> type()){
+        case Values::ARRAY : return new ArrayValue(((ArrayValue*) container) -> getCopyElement());
+        case Values::MAP : return ((MapValue*) container) -> getCopyElement();
         default: return container;
     }
 }
@@ -87,20 +85,20 @@ Value* ContainerAccessExpression::getContainer(){
     for(int i = 0; i < last; ++i){
         Value* ind = index(i);
         bool isdot = isDot(i);
-        switch(container -> type){
+        switch(container -> type()){
             case Values::ARRAY : {
-                if (isdot) container = ((Array*) container) -> accessDot(ind);
-                else container = ((Array*) container) -> accessBracket(ind);
+                if (isdot) container = ((ArrayValue*) container) -> accessDot(ind);
+                else container = ((ArrayValue*) container) -> accessBracket(ind);
                 break;
             }
             case Values::MAP : {
-                if (isdot && !((Map*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
-                container = ((Map*) container) -> get(ind);
+                if (isdot && !((MapValue*) container) -> isThisMap()) throw new std::logic_error("Cannot used DOT for map");
+                container = ((MapValue*) container) -> get(ind);
                 break;
             }
             case Values::STRING : {
-                if (isdot) container = ((String*) container) -> accessDot(ind);
-                else container = ((String*) container) -> accessBracket(ind);
+                if (isdot) container = ((StringValue*) container) -> accessDot(ind);
+                else container = ((StringValue*) container) -> accessBracket(ind);
                 break;
             }
             case Values::CLASS : {
@@ -132,7 +130,7 @@ bool ContainerAccessExpression::isDot(int index){
 
 ContainerAccessExpression::operator std::string(){
     std::string result = std::string(*root);
-    for(unsigned i = 0; i < indices.size(); ++i){
+    for(int i = 0; i < indices.size(); ++i){
         result += std::string(indices[i]);
     }
     return result;

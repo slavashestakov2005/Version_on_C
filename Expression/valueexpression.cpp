@@ -1,13 +1,13 @@
 #include "valueexpression.h"
 
 ValueExpression::ValueExpression(Value* val){
-    if (val -> type == Values::ARRAY) value = val;
-    else if (val -> type == Values::STRING) value = new String(*(String*)val);
-    else if (val -> type == Values::BOOL) value = new Bool(*(Bool*)val);
-    else if (val -> type == Values::FUNCTION) value = new FunctionValue(*(FunctionValue*)val);
-    else if (val -> type == Values::MAP) value = new Map(*(Map*)val);
-    else if (val -> type == Values::NUMBER) value = new BigNumber(*(BigNumber*)val);
-    else if (val -> type == Values::NULL_) value = new Null();
+    if (val -> type() == Values::ARRAY) value = val;
+    else if (val -> type() == Values::STRING) value = new StringValue(*(StringValue*)val);
+    else if (val -> type() == Values::BOOL) value = new BoolValue(*(BoolValue*)val);
+    else if (val -> type() == Values::FUNCTION) value = new FunctionValue(*(FunctionValue*)val);
+    else if (val -> type() == Values::MAP) value = new MapValue(*(MapValue*)val);
+    else if (val -> type() == Values::NUMBER) value = new BigNumberValue(*(BigNumberValue*)val);
+    else if (val -> type() == Values::NULL_) value = NullValue::NULL_;
 }
 
 Value* ValueExpression::eval(){

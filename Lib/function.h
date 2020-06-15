@@ -1,8 +1,9 @@
 #ifndef FUNCTION_H_INCLUDED
 #define FUNCTION_H_INCLUDED
 
-#include "value.h"
 #include <vector>
+#include "../Value/value.h"
+
 class Function{
 public:
     bool type = false;

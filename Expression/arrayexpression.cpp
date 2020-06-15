@@ -1,8 +1,8 @@
 #include "arrayexpression.h"
-#include "../Lib/array.h"
+#include "../Value/arrayvalue.h"
 
 Value* ArrayExpression::eval(){
-    Array* arr = new Array(elements.size());
+    ArrayValue* arr = new ArrayValue(elements.size());
     for(int i = 0; i < elements.size(); ++i){
         arr -> set(i, elements[i] -> eval());
     }

@@ -1,18 +1,19 @@
 #include "math.h"
 #include <cmath>
 #include "../Lib/function.h"
-#include "../Lib/bignumber.h"
+#include "../Value/bignumbervalue.h"
 #include "../Lib/functions.h"
 #include "../Lib/variables.h"
 #include "../Exception/argumentsmismatchexception.h"
 #include "../Exception/mathexception.h"
-#include "../Lib/bignumbers/smath.h"
+#include "../Value/bignumbers/smath.h"
+
 namespace{
     class Abs : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(abs(values[0] -> getBignum()));
+            else return new BigNumberValue(abs(values[0] -> asBignum()));
         }
     };
 
@@ -20,7 +21,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(acos(values[0] -> getBignum()));
+            else return new BigNumberValue(acos(values[0] -> asBignum()));
         }
     };
 
@@ -28,7 +29,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(asin(values[0] -> getBignum()));
+            else return new BigNumberValue(asin(values[0] -> asBignum()));
         }
     };
 
@@ -36,7 +37,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(atan(values[0] -> getBignum()));
+            else return new BigNumberValue(atan(values[0] -> asBignum()));
         }
     };
 
@@ -44,7 +45,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("Two argument expected");
-            else return new BigNumber(atan2(values[0] -> getBignum(), values[1] -> getBignum()));
+            else return new BigNumberValue(atan2(values[0] -> asBignum(), values[1] -> asBignum()));
         }
     };
 
@@ -52,7 +53,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(cbrt(values[0] -> getBignum()));
+            else return new BigNumberValue(cbrt(values[0] -> asBignum()));
         }
     };
 
@@ -60,7 +61,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(ceil(values[0] -> getBignum()));
+            else return new BigNumberValue(ceil(values[0] -> asBignum()));
         }
     };
 
@@ -68,7 +69,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(copy_sign(values[0] -> getBignum(), values[1] -> getBignum()));
+            else return new BigNumberValue(copy_sign(values[0] -> asBignum(), values[1] -> asBignum()));
         }
     };
 
@@ -76,7 +77,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(cos(values[0] -> getBignum()));
+            else return new BigNumberValue(cos(values[0] -> asBignum()));
         }
     };
 
@@ -84,7 +85,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(cosh(values[0] -> getBignum()));
+            else return new BigNumberValue(cosh(values[0] -> asBignum()));
         }
     };
 
@@ -92,7 +93,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(exp(values[0] -> getBignum()));
+            else return new BigNumberValue(exp(values[0] -> asBignum()));
         }
     };
 
@@ -100,7 +101,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(expm1(values[0] -> getBignum()));
+            else return new BigNumberValue(expm1(values[0] -> asBignum()));
         }
     };
 
@@ -108,11 +109,11 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            if (values[0] -> getDouble() < 0) throw new MathException("Bad argument for factorial");
+            if (values[0] -> asDouble() < 0) throw new MathException("Bad argument for factorial");
             Bignum result = 1;
-            int n = values[0] -> getDouble();
+            int n = values[0] -> asDouble();
             for(int i = 2; i <= n; ++i) result *= i;
-            return new BigNumber(result);
+            return new BigNumberValue(result);
         }
     };
 
@@ -120,7 +121,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(floor(values[0] -> getBignum()));
+            else return new BigNumberValue(floor(values[0] -> asBignum()));
         }
     };
 
@@ -128,7 +129,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(hypot(values[0] -> getBignum(), values[1] -> getBignum()));
+            else return new BigNumberValue(hypot(values[0] -> asBignum(), values[1] -> asBignum()));
         }
     };
 
@@ -136,7 +137,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(log(values[0] -> getBignum()));
+            else return new BigNumberValue(log(values[0] -> asBignum()));
         }
     };
 
@@ -144,7 +145,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(log10(values[0] -> getBignum()));
+            else return new BigNumberValue(log10(values[0] -> asBignum()));
         }
     };
 
@@ -152,7 +153,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(log1p(values[0] -> getBignum()));
+            else return new BigNumberValue(log1p(values[0] -> asBignum()));
         }
     };
 
@@ -160,7 +161,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("Two argument expected");
-            else return new BigNumber(pow(values[0] -> getBignum(), values[1] -> getBignum()));
+            else return new BigNumberValue(pow(values[0] -> asBignum(), values[1] -> asBignum()));
         }
     };
 
@@ -168,7 +169,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(round(values[0] -> getBignum()));
+            else return new BigNumberValue(round(values[0] -> asBignum()));
         }
     };
 
@@ -176,10 +177,10 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            Bignum x = values[0] -> getBignum();
-            if (x < 0) return new BigNumber(-1);
-            else if (x > 0) return new BigNumber(1);
-            else return new BigNumber(0);
+            Bignum x = values[0] -> asBignum();
+            if (x < 0) return new BigNumberValue(-1);
+            else if (x > 0) return new BigNumberValue(1);
+            else return new BigNumberValue(0);
         }
     };
 
@@ -187,7 +188,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(sin(values[0] -> getBignum()));
+            else return new BigNumberValue(sin(values[0] -> asBignum()));
         }
     };
 
@@ -195,7 +196,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(sinh(values[0] -> getBignum()));
+            else return new BigNumberValue(sinh(values[0] -> asBignum()));
         }
     };
 
@@ -204,8 +205,8 @@ namespace{
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
             else{
-                if (values[0] -> getDouble() < 0) throw new MathException("Sqrt from negative argument");
-                else return new BigNumber(sqrt(values[0] -> getBignum()));
+                if (values[0] -> asDouble() < 0) throw new MathException("Sqrt from negative argument");
+                else return new BigNumberValue(sqrt(values[0] -> asBignum()));
             }
         }
     };
@@ -214,7 +215,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(tan(values[0] -> getBignum()));
+            else return new BigNumberValue(tan(values[0] -> asBignum()));
         }
     };
 
@@ -222,7 +223,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(tanh(values[0] -> getBignum()));
+            else return new BigNumberValue(tanh(values[0] -> asBignum()));
         }
     };
 
@@ -230,7 +231,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(to_degrees(values[0] -> getBignum()));
+            else return new BigNumberValue(to_degrees(values[0] -> asBignum()));
         }
     };
 
@@ -238,14 +239,14 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
-            else return new BigNumber(to_radians(values[0] -> getBignum()));
+            else return new BigNumberValue(to_radians(values[0] -> asBignum()));
         }
     };
 }
 
 void Math::initConstants(){
-    Variables::set("PI", new BigNumber(3.1415926535));
-    Variables::set("E", new BigNumber(2.7182818284));
+    Variables::set("PI", new BigNumberValue(3.1415926535));
+    Variables::set("E", new BigNumberValue(2.7182818284));
 }
 
 void Math::initFunctions(){

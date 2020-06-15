@@ -1,8 +1,9 @@
 #ifndef MAPEXPRESSION_H_INCLUDED
 #define MAPEXPRESSION_H_INCLUDED
 
-#include "expression.h"
 #include <map>
+#include "expression.h"
+
 class MapExpression : public Expression{
 private:
     std::map<Expression*, Expression*> elements;

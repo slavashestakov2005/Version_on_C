@@ -1,10 +1,10 @@
-#include "userdefinedfunction.h"
-#include "null.h"
-#include "../Statement/returnstatement.h"
-#include "../Exception/argumentsmismatchexception.h"
-#include "variables.h"
 #include <sstream>
-#include "../Lib/array.h"
+#include "variables.h"
+#include "userdefinedfunction.h"
+#include "../Exception/argumentsmismatchexception.h"
+#include "../Statement/returnstatement.h"
+#include "../Value/arrayvalue.h"
+#include "../Value/nullvalue.h"
 
 int UserDefinedFunction::getArgsCount(){
     return arguments.getSize();
@@ -40,7 +40,7 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
         for(int i = 0; i < minimal; ++i){
             Variables::set(getArgsName(i), values[i]);
         }
-        Array* array = new Array(siz - minimal);
+        ArrayValue* array = new ArrayValue(siz - minimal);
         for(int i = minimal; i < siz; ++i){
             array -> set(i - minimal, values[i]);
         }
@@ -57,7 +57,7 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
         return rs -> getResult();
     }
     Variables::pop();
-    return Null::NULL_;
+    return NullValue::NULL_;
 }
 
 UserDefinedFunction::operator std::string(){

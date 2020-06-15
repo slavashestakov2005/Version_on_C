@@ -2,6 +2,7 @@
 #define TERNARYEXPRESSION_H_INCLUDED
 
 #include "expression.h"
+
 class TernaryExpression : public Expression{
 private:
     Expression* condition, *trueExpr, *falseExpr;

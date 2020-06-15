@@ -1,28 +1,28 @@
 #include "global.h"
-#include "../Lib/array.h"
-#include "../Lib/bignumber.h"
+#include "../Value/arrayvalue.h"
+#include "../Value/bignumbervalue.h"
 #include "../Lib/functions.h"
-#include "../Lib/functionvalue.h"
-#include "../Lib/classvalue.h"
-#include "../Lib/map.h"
+#include "../Value/functionvalue.h"
+#include "../Value/classvalue.h"
+#include "../Value/mapvalue.h"
 #include "../Lib/variables.h"
-#include "../Lib/bool.h"
-#include "../Lib/null.h"
-#include "../Lib/string.h"
+#include "../Value/boolvalue.h"
+#include "../Value/nullvalue.h"
+#include "../Value/stringvalue.h"
 #include "../Exception/argumentsmismatchexception.h"
 #include <iostream>
 
 namespace{
     bool operator_lt(Value const& a, Value const& b){
-        if (a.type != b.type) return int(a.type) < int(b.type);
-        switch(a.type){
-            case Values::ARRAY : return *(Array*)(&a) < *(Array*)(&b);
-            case Values::BOOL : return *(Bool*)(&a) < *(Bool*)(&b);
-            case Values::NUMBER : return *(BigNumber*)(&a) < *(BigNumber*)(&b);
+        if (a.type() != b.type()) return int(a.type()) < int(b.type());
+        switch(a.type()){
+            case Values::ARRAY : return *(ArrayValue*)(&a) < *(ArrayValue*)(&b);
+            case Values::BOOL : return *(BoolValue*)(&a) < *(BoolValue*)(&b);
+            case Values::NUMBER : return *(BigNumberValue*)(&a) < *(BigNumberValue*)(&b);
             case Values::FUNCTION : return *(FunctionValue*)(&a) < *(FunctionValue*)(&b);
-            case Values::MAP : return *(Map*)(&a) < *(Map*)(&b);
-            case Values::STRING : return *(String*)(&a) < *(String*)(&b);
-            case Values::NULL_ : return *(Null*)(&a) < *(Null*)(&b);
+            case Values::MAP : return *(MapValue*)(&a) < *(MapValue*)(&b);
+            case Values::STRING : return *(StringValue*)(&a) < *(StringValue*)(&b);
+            case Values::NULL_ : return *(NullValue*)(&a) < *(NullValue*)(&b);
             case Values::CLASS : return *(ClassValue*)(&a) < *(ClassValue*)(&b);
         }
     }
@@ -33,7 +33,7 @@ namespace{
             for(int i = 0; i < values.size(); ++i) std::cout << std::string(*(values[i]));
             std::string str;
             getline(std::cin, str);
-            return new String(str);
+            return new StringValue(str);
         }
     };
 
@@ -59,9 +59,9 @@ namespace{
 }
 
 void Global::initConstants(){
-    Variables::set("true", Bool::TRUE_);
-    Variables::set("false", Bool::FALSE_);
-    Variables::set("null", Null::NULL_);
+    Variables::set("true", BoolValue::TRUE_);
+    Variables::set("false", BoolValue::FALSE_);
+    Variables::set("null", NullValue::NULL_);
 }
 
 void Global::initFunctions(){

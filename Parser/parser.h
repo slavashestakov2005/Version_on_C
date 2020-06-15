@@ -2,21 +2,16 @@
 #define PARSER_H_INCLUDED
 
 #include <vector>
+#include "parseerrors.h"
+#include "token.h"
+#include "../Expression/containeracceselement.h"
 #include "../Expression/expression.h"
-#include "../Statement/statement.h"
 #include "../Expression/functionalexpression.h"
 #include "../Statement/foreacharraystatement.h"
 #include "../Statement/foreachmapstatement.h"
 #include "../Statement/functiondefinestatement.h"
-#include "token.h"
-#include "parseerrors.h"
-#include "../Expression/containeracceselement.h"
-/**
-    @throw std::logic_error("Unknown expression")
-    @throw std::logic_error(str)
-    @throw std::logic_error("Unknown statement at 74")
+#include "../Statement/statement.h"
 
-**/
 class Parser{
 private:
     std::vector<Token*> tokens;

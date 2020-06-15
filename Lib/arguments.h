@@ -1,8 +1,9 @@
 #ifndef ARGUMENTS_H_INCLUDED
 #define ARGUMENTS_H_INCLUDED
 
-#include "argument.h"
 #include <vector>
+#include "argument.h"
+
 class Arguments{
 private:
     std::vector<Argument> arguments;

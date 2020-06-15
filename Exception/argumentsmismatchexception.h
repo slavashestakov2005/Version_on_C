@@ -2,6 +2,7 @@
 #define ARGUMENTSMISMATCHEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class ArgumentsMismatchException : public std::exception{
 private:
     std::string text;

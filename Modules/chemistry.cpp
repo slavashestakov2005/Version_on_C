@@ -1,13 +1,14 @@
 #include "chemistry.h"
 #include "../Lib/function.h"
 #include "../Lib/functions.h"
-#include "../Lib/string.h"
-#include "../Lib/bignumber.h"
+#include "../Value/stringvalue.h"
+#include "../Value/bignumbervalue.h"
 #include "../Exception/argumentsmismatchexception.h"
 #include "../Exception/typeexception.h"
 #include <cmath>
 #include <map>
 #include <vector>
+
 namespace{
     struct Elemnent{
         std::string name, russionRead, latinRead, electrons;
@@ -214,12 +215,12 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((StringValue*)values[0]) -> asString();
             int finded = -1;
             for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
             if (finded == -1) throw std::logic_error("First argument not element");
-            return new BigNumber(elements[finded].number);
+            return new BigNumberValue(elements[finded].number);
         }
     };
 
@@ -227,12 +228,12 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((StringValue*)values[0]) -> asString();
             int finded = -1;
             for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
             if (finded == -1) throw std::logic_error("First argument not element");
-            return new String(elements[finded].latinRead);
+            return new StringValue(elements[finded].latinRead);
         }
     };
 
@@ -240,9 +241,9 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted");
-            std::string str = ((String*)values[0]) -> getString();
-            return new BigNumber(mr(str));
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted");
+            std::string str = ((StringValue*)values[0]) -> asString();
+            return new BigNumberValue(mr(str));
         }
     };
 
@@ -250,12 +251,12 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((StringValue*)values[0]) -> asString();
             int finded = -1;
             for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
             if (finded == -1) throw std::logic_error("First argument not element");
-            return new BigNumber(round(elements[finded].massa) - elements[finded].number);
+            return new BigNumberValue(round(elements[finded].massa) - elements[finded].number);
         }
     };
 
@@ -263,14 +264,14 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw ArgumentsMismatchException("Two argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            if (values[1] -> type != Values::STRING) throw TypeException("String excepted in second argument");
-            std::string str1 = ((String*)values[0]) -> getString(), str2 = ((String*)values[1]) -> getString();
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted in first argument");
+            if (values[1] -> type() != Values::STRING) throw TypeException("String excepted in second argument");
+            std::string str1 = ((StringValue*)values[0]) -> asString(), str2 = ((StringValue*)values[1]) -> asString();
             int finded = -1;
             for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
             if (finded == -1) throw std::logic_error("First argument not element");
             if (mr(str2) == 0) throw std::logic_error("Bad second argument");
-            return new BigNumber(omega(str2, str1));
+            return new BigNumberValue(omega(str2, str1));
         }
     };
 
@@ -278,12 +279,12 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str1 = ((String*)values[0]) -> getString();
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str1 = ((StringValue*)values[0]) -> asString();
             int finded = -1;
             for(int i = 0; i < SizeOfTabel && finded == -1; ++i) if (elements[i].name == str1) finded = i;
             if (finded == -1) throw std::logic_error("First argument not element");
-            return new String(elements[finded].russionRead);
+            return new StringValue(elements[finded].russionRead);
         }
     };
 
@@ -291,12 +292,12 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw ArgumentsMismatchException("One argument excepted");
-            if (values[0] -> type != Values::STRING) throw TypeException("String excepted in first argument");
-            std::string str = ((String*)values[0]) -> getString();
+            if (values[0] -> type() != Values::STRING) throw TypeException("String excepted in first argument");
+            std::string str = ((StringValue*)values[0]) -> asString();
             int finded = -1;
             for(int i = 0; i < SizeOfTabel; ++i) if (elements[i].russionRead == str) finded = i;
             if (finded == -1) throw std::logic_error("First argument not element");
-            return new String(elements[finded].name);
+            return new StringValue(elements[finded].name);
         }
     };
 }

@@ -1,7 +1,7 @@
 #include "variables.h"
-#include "bignumber.h"
-#include "bool.h"
-#include "null.h"
+#include "../Value/bignumbervalue.h"
+#include "../Value/boolvalue.h"
+#include "../Value/nullvalue.h"
 #include "../Modules/global.h"
 #include <iostream>
 
@@ -46,7 +46,7 @@ bool Variables::isExists(std::string key){
 }
 
 Value* Variables::get(std::string key){
-    if (!isExists(key)) return Null::NULL_;
+    if (!isExists(key)) return NullValue::NULL_;
     else return variables[key];
 }
 

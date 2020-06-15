@@ -2,6 +2,7 @@
 #define MATHEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class MathException : public std::exception{
 private:
     std::string text;

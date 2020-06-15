@@ -1,8 +1,8 @@
 #include "types.h"
 #include "../Lib/variables.h"
 #include "../Lib/functions.h"
-#include "../Lib/bignumber.h"
-#include "../Lib/string.h"
+#include "../Value/bignumbervalue.h"
+#include "../Value/stringvalue.h"
 
 namespace{
     std::string mas[] = {
@@ -20,7 +20,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            return new BigNumber(values[0] -> getBignum());
+            return new BigNumberValue(values[0] -> asBignum());
         }
     };
 
@@ -28,12 +28,12 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            std::string str = std::string(BigNumber(values[0] -> getBignum())), cop;
+            std::string str = std::string(BigNumberValue(values[0] -> asBignum())), cop;
             for(int i = 0; i < str.size(); ++i){
                 if (str[i] == '.') break;
                 else cop += str[i];
             }
-            return new BigNumber(cop);
+            return new BigNumberValue(cop);
         }
     };
 
@@ -41,7 +41,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            else return new String(values[0] -> getString());
+            else return new StringValue(values[0] -> asString());
         }
     };
 
@@ -49,7 +49,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            else return new String(mas[int(values[0] -> type)]);
+            else return new StringValue(mas[int(values[0] -> type())]);
         }
     };
 
@@ -57,20 +57,20 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw std::logic_error("One argument expected");
-            else return new BigNumber(int(values[0] -> type));
+            else return new BigNumberValue(int(values[0] -> type()));
         }
     };
 }
 
 void Types::initConstants(){
-    Variables::set("BOOL", new BigNumber(int(Values::BOOL)));
-    Variables::set("NUMBER", new BigNumber(int(Values::NUMBER)));
-    Variables::set("STRING", new BigNumber(int(Values::STRING)));
-    Variables::set("ARRAY", new BigNumber(int(Values::ARRAY)));
-    Variables::set("MAP", new BigNumber(int(Values::MAP)));
-    Variables::set("NULL", new BigNumber(int(Values::NULL_)));
-    Variables::set("FUNCTION", new BigNumber(int(Values::FUNCTION)));
-    Variables::set("CLASS", new BigNumber(int(Values::CLASS)));
+    Variables::set("BOOL", new BigNumberValue(int(Values::BOOL)));
+    Variables::set("NUMBER", new BigNumberValue(int(Values::NUMBER)));
+    Variables::set("STRING", new BigNumberValue(int(Values::STRING)));
+    Variables::set("ARRAY", new BigNumberValue(int(Values::ARRAY)));
+    Variables::set("MAP", new BigNumberValue(int(Values::MAP)));
+    Variables::set("NULL", new BigNumberValue(int(Values::NULL_)));
+    Variables::set("FUNCTION", new BigNumberValue(int(Values::FUNCTION)));
+    Variables::set("CLASS", new BigNumberValue(int(Values::CLASS)));
 }
 
 void Types::initFunctions(){

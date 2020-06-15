@@ -2,10 +2,10 @@
 #include "../Lib/function.h"
 #include "../Lib/variables.h"
 #include "../Lib/functions.h"
-#include "../Lib/array.h"
-#include "../Lib/functionvalue.h"
-#include "../Lib/map.h"
-#include "../Lib/string.h"
+#include "../Value/arrayvalue.h"
+#include "../Value/functionvalue.h"
+#include "../Value/mapvalue.h"
+#include "../Value/stringvalue.h"
 #include "../Lib/userdefinedfunction.h"
 #include "../Expression/valueexpression.h"
 #include <iostream>
@@ -51,11 +51,11 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("Two arguments expected");
-            if (values[0] -> type != Values::ARRAY) throw new TypeException("Array expected in first argument");
-            if (values[1] -> type != Values::ARRAY) throw new TypeException("Array expected in second argument");
-            Array* keys = (Array*)values[0], *value = (Array*)values[1];
+            if (values[0] -> type() != Values::ARRAY) throw new TypeException("Array expected in first argument");
+            if (values[1] -> type() != Values::ARRAY) throw new TypeException("Array expected in second argument");
+            ArrayValue* keys = (ArrayValue*)values[0], *value = (ArrayValue*)values[1];
             int len = std::min(keys -> getSize(), value -> getSize());
-            Map* map = new Map(len);
+            MapValue* map = new MapValue(len);
             for(int i = 0; i < len; ++i) map -> set(keys -> get(i), value -> get(i));
             return map;
         }
@@ -65,19 +65,19 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("Two arguments expected");
-            std::string str = values[0] -> getString();
-            int index = values[1] -> getDouble();
+            std::string str = values[0] -> asString();
+            int index = values[1] -> asDouble();
             str = str.at(index);
-            return new String(str);
+            return new StringValue(str);
         }
     };
 
     class Echo : public Function{
     public:
         Value* execute(std::vector<Value*> values){
-            for(unsigned i = 0; i < values.size(); ++i) std::cout << values[i] -> getString();
+            for(unsigned i = 0; i < values.size(); ++i) std::cout << values[i] -> asString();
             std::cout << std::endl;
-            return Null::NULL_;
+            return NullValue::NULL_;
         }
     };
 
@@ -85,11 +85,11 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 2 || values.size() > 3) throw new ArgumentsMismatchException("Two or three arguments expected");
-            std::string str = values[0] -> getString(), str2 = values[1] -> getString();
-            int position = ((values.size() == 3) ? (int)values[2] -> getDouble() : 0);
+            std::string str = values[0] -> asString(), str2 = values[1] -> asString();
+            int position = ((values.size() == 3) ? (int)values[2] -> asDouble() : 0);
             size_t x = str.find(str2, position);
-            if (x == std::string::npos) return new BigNumber(-1);
-            else return new BigNumber(x);
+            if (x == std::string::npos) return new BigNumberValue(-1);
+            else return new BigNumberValue(x);
         }
     };
 
@@ -97,22 +97,22 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 2) throw new ArgumentsMismatchException("At least two argument expected");
-            if (values[0] -> type != Values::STRING) throw new TypeException("String expected in first argument");
-            std::string ans, delimiter = values[0] -> getString();
-            if (values.size() == 2 && values[1] -> type == Values::ARRAY){
-                Array* arr = (Array*) values[1];
+            if (values[0] -> type() != Values::STRING) throw new TypeException("String expected in first argument");
+            std::string ans, delimiter = values[0] -> asString();
+            if (values.size() == 2 && values[1] -> type() == Values::ARRAY){
+                ArrayValue* arr = (ArrayValue*) values[1];
                 for(int i = 0; i < arr -> getSize(); ++i){
-                    ans += arr -> get(i) -> getString();
+                    ans += arr -> get(i) -> asString();
                     if (i < arr -> getSize() - 1) ans += delimiter;
                 }
             }
             else{
                 for(int i = 1; i < values.size(); ++i){
-                    ans += values[i] -> getString();
+                    ans += values[i] -> asString();
                     if (i < values.size() - 1) ans += delimiter;
                 }
             }
-            return new String(ans);
+            return new StringValue(ans);
         }
     };
 
@@ -121,10 +121,10 @@ namespace{
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
             int length;
-            switch(values[0] -> type){
-                case Values::ARRAY : length = ((Array*)values[0]) -> getSize(); break;
-                case Values::MAP : length = ((Map*)values[0]) -> getSize(); break;
-                case Values::STRING : length = ((String*)values[0]) -> getSize(); break;
+            switch(values[0] -> type()){
+                case Values::ARRAY : length = ((ArrayValue*)values[0]) -> getSize(); break;
+                case Values::MAP : length = ((MapValue*)values[0]) -> getSize(); break;
+                case Values::STRING : length = ((StringValue*)values[0]) -> getSize(); break;
                 case Values::FUNCTION :{
                     if (((FunctionValue*)values[0]) -> getFunction() -> type) length = ((UserDefinedFunction*)(((FunctionValue*)values[0]) -> getFunction())) -> getArgsCount();
                     else length = 0;
@@ -132,7 +132,7 @@ namespace{
                 }
                 default : length = 0; break;
             }
-            return new BigNumber(length);
+            return new BigNumberValue(length);
         }
     };
 
@@ -140,9 +140,9 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 2) throw new ArgumentsMismatchException("Two arguments expected");
-            if (values[0] -> type != Values::MAP) throw new TypeException("Map expected in first argument");
-            Map* map = (Map*)values[0];
-            return new Bool(map -> containsKey(values[1]));
+            if (values[0] -> type() != Values::MAP) throw new TypeException("Map expected in first argument");
+            MapValue* map = (MapValue*)values[0];
+            return new BoolValue(map -> containsKey(values[1]));
         }
     };
 
@@ -150,13 +150,13 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            if (values[0] -> type != Values::MAP) throw new TypeException("Map expected in first argument");
-            Map* map = (Map*)values[0];
+            if (values[0] -> type() != Values::MAP) throw new TypeException("Map expected in first argument");
+            MapValue* map = (MapValue*)values[0];
             std::vector<Value*> keys;
             int siz = map -> getSize();
             std::map<Value*, Value*>::iterator iter = map -> iter();
             for(int i = 0; i < siz; ++i, ++iter) keys.push_back(iter -> first);
-            return new Array(keys);
+            return new ArrayValue(keys);
         }
     };
 
@@ -164,25 +164,25 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            if (values[0] -> type != Values::MAP) throw new TypeException("Map expected in first argument");
-            Map* map = (Map*)values[0];
+            if (values[0] -> type() != Values::MAP) throw new TypeException("Map expected in first argument");
+            MapValue* map = (MapValue*)values[0];
             std::vector<Value*> keys;
             int siz = map -> getSize();
             std::map<Value*, Value*>::iterator iter = map -> iter();
             for(int i = 0; i < siz; ++i, ++iter) keys.push_back(iter -> second);
-            return new Array(keys);
+            return new ArrayValue(keys);
         }
     };
 
     class NewArray : public Function{
     private:
-        Array* createArray(std::vector<Value*> values, int index){
-            int size = int(values[index] -> getDouble());
+        ArrayValue* createArray(std::vector<Value*> values, int index){
+            int size = int(values[index] -> asDouble());
             int last = values.size() - 1;
-            Array* arr = new Array(size);
+            ArrayValue* arr = new ArrayValue(size);
             if (index == last){
                 for(int i = 0; i < size; ++i){
-                    arr -> set(i, Null::NULL_);
+                    arr -> set(i, NullValue::NULL_);
                 }
             }
             else if(index < last){
@@ -202,10 +202,10 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 1 || values.size() > 2) throw new ArgumentsMismatchException("One or two arguments expected");
-            int radix = values.size() == 2 ? values[1] -> getDouble() : 10;
+            int radix = values.size() == 2 ? values[1] -> asDouble() : 10;
             int power = 1;
             long long ans = 0;
-            std::string parsed = values[0] -> getString();
+            std::string parsed = values[0] -> asString();
             for(int i = parsed.size() - 1; i > -1; --i){
                 int current;
                 if (parsed[i] >= '0' && parsed[i] <= '9') current = parsed[i] - '0';
@@ -214,7 +214,7 @@ namespace{
                 ans += current * power;
                 power *= radix;
             }
-            return new BigNumber(ans);
+            return new BigNumberValue(ans);
         }
     };
 
@@ -225,10 +225,10 @@ namespace{
             double random = 1. * rand() / (RAND_MAX + 1), result;
             switch(siz){
                 case (0) : result = random; break;
-                case (1) : result = random * values[0] -> getDouble(); break;
+                case (1) : result = random * values[0] -> asDouble(); break;
                 case (2) : {
-                    double start = std::min(values[0] -> getDouble(), values[1] -> getDouble());
-                    double finish = std::max(values[0] -> getDouble(), values[1] -> getDouble());
+                    double start = std::min(values[0] -> asDouble(), values[1] -> asDouble());
+                    double finish = std::max(values[0] -> asDouble(), values[1] -> asDouble());
                     result = start + (finish - start) * random;
                     break;
                 }
@@ -236,7 +236,7 @@ namespace{
             }
             std::ostringstream strs;
             strs << result;
-            return new BigNumber(strs.str());
+            return new BigNumberValue(strs.str());
         }
     };
 
@@ -244,13 +244,13 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 3) throw new ArgumentsMismatchException("Three arguments expected");
-            std::string str = values[0] -> getString(), start = values[1] -> getString(), finish = values[2] -> getString(), ans;
+            std::string str = values[0] -> asString(), start = values[1] -> asString(), finish = values[2] -> asString(), ans;
             for(int i = 0; i < str.size(); ++i){
                 std::string temp = str.substr(i, start.size());
                 if (temp == start) { i += start.size() - 1; ans += finish; }
                 else ans += str[i];
             }
-            return new String(ans);
+            return new StringValue(ans);
         }
     };
 
@@ -258,7 +258,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 3) throw new ArgumentsMismatchException("Three arguments expected");
-            std::string str = values[0] -> getString(), start = values[1] -> getString(), finish = values[2] -> getString(), ans;
+            std::string str = values[0] -> asString(), start = values[1] -> asString(), finish = values[2] -> asString(), ans;
             bool smena = false;
             for(int i = 0; i < str.size(); ++i){
                 std::string temp;
@@ -266,7 +266,7 @@ namespace{
                 if (temp == start) { smena = true; i += start.size() - 1; ans += finish; }
                 else ans += str[i];
             }
-            return new String(ans);
+            return new StringValue(ans);
         }
     };
 
@@ -274,11 +274,11 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 2 || values.size() > 3) throw new ArgumentsMismatchException("Two or three arguments expected");
-            std::string str = values[0] -> getString(), str2 = values[1] -> getString();
-            int position = ((values.size() == 3) ? (int)values[2] -> getDouble() : 0);
+            std::string str = values[0] -> asString(), str2 = values[1] -> asString();
+            int position = ((values.size() == 3) ? (int)values[2] -> asDouble() : 0);
             size_t x = str.rfind(str2, position);
-            if (x == std::string::npos) return new BigNumber(-1);
-            else return new BigNumber(x);
+            if (x == std::string::npos) return new BigNumberValue(-1);
+            else return new BigNumberValue(x);
         }
     };
 
@@ -287,9 +287,9 @@ namespace{
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
             long long start = clock(), finish = clock();
-            double tim = values[0] -> getDouble();
+            double tim = values[0] -> asDouble();
             while(finish - start < tim) finish = clock();
-            return Null::NULL_;
+            return NullValue::NULL_;
         }
     };
 
@@ -298,17 +298,17 @@ namespace{
         Value* execute(std::vector<Value*> values){
             mas.clear();
             if (values.size() < 1 || values.size() > 2) throw new ArgumentsMismatchException("One or two arguments expected");
-            if (values[0] -> type != Values::ARRAY) throw new TypeException("Array expected in first argument");
-            Array* arr = (Array*)values[0];
+            if (values[0] -> type() != Values::ARRAY) throw new TypeException("Array expected in first argument");
+            ArrayValue* arr = (ArrayValue*)values[0];
             for(int i = 0; i < arr -> getSize(); ++i) mas.push_back(arr -> get(i));
             if (values.size() == 1) sort(mas.begin(), mas.end(), comparator);
             if (values.size() == 2){
-                if (values[1] -> type != Values::FUNCTION) throw new TypeException("Function expected in second argument");
+                if (values[1] -> type() != Values::FUNCTION) throw new TypeException("Function expected in second argument");
                 func = ((FunctionValue*)values[1]) -> getFunction();
-                if (!mas.size()) return new Array(mas);
+                if (!mas.size()) return new ArrayValue(mas);
                 qweek_sort(0, mas.size() - 1);
             }
-            return new Array(mas);
+            return new ArrayValue(mas);
         }
     };
 
@@ -316,8 +316,8 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 2 || values.size() > 3) throw new ArgumentsMismatchException("Two or three arguments expected");
-            std::string str = values[0] -> getString(), reg = values[1] -> getString();
-            int limit = ((values.size() == 3) ? (int)values[2] -> getDouble() : -1);
+            std::string str = values[0] -> asString(), reg = values[1] -> asString();
+            int limit = ((values.size() == 3) ? (int)values[2] -> asDouble() : -1);
             if (limit <= 0) limit = -1;
             std::vector<Value*> val;
             int pos = str.find(reg), last = 0;
@@ -325,14 +325,14 @@ namespace{
             while(pos != std::string::npos){
                 std::string temp;
                 for(int i = last; i < pos; ++i) temp += str[i];
-                if (limit == -1 || val.size() < limit) val.push_back(new String(temp));
+                if (limit == -1 || val.size() < limit) val.push_back(new StringValue(temp));
                 else break;
                 last = pos + 1;
                 pos = str.find(reg, last);
             }
             for(int i = last; i < str.size(); ++i) t += str[i];
-            if (t != "") val.push_back(new String(t));
-            return new Array(val);
+            if (t != "") val.push_back(new StringValue(t));
+            return new ArrayValue(val);
         }
     };
 
@@ -340,14 +340,14 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 2 || values.size() > 3) throw new ArgumentsMismatchException("Two or three arguments expected");
-            std::string str = values[0] -> getString(), ans;
-            int start = values[1] -> getDouble();
+            std::string str = values[0] -> asString(), ans;
+            int start = values[1] -> asDouble();
             if (values.size() == 2) ans = str.substr(start);
             else{
-                int finish = values[2] -> getDouble();
+                int finish = values[2] -> asDouble();
                 ans = str.substr(start, finish);
             }
-            return new String(ans);
+            return new StringValue(ans);
         }
     };
 
@@ -355,7 +355,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 0) throw new ArgumentsMismatchException("Zero arguments expected");
-            return new BigNumber(clock());
+            return new BigNumberValue(clock());
         }
     };
 
@@ -364,8 +364,8 @@ namespace{
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
             std::string str;
-            str += char(values[0] -> getDouble());
-            return new String(str);
+            str += char(values[0] -> asDouble());
+            return new StringValue(str);
         }
     };
 
@@ -373,7 +373,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            long long value = values[0] -> getDouble();
+            long long value = values[0] -> asDouble();
             std::string ans;
             while(value){
                 int current = value % 16;
@@ -381,7 +381,7 @@ namespace{
                 value /= 16;
             }
             reverse(ans.begin(), ans.end());
-            return new String(ans);
+            return new StringValue(ans);
         }
     };
 
@@ -389,9 +389,9 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            std::string str = values[0] -> getString();
+            std::string str = values[0] -> asString();
             for(auto& x : str) x = tolower(x);
-            return new String(str);
+            return new StringValue(str);
         }
     };
 
@@ -399,9 +399,9 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            std::string str = values[0] -> getString();
+            std::string str = values[0] -> asString();
             for(auto& x : str) x = toupper(x);
-            return new String(str);
+            return new StringValue(str);
         }
     };
 
@@ -409,7 +409,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            std::string ans, str = values[0] -> getString();
+            std::string ans, str = values[0] -> asString();
             for(int i = 0; i < str.size(); ++i){
                 if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n' || ans.size()) ans += str[i];
             }
@@ -418,7 +418,7 @@ namespace{
                 if (ans[i] != ' ' && ans[i] != '\t' && ans[i] != '\n' || str.size()) str += ans[i];
             }
             reverse(str.begin(), str.end());
-            return new String(str);
+            return new StringValue(str);
         }
     };
 }

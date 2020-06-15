@@ -1,10 +1,9 @@
-#include "functions.h"
-#include "function.h"
-#include "../Exception/unknownfunctionexception.h"
-#include "string.h"
-#include "../Modules/global.h"
-#include <sstream>
 #include <iostream>
+#include <sstream>
+#include "function.h"
+#include "functions.h"
+#include "../Exception/unknownfunctionexception.h"
+#include "../Modules/global.h"
 
 std::map<std::string, Function*> Functions::functions = {};
 

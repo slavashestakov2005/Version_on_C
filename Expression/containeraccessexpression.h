@@ -1,17 +1,16 @@
 #ifndef CONTAINERACCESSEXPRESSION_H_INCLUDED
 #define CONTAINERACCESSEXPRESSION_H_INCLUDED
 
-#include "expression.h"
 #include <vector>
-#include "../Lib/array.h"
-#include "../Lib/map.h"
 #include "containeracceselement.h"
+#include "expression.h"
+#include "../Value/arrayvalue.h"
+#include "../Value/mapvalue.h"
 #include "../Visitor/assignvalidator.h"
 
 class ContainerAccessExpression : public Expression{
 private:
     Expression* root;
-    bool rootVariable;
     std::vector<ContainerAccessElement> indices;
 public:
     ContainerAccessExpression(std::string variable, std::vector<ContainerAccessElement> indices);

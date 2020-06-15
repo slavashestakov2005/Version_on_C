@@ -1,15 +1,12 @@
 #ifndef LEXER_H_INCLUDED
 #define LEXER_H_INCLUDED
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 #include "token.h"
 #include "../Exception/lexerexception.h"
-/**
-    @throw std::logic_error("Invalid float number")
-    @throw std::logic_error("Missing close tag");
-**/
+
 class Lexer{
 private:
     static std::map<std::string, TokenType> OPERATORS, KEYWORDS;

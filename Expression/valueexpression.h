@@ -2,23 +2,25 @@
 #define VALUEEXPRESSION_H_INCLUDED
 
 #include "expression.h"
-#include "../Lib/string.h"
-#include "../Lib/array.h"
-#include "../Lib/bool.h"
-#include "../Lib/functionvalue.h"
-#include "../Lib/map.h"
-#include "../Lib/bignumber.h"
-#include "../Lib/null.h"
+#include "../Value/arrayvalue.h"
+#include "../Value/bignumbervalue.h"
+#include "../Value/boolvalue.h"
+#include "../Value/functionvalue.h"
+#include "../Value/mapvalue.h"
+#include "../Value/nullvalue.h"
+#include "../Value/stringvalue.h"
+#include "../Value/value.h"
+
 class ValueExpression : public Expression{
 public:
     Value* value;
-    ValueExpression(std::string val){ value = new String(val); }
-    ValueExpression(Array val){ value = new Array(val); }
-    ValueExpression(bool val){ value = new Bool(val); }
+    ValueExpression(std::string val){ value = new StringValue(val); }
+    ValueExpression(ArrayValue val){ value = new ArrayValue(val); }
+    ValueExpression(bool val){ value = new BoolValue(val); }
     ValueExpression(Function* val){ value = new FunctionValue(val); }
-    ValueExpression(Map val){ value = new Map(val); }
-    ValueExpression(Bignum val){ value = new BigNumber(val); }
-    ValueExpression(Null null){ value = new Null(); }
+    ValueExpression(MapValue val){ value = new MapValue(val); }
+    ValueExpression(Bignum val){ value = new BigNumberValue(val); }
+    ValueExpression(NullValue null){ value = new NullValue(); }
     ValueExpression(Value* val);
     Expressions type(){ return Expressions::ValueExpression; }
     Value* eval();

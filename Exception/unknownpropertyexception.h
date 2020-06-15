@@ -2,6 +2,7 @@
 #define UNKNOWNPROPERTYEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class UnknownPropertyException  : public std::exception{
 private:
     std::string text;

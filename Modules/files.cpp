@@ -1,27 +1,30 @@
 #include "files.h"
 #include "../Lib/functions.h"
 #include "../Lib/variables.h"
-#include "../Lib/bignumber.h"
-#include "../Lib/string.h"
+#include "../Value/bignumbervalue.h"
+#include "../Value/stringvalue.h"
 #include "../Exception/argumentsmismatchexception.h"
 #include <fstream>
 #include <iostream>
+
 namespace{
     std::fstream file;
     bool bad = true;
+
     class Fopen : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            file.open(values[0] -> getString());
+            file.open(values[0] -> asString());
             if (!file){
                 bad = false;
-                return new BigNumber(-1);
+                return new BigNumberValue(-1);
             }
             bad = false;
-            return new BigNumber(0);
+            return new BigNumberValue(0);
         }
     };
+
     class Fclose : public Function{
     public:
         Value* execute(std::vector<Value*> values){
@@ -29,27 +32,29 @@ namespace{
             file.close();
         }
     };
+
     class ReadLine : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 0) throw new ArgumentsMismatchException("Zero arguments expected");
             std::string line;
             if (file) std::getline(file, line);
-            return new String(line);
+            return new StringValue(line);
         }
     };
+
     class WriteLine : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 1) throw new ArgumentsMismatchException("One arguments expected");
-            if (file && file.tellg() < file.end) file << values[0] -> getString();
+            if (file && file.tellg() < file.end) file << values[0] -> asString();
             else if (!bad){
                 std::cout << "Here\n";
                 file.seekg(0, file.beg);
-                file << values[0] -> getString();
+                file << values[0] -> asString();
             }
-            else return new BigNumber(-1);
-            return new BigNumber(0);
+            else return new BigNumberValue(-1);
+            return new BigNumberValue(0);
         }
     };
 }

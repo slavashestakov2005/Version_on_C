@@ -1,8 +1,9 @@
 #ifndef PARSEERRORS_H_INCLUDED
 #define PARSEERRORS_H_INCLUDED
 
-#include "parseerror.h"
 #include <vector>
+#include "parseerror.h"
+
 class ParseErrors{
 private:
     std::vector<ParseError*> errors;

@@ -2,6 +2,7 @@
 #define UNKNOWNCLASSEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class UnknownClassException : public std::exception{
 private:
     std::string text;

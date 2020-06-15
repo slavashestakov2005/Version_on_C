@@ -4,9 +4,7 @@
 #include <map>
 #include <string>
 #include "function.h"
-/**
-    @throw std::logic_error("Unknown function " + key)
-**/
+
 class Functions{
 private:
     static std::map<std::string, Function*> functions, now;

@@ -1,6 +1,6 @@
 #include "objectcreationexpression.h"
 #include "../Lib/classdeclaration.h"
-#include "../Lib/classvalue.h"
+#include "../Value/classvalue.h"
 #include "assignmentexpression.h"
 #include "../Statement/functiondefinestatement.h"
 

@@ -3,6 +3,7 @@
 
 #include "expression.h"
 #include "../Visitor/variableprinter.h"
+
 class VariableExpression : public Expression{
 public:
     std::string name;

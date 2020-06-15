@@ -2,7 +2,7 @@
 #define EXPRESSION_H_INCLUDED
 
 #include <string>
-#include "../Lib/value.h"
+#include "../Value/value.h"
 #include "../Visitor/node.h"
 
 enum class Expressions{

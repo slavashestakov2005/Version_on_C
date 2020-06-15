@@ -3,6 +3,7 @@
 
 #include <string>
 #include "tokentype.h"
+
 class Token{
 private:
     TokenType type;

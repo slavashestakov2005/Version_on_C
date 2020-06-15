@@ -1,11 +1,11 @@
-#include "parser.h"
 #include <sstream>
-#include "../Expression/all.h"
-#include "../Statement/all.h"
-#include "../Lib/userdefinedfunction.h"
-#include "../Exception/parseexception.h"
-#include "../Lib/bignumber.h"
 #include <map>
+#include "parser.h"
+#include "../Exception/parseexception.h"
+#include "../Expression/all.h"
+#include "../Lib/userdefinedfunction.h"
+#include "../Statement/all.h"
+#include "../Value/bignumbervalue.h"
 
 ParseErrors Parser::getParseErrors(){
     return parseErrors;
@@ -174,7 +174,7 @@ Statement* Parser::switchStatement(){
         else break;
     }
     if (!openParen && (body.size() + (defaultCase != nullptr)) > 1) throw std::logic_error("Missing open tag for switch");
-    if(openParen) consume(TokenType::RBRACE);
+    if (openParen) consume(TokenType::RBRACE);
     return new SwitchStatement(start, body, defaultCase);
 }
 
@@ -196,12 +196,12 @@ Statement* Parser::importStatement(){
 
 Statement* Parser::tryStatement(){
     Statement* body = statementOrBlock();
-    if(lookMatch(0, TokenType::CATCH) && lookMatch(1, TokenType::WORD)){
+    if (lookMatch(0, TokenType::CATCH) && lookMatch(1, TokenType::WORD)){
         consume(TokenType::CATCH);
         std::string name = consume(TokenType::WORD) -> getText();
         return new TryStatement(body, name, statementOrBlock());
     }
-    else throw std::logic_error("Catch block not found after try block");
+    else throw new ParseException("Catch block not found after try block");
 }
 
 FunctionDefineStatement* Parser::functionDefine(){
@@ -425,7 +425,7 @@ Expression* Parser::logicalAnd(){
         if (match(TokenType::AMPAMP)){
             result = new ConditionalExpression(ConditionalOperator::AND, result, bitOr());
         }
-            else break;
+        else break;
     }
     return result;
 }
@@ -576,7 +576,7 @@ Expression* Parser::primary(){
                 args.addArrayArgument(name);
             }
             else if (arrayArguments) throw new ParseException("Argument cannot be after array argument");
-                else if (match(TokenType::EQ)){
+            else if (match(TokenType::EQ)){
                 startOption = true;
                 args.addOptional(name, expression());
             }
@@ -602,12 +602,12 @@ Expression* Parser::variable(){
     if (nameExpression != nullptr){
         if (lookMatch(0, TokenType::LPAREN)) return functionChain(nameExpression);
         if (nameExpression -> type() == Expressions::ContainerAccessExpression){
-            if (match(TokenType::PLUSPLUS)) return new ContainerAssignmentExpression(AssignmentOperator::_PLUSPLUS, (ContainerAccessExpression*)nameExpression, new ValueExpression(Bignum(1)));
-            if (match(TokenType::MINUSMINUS)) return new ContainerAssignmentExpression(AssignmentOperator::_MINUSMINUS, (ContainerAccessExpression*)nameExpression, new ValueExpression(Bignum(1)));
+            if (match(TokenType::PLUSPLUS)) return new ContainerAssignmentExpression(AssignmentOperator::_PLUSPLUS, (ContainerAccessExpression*)nameExpression, new ValueExpression(Bignum(0)));
+            if (match(TokenType::MINUSMINUS)) return new ContainerAssignmentExpression(AssignmentOperator::_MINUSMINUS, (ContainerAccessExpression*)nameExpression, new ValueExpression(Bignum(0)));
         }
         if (nameExpression -> type() == Expressions::VariableExpression){
-            if (match(TokenType::PLUSPLUS)) return new AssignmentExpression(AssignmentOperator::_PLUSPLUS, ((VariableExpression*) nameExpression) -> name, new ValueExpression(Bignum(1)));
-            if (match(TokenType::MINUSMINUS)) return new AssignmentExpression(AssignmentOperator::_MINUSMINUS, ((VariableExpression*) nameExpression) -> name, new ValueExpression(Bignum(1)));
+            if (match(TokenType::PLUSPLUS)) return new AssignmentExpression(AssignmentOperator::_PLUSPLUS, ((VariableExpression*) nameExpression) -> name, new ValueExpression(Bignum(0)));
+            if (match(TokenType::MINUSMINUS)) return new AssignmentExpression(AssignmentOperator::_MINUSMINUS, ((VariableExpression*) nameExpression) -> name, new ValueExpression(Bignum(0)));
         }
         return nameExpression;
     }
@@ -628,7 +628,7 @@ Expression* Parser::variable(){
 
 Expression* Parser::value(){
     Token* current = get(0);
-    if (match(TokenType::NUMBER)) return new ValueExpression(new BigNumber(current -> getText()));
+    if (match(TokenType::NUMBER)) return new ValueExpression(new BigNumberValue(current -> getText()));
     if (match(TokenType::HEX_NUMBER)){
         Bignum big = 0;
         std::string str = current -> getText();
@@ -638,7 +638,7 @@ Expression* Parser::value(){
             else if (str[i] >= 'A' && str[i] <= 'F') big += str[i] - 'A' + 10;
             else if (str[i] >= 'a' && str[i] <= 'f') big += str[i] - 'a' + 10;
         }
-        return new ValueExpression(BigNumber(big));
+        return new ValueExpression(BigNumberValue(big));
     }
     if (match(TokenType::TEXT)){
         ValueExpression* stringExpr = new ValueExpression(current -> getText());

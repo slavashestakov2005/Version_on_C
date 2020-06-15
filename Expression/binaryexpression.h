@@ -1,21 +1,8 @@
 #ifndef BINARYEXPRESSION_H_INCLUDED
 #define BINARYEXPRESSION_H_INCLUDED
 
+#include "binaryoperator.h"
 #include "expression.h"
-enum class BinaryOperator{
-    ADD,        /// +
-    SUBSTRACT,  /// -
-    MULTIPLY,   /// *
-    DIVIDE,     /// /
-    REMAINDER,  /// %
-    POWER,      /// **
-
-    AND,        /// &
-    OR,         /// |
-    XOR,        /// ^
-    LSHIFT,     /// <<
-    RSHIFT      /// >>
-};
 
 class BinaryExpression : public Expression{
 private:

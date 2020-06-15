@@ -1,9 +1,9 @@
 #ifndef CONTAINERASSIGNMENTSTATEMENT_H_INCLUDED
 #define CONTAINERASSIGNMENTSTATEMENT_H_INCLUDED
 
-#include "../Expression/expression.h"
-#include "../Expression/containeraccessexpression.h"
 #include "../Expression/assignmentexpression.h"
+#include "../Expression/containeraccessexpression.h"
+#include "../Expression/expression.h"
 #include "../Visitor/assignvalidator.h"
 
 class ContainerAssignmentExpression : public Expression{

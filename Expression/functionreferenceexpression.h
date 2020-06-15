@@ -2,7 +2,8 @@
 #define FUNCTIONREFERENCEEXPRESSION_H_INCLUDED
 
 #include "expression.h"
-#include "../Lib/functionvalue.h"
+#include "../Value/functionvalue.h"
+
 class FunctionReferenceExpression : public Expression{
 private:
     std::string name;

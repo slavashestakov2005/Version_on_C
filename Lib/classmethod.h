@@ -4,6 +4,7 @@ class ClassValue;
 #define CLASSMETHOD_H_INCLUDED
 
 #include "userdefinedfunction.h"
+
 class ClassMethod : public UserDefinedFunction{
 private:
     ClassValue* classInstance;

@@ -2,13 +2,13 @@
 #define OPERATIONISNOTSUPPORTEDEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class OperationIsNotSupportedException  : public std::exception{
 private:
-    std::string text, endText;
+    std::string text;
 public:
-    explicit OperationIsNotSupportedException (std::string text) : text(text) { endText = ""; }
-    explicit OperationIsNotSupportedException (std::string text, std::string endT) : text(text) { endText = endT; }
-    const char* what() const noexcept{ return (("Operation " + text + " is not supported ").c_str() + endText).c_str(); }
+    explicit OperationIsNotSupportedException (std::string text) : text(text) {}
+    const char* what() const noexcept{ return ("Operation " + text + " is not supported").c_str(); }
     virtual ~OperationIsNotSupportedException () noexcept {}
 };
 

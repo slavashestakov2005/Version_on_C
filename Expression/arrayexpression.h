@@ -1,8 +1,9 @@
 #ifndef ARRAYEXPRESSION_H_INCLUDED
 #define ARRAYEXPRESSION_H_INCLUDED
 
-#include "expression.h"
 #include <vector>
+#include "expression.h"
+
 class ArrayExpression : public Expression{
 private:
     std::vector<Expression*> elements;

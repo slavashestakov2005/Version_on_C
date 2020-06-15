@@ -2,6 +2,7 @@
 #define TYPEEXCEPTION_H_INCLUDED
 
 #include <string>
+
 class TypeException : public std::exception{
 private:
     std::string text;

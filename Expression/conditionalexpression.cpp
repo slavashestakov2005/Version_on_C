@@ -1,8 +1,8 @@
 #include "conditionalexpression.h"
-#include "../Lib/bool.h"
-#include "../Lib/array.h"
+#include "../Value/boolvalue.h"
+#include "../Value/arrayvalue.h"
 #include "../Lib/functions.h"
-#include "../Lib/classvalue.h"
+#include "../Value/classvalue.h"
 #include "valueexpression.h"
 #include "../Exception/operationIsnotsupportedexception.h"
 #include "../Exception/typeexception.h"
@@ -17,29 +17,29 @@ namespace{
     };
 
     bool operator_gtgt(Value const& a, Value const& b){
-        if (a.type != b.type) return false;
-        switch(a.type){
-            case Values::ARRAY : return *(Array*)(&a) == *(Array*)(&b);
-            case Values::BOOL : return *(Bool*)(&a) == *(Bool*)(&b);
-            case Values::NUMBER : return *(BigNumber*)(&a) == *(BigNumber*)(&b);
+        if (a.type() != b.type()) return false;
+        switch(a.type()){
+            case Values::ARRAY : return *(ArrayValue*)(&a) == *(ArrayValue*)(&b);
+            case Values::BOOL : return *(BoolValue*)(&a) == *(BoolValue*)(&b);
+            case Values::NUMBER : return *(BigNumberValue*)(&a) == *(BigNumberValue*)(&b);
             case Values::FUNCTION : return *(FunctionValue*)(&a) == *(FunctionValue*)(&b);
-            case Values::MAP : return *(Map*)(&a) == *(Map*)(&b);
-            case Values::STRING : return *(String*)(&a) == *(String*)(&b);
-            case Values::NULL_ : return *(Null*)(&a) == *(Null*)(&b);
+            case Values::MAP : return *(MapValue*)(&a) == *(MapValue*)(&b);
+            case Values::STRING : return *(StringValue*)(&a) == *(StringValue*)(&b);
+            case Values::NULL_ : return *(NullValue*)(&a) == *(NullValue*)(&b);
             case Values::CLASS : return *(ClassValue*)(&a) == *(ClassValue*)(&b);
         }
     }
 
     bool operator_lt(Value const& a, Value const& b){
-        if (a.type != b.type) return int(a.type) < int(b.type);
-        switch(a.type){
-            case Values::ARRAY : return *(Array*)(&a) < *(Array*)(&b);
-            case Values::BOOL : return *(Bool*)(&a) < *(Bool*)(&b);
-            case Values::NUMBER : return *(BigNumber*)(&a) < *(BigNumber*)(&b);
+        if (a.type() != b.type()) return int(a.type()) < int(b.type());
+        switch(a.type()){
+            case Values::ARRAY : return *(ArrayValue*)(&a) < *(ArrayValue*)(&b);
+            case Values::BOOL : return *(BoolValue*)(&a) < *(BoolValue*)(&b);
+            case Values::NUMBER : return *(BigNumberValue*)(&a) < *(BigNumberValue*)(&b);
             case Values::FUNCTION : return *(FunctionValue*)(&a) < *(FunctionValue*)(&b);
-            case Values::MAP : return *(Map*)(&a) < *(Map*)(&b);
-            case Values::STRING : return *(String*)(&a) < *(String*)(&b);
-            case Values::NULL_ : return *(Null*)(&a) < *(Null*)(&b);
+            case Values::MAP : return *(MapValue*)(&a) < *(MapValue*)(&b);
+            case Values::STRING : return *(StringValue*)(&a) < *(StringValue*)(&b);
+            case Values::NULL_ : return *(NullValue*)(&a) < *(NullValue*)(&b);
             case Values::CLASS : return *(ClassValue*)(&a) < *(ClassValue*)(&b);
         }
     }
@@ -54,11 +54,11 @@ Value* ConditionalExpression::calculate(ConditionalOperator operation, Value* le
         case ConditionalOperator::LTEQ : result = operator_lt(*left, *right) || operator_gtgt(*left, *right); break;
         case ConditionalOperator::GT : result = operator_lt(*right, *left); break;
         case ConditionalOperator::GTEQ : result = operator_lt(*right, *left) || operator_gtgt(*left, *right); break;
-        case ConditionalOperator::AND : result = left -> getBool() && right -> getBool(); break;
-        case ConditionalOperator::OR : result = left -> getBool() || right -> getBool(); break;
+        case ConditionalOperator::AND : result = left -> asBool() && right -> asBool(); break;
+        case ConditionalOperator::OR : result = left -> asBool() || right -> asBool(); break;
         default: throw new OperationIsNotSupportedException(mas[(int)operation]);
     }
-    return new Bool(result);
+    return new BoolValue(result);
 }
 
 Value* ConditionalExpression::eval(){

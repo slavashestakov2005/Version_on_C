@@ -2,6 +2,7 @@
 #define CONTAINERACCESELEMENT_H_INCLUDED
 
 #include "expression.h"
+
 class ContainerAccessElement {
 private:
    bool dot;
