@@ -1,7 +1,7 @@
+#include <iostream>
 #include "variableprinter.h"
 #include "../Expression/assignmentexpression.h"
 #include "../Expression/variableexpression.h"
-#include <iostream>
 
 void VariablePrinter::visit(AssignmentExpression* v){
     v -> expression -> accept(this);

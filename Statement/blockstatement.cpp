@@ -11,10 +11,9 @@ void BlockStatement::execute(){
 }
 
 BlockStatement::operator std::string(){
-    std::string result = "{";
+    std::string result = "{\n";
     for(int i = 0; i < statements.size(); ++i){
-        result += std::string(*statements[i]);
-        result += "\n";
+        result += std::string(*statements[i]) + "\n";
     }
     result += "}";
     return result;

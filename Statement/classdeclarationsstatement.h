@@ -1,8 +1,8 @@
 #ifndef CLASSDECLARATIONSSTATEMENT_H_INCLUDED
 #define CLASSDECLARATIONSSTATEMENT_H_INCLUDED
 
-#include "statement.h"
 #include <vector>
+#include "statement.h"
 
 class ClassDeclarationsStatement : public Statement{
 private:

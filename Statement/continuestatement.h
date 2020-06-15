@@ -2,6 +2,7 @@
 #define CONTINUESTATEMENT_H_INCLUDED
 
 #include "statement.h"
+
 class ContinueStatement : public Statement{
 public:
     Statements type(){ return Statements::ContinueStatement; }

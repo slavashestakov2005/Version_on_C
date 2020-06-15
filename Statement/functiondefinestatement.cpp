@@ -1,3 +1,4 @@
+#include <sstream>
 #include "functiondefinestatement.h"
 #include "../Lib/functions.h"
 #include "../Lib/userdefinedfunction.h"
@@ -10,7 +11,11 @@ void FunctionDefineStatement::execute(bool set){
     int start = arguments.getRequiredCounter();
     int finish = arguments.getArrayCounter() == 1 ? 100 : arguments.getSize();
     bool add = Functions::add(name, new UserDefinedFunction(arguments, body), start, finish);
-    if (!add) throw std::logic_error("Cannot redefinition user's function \"" + name + "\"");
+    if (!add){
+        std::ostringstream cnt;
+        cnt << arguments.getSize();
+        throw std::logic_error("Cannot redefinition user's function \"" + name + "\" with " + cnt.str() + " arguments");
+    }
 }
 
 std::string FunctionDefineStatement::getName(){
@@ -20,7 +25,7 @@ std::string FunctionDefineStatement::getName(){
 FunctionDefineStatement::operator std::string(){
     std::string result = name;
     result += " def (";
-    for(unsigned i = 0; i < arguments.getSize(); ++i){
+    for(int i = 0; i < arguments.getSize(); ++i){
         result += std::string(arguments.get(i));
         if (i < arguments.getSize() - 1) result += ", ";
     }

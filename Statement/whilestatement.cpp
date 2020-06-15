@@ -1,9 +1,9 @@
-#include "whilestatement.h"
 #include "breakstatement.h"
 #include "continuestatement.h"
+#include "whilestatement.h"
 
 void WhileStatement::execute(){
-    while((condition -> eval()) -> getDouble()){
+    while(condition -> eval() -> asBool()){
         try{
             statement -> execute();
         }

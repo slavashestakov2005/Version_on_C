@@ -3,12 +3,13 @@
 
 #include <string>
 #include <vector>
-#include "Lib/array.h"
+#include "Value/arrayvalue.h"
+
 class Path{
 private:
     static std::vector<std::string> pathes;
     static bool import;
-    static Array* arguments;
+    static ArrayValue* arguments;
 public:
     static void setPath(std::string path);
     static std::string getPath();
@@ -16,7 +17,7 @@ public:
     static bool getImpoted();
     static void setImpoted(bool imp);
     static void setCommandArguments(std::vector<std::string> argv);
-    static Array* getCommandArguments();
+    static ArrayValue* getCommandArguments();
 };
 
 #endif // PATH_H_INCLUDED

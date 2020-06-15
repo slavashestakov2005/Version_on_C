@@ -2,6 +2,7 @@
 #define IMPORTADDER_H_INCLUDED
 
 #include "visitor.h"
+
 class ImportAdder : public Visitor{
 public:
     void visit(ImportStatement* v);

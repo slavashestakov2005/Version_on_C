@@ -1,5 +1,5 @@
-#include "printlnstatement.h"
 #include <iostream>
+#include "printlnstatement.h"
 
 void PrintlnStatement::execute(){
     std::cout << std::string(*(expression -> eval())) << std::endl;
@@ -10,8 +10,8 @@ PrintlnStatement::operator std::string(){
 }
 
 PrintlnStatement::~PrintlnStatement(){
-    ///delete expression;
-    ///expression = nullptr;
+    delete expression;
+    expression = nullptr;
 }
 
 void PrintlnStatement::accept(Visitor* visitor){

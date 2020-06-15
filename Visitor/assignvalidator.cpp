@@ -1,9 +1,9 @@
+#include <stdexcept>
 #include "assignvalidator.h"
 #include "../Expression/assignmentexpression.h"
 #include "../Expression/containerassignmentexpression.h"
 #include "../Expression/variableexpression.h"
 #include "../Lib/variables.h"
-#include <stdexcept>
 
 void AssignValidator::visit(AssignmentExpression* v){
     v -> expression -> accept(this);
@@ -13,5 +13,5 @@ void AssignValidator::visit(AssignmentExpression* v){
 void AssignValidator::visit(ContainerAssignmentExpression* v){
     v -> containerExpr -> accept(this);
     v -> expression -> accept(this);
-    if (v -> containerExpr -> rootVariable && Variables::isExists(((VariableExpression*) v -> containerExpr -> root) -> name)) throw std::logic_error("Cannot assign value to constant");
+    if (v -> containerExpr -> type() == Expressions::VariableExpression && Variables::isExists(((VariableExpression*) v -> containerExpr -> root) -> name)) throw std::logic_error("Cannot assign value to constant");
 }

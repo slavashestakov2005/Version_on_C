@@ -2,6 +2,7 @@
 #define BREAKSTATEMENT_H_INCLUDED
 
 #include "statement.h"
+
 class BreakStatement : public Statement{
 public:
     Statements type(){ return Statements::BreakStatement; }

@@ -3,6 +3,7 @@
 
 #include "statement.h"
 #include "../Expression/expression.h"
+
 class TryStatement : public Statement{
 private:
     Statement* body, *catchBlock;

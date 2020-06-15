@@ -3,6 +3,7 @@
 
 #include "statement.h"
 #include "../Expression/expression.h"
+
 class WhileStatement : public Statement{
 private:
     Expression* condition;

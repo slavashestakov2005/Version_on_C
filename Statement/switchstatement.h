@@ -1,9 +1,10 @@
 #ifndef SWITCHSTATEMENT_H_INCLUDED
 #define SWITCHSTATEMENT_H_INCLUDED
 
-#include "statement.h"
 #include <vector>
+#include "statement.h"
 #include "../Expression/expression.h"
+
 class SwitchStatement : public Statement{
 private:
     Expression* start;

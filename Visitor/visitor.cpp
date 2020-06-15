@@ -1,6 +1,6 @@
+#include "visitor.h"
 #include "../Expression/all.h"
 #include "../Statement/all.h"
-#include "visitor.h"
 
 void Visitor::visit(ArrayExpression* v){
     for(auto now : v -> elements){
@@ -88,9 +88,9 @@ void Visitor::visit(FunctionalExpression* v){
 void Visitor::visit(FunctionReferenceExpression* v){ }
 
 void Visitor::visit(IfStatement* v){
-    if (v -> elseStatement != nullptr) v -> elseStatement -> accept(this);
     v -> expression -> accept(this);
     v -> ifStatement -> accept(this);
+    if (v -> elseStatement != nullptr) v -> elseStatement -> accept(this);
 }
 
 void Visitor::visit(ImportStatement* v){ }
@@ -131,7 +131,9 @@ void Visitor::visit(TernaryExpression* v){
     v -> falseExpr -> accept(this);
 }
 
-void Visitor::visit(ThrowStatement* v){ }
+void Visitor::visit(ThrowStatement* v){
+    v -> expression -> accept(this);
+}
 
 void Visitor::visit(TryStatement* v){
     v -> body -> accept(this);

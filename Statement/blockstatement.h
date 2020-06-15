@@ -1,8 +1,9 @@
 #ifndef BLOCKSTATEMENT_H_INCLUDED
 #define BLOCKSTATEMENT_H_INCLUDED
 
-#include "statement.h"
 #include <vector>
+#include "statement.h"
+
 class BlockStatement : public Statement{
 private:
     std::vector<Statement*> statements;

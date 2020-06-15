@@ -3,6 +3,7 @@
 
 #include <string>
 #include "../Visitor/node.h"
+
 enum class Statements{
     BlockStatement,
     BreakStatement,
@@ -25,13 +26,13 @@ enum class Statements{
     TryStatement,
     WhileStatement
 };
+
 class Statement : public Node{
 public:
     virtual void execute() = 0;
     virtual operator std::string() = 0;
     virtual ~Statement(){}
     virtual Statements type() = 0;
-    //virtual void accept(Visitor* visitor) = 0;
 };
 
 #endif // STATEMENT_H_INCLUDED

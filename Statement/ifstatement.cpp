@@ -1,8 +1,7 @@
 #include "ifstatement.h"
 
 void IfStatement::execute(){
-    double result = (expression -> eval()) -> getDouble();
-    if (result) ifStatement -> execute();
+    if (expression -> eval() -> asBool()) ifStatement -> execute();
     else if (elseStatement != nullptr) elseStatement -> execute();
 }
 

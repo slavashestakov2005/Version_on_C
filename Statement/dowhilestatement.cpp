@@ -1,6 +1,6 @@
-#include "dowhilestatement.h"
 #include "breakstatement.h"
 #include "continuestatement.h"
+#include "dowhilestatement.h"
 
 void DoWhileStatement::execute(){
     do{
@@ -13,7 +13,7 @@ void DoWhileStatement::execute(){
         catch(ContinueStatement* cs){
             //continue;
         }
-    }while((condition -> eval()) -> getDouble());
+    }while(condition -> eval() -> asBool());
 }
 
 DoWhileStatement::operator std::string(){

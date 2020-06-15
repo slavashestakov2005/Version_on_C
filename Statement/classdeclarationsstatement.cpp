@@ -1,7 +1,7 @@
 #include "classdeclarationsstatement.h"
-#include "../Lib/classdeclaration.h"
-#include "../Expression/assignmentexpression.h"
 #include "functiondefinestatement.h"
+#include "../Expression/assignmentexpression.h"
+#include "../Lib/classdeclaration.h"
 
 void ClassDeclarationsStatement::addField(AssignmentExpression* expr){
     fields.push_back(new AssignmentExpression(*expr));

@@ -3,6 +3,7 @@
 
 #include "statement.h"
 #include "../Expression/expression.h"
+
 class ForeachArrayStatement : public Statement{
 private:
     std::string variable;

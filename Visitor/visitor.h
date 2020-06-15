@@ -73,4 +73,5 @@ public:
     virtual void visit(VariableExpression* v);
     void visit(WhileStatement* v);
 };
+
 #endif // VISITOR_H_INCLUDED

@@ -1,9 +1,9 @@
-#include "forstatement.h"
 #include "breakstatement.h"
 #include "continuestatement.h"
+#include "forstatement.h"
 
 void ForStatement::execute(){
-    for(initialization -> execute(); (termination -> eval()) -> getDouble(); increment -> execute()){
+    for(initialization -> execute(); termination -> eval() -> asBool(); increment -> execute()){
         try{
             statement -> execute();
         }

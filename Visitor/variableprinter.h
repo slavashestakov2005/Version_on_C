@@ -2,6 +2,7 @@
 #define VARIABLEPRINTER_H_INCLUDED
 
 #include "visitor.h"
+
 class VariablePrinter : public Visitor{
     void visit(AssignmentExpression* v);
     void visit(VariableExpression* v);
