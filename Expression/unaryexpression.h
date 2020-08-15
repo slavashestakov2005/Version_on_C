@@ -6,11 +6,12 @@
 
 class UnaryExpression : public Expression{
 private:
-    Expression* expr1;
+    Expression* expr;
     UnaryOperator operation;
 public:
-    UnaryExpression(UnaryOperator operation, Expression* expr1) : operation(operation), expr1(expr1) {}
+    UnaryExpression(UnaryOperator operation, Expression* expr) : operation(operation), expr(expr) {}
     Expressions type(){ return Expressions::UnaryExpression; }
+    /** @return  throw: OperationIsNotSupportedException*. */
     static Value* calculate(UnaryOperator operation, Value* value);
     Value* eval();
     operator std::string();

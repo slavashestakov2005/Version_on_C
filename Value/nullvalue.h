@@ -7,9 +7,13 @@ class NullValue : public Value{
 public:
     static NullValue* NULL_;
     NullValue(){}
+    /** @return  throw: TypeException*. */
     double asDouble();
+    /** @return  throw: TypeException*. */
     std::string asString();
+    /** @return  throw: TypeException*. */
     bool asBool();
+    /** @return  throw: TypeException*. */
     Bignum asBignum();
     Values type() const;
     operator std::string();

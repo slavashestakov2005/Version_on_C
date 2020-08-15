@@ -4,7 +4,10 @@
 #include "visitor.h"
 
 class AssignValidator : public Visitor{
+public:
+    /** @return  throw: std::logic_error. */
     void visit(AssignmentExpression* v);
+    /** @return  throw: std::logic_error. */
     void visit(ContainerAssignmentExpression* v);
 };
 

@@ -7,6 +7,7 @@
 #include "../Modules/all.h"
 #include "../Value/mapvalue.h"
 #include "../Value/stringvalue.h"
+#include "../Modules/modules.h"
 
 void ImportStatement::execute(){
     if (!Path::getImpoted()) return;
@@ -19,14 +20,7 @@ void ImportStatement::execute(){
         Functions::setInsert(true);
     }
     for(std::string name : names){
-        if (name == "chemistry") Chemistry::init();
-        else if (name == "draw") Draw::init();
-        else if (name == "files") Files::init();
-        else if (name == "functional") Functional::init();
-        else if (name == "math") Math::init();
-        else if (name == "std") Std::init();
-        else if (name == "types") Types::init();
-        else{
+        if (!try_import_module(name)){
             try{
                 if (name.find("\\") == std::string::npos && name.find("/") == std::string::npos) name = Path::getPath() + name;
                 Start start(name);

@@ -46,10 +46,10 @@ void Visitor::visit(ContinueStatement* v){}
 
 void Visitor::visit(DoWhileStatement* v){
     v -> condition -> accept(this);
-    v -> statement -> accept(this);
+    v -> body -> accept(this);
 }
 
-void Visitor::visit(ExprToStat* v){
+void Visitor::visit(ExprStatement* v){
     v -> expression -> accept(this);
 }
 
@@ -66,7 +66,7 @@ void Visitor::visit(ForeachMapStatement* v){
 void Visitor::visit(ForStatement* v){
     v -> increment -> accept(this);
     v -> initialization -> accept(this);
-    v -> statement -> accept(this);
+    v -> body -> accept(this);
     v -> termination -> accept(this);
 }
 
@@ -141,7 +141,7 @@ void Visitor::visit(TryStatement* v){
 }
 
 void Visitor::visit(UnaryExpression* v){
-    v -> expr1 -> accept(this);
+    v -> expr -> accept(this);
 }
 
 void Visitor::visit(ValueExpression* v){ }
@@ -150,5 +150,5 @@ void Visitor::visit(VariableExpression* v){ }
 
 void Visitor::visit(WhileStatement* v){
     v -> condition -> accept(this);
-    v -> statement -> accept(this);
+    v -> body -> accept(this);
 }

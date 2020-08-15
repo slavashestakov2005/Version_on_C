@@ -3,12 +3,15 @@
 #include "foreacharraystatement.h"
 #include "../Lib/variables.h"
 #include "../Value/arrayvalue.h"
+#include "../Exception/typeexception.h"
+#include "../Value/value.h"
 
 void ForeachArrayStatement::execute(){
     Value* start = Variables::isExists(variable) ? Variables::get(variable) : nullptr;
-    int siz = ((ArrayValue*)(container -> eval())) -> getSize();
-    for (int i = 0; i < siz; ++i){
-        Variables::set(variable, ((ArrayValue*)(container -> eval())) -> get(i));
+    Value* containerValue = container -> eval();
+    if (containerValue -> type() != Values::ARRAY) throw new TypeException("Array expected in foreach");
+    for (auto now : *(ArrayValue*) containerValue){
+        Variables::set(variable, now);
         try{
             body -> execute();
         }

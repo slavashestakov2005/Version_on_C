@@ -1,6 +1,5 @@
 #include "bignum.h"
 #include <cmath>
-#include <iostream>
 #include "../../Exception/mathexception.h"
 
 namespace{

@@ -17,12 +17,18 @@ public:
     void set(int index, Value* value);
     static ArrayValue* add(ArrayValue* array, Value* value);
     static ArrayValue* add(ArrayValue* array1, ArrayValue* array2);
-    int getSize() const;
+    int size() const;
+    std::vector<Value*>::iterator begin();
+    std::vector<Value*>::iterator end();
+    /** @return  throw: UnknownPropertyException*. */
     Value* accessDot(Value* property);
     Value* accessBracket(Value* property);
+    /** @return  throw: TypeException*. */
     double asDouble();
     std::string asString();
+    /** @return  throw: TypeException*. */
     bool asBool();
+    /** @return  throw: TypeException*. */
     Bignum asBignum();
     Values type() const;
     operator std::string();

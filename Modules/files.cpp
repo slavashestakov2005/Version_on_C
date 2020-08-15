@@ -1,7 +1,8 @@
+// [[not imported module]]
 #include "files.h"
 #include "../Lib/functions.h"
 #include "../Lib/variables.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 #include "../Value/stringvalue.h"
 #include "../Exception/argumentsmismatchexception.h"
 #include <fstream>
@@ -18,10 +19,10 @@ namespace{
             file.open(values[0] -> asString());
             if (!file){
                 bad = false;
-                return new BigNumberValue(-1);
+                return new NumberValue(-1);
             }
             bad = false;
-            return new BigNumberValue(0);
+            return new NumberValue(0);
         }
     };
 
@@ -53,8 +54,8 @@ namespace{
                 file.seekg(0, file.beg);
                 file << values[0] -> asString();
             }
-            else return new BigNumberValue(-1);
-            return new BigNumberValue(0);
+            else return new NumberValue(-1);
+            return new NumberValue(0);
         }
     };
 }

@@ -5,7 +5,7 @@
 #include "../Exception/unknownpropertyexception.h"
 #include "../Value/arrayvalue.h"
 #include "../Lib/function.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 #include "../Value/functionvalue.h"
 
 namespace{
@@ -62,7 +62,7 @@ namespace{
     };
 }
 
-int StringValue::getSize(){
+int StringValue::size(){
     return value.size();
 }
 
@@ -72,7 +72,7 @@ void StringValue::set(int index, Value* val){
 
 Value* StringValue::accessDot(Value* property){
     std::string prop = property -> asString();
-    if (prop == "length") return new BigNumberValue(getSize());
+    if (prop == "length") return new NumberValue(size());
     if (prop == "trim") return new FunctionValue(new Trim(value));
     if (prop == "to_upper") return new FunctionValue(new To_upper(value));
     if (prop == "to_lower") return new FunctionValue(new To_lower(value));

@@ -13,6 +13,7 @@ public:
     ThrowStatement(Expression* expression) : expression(expression) {}
     Statements type(){ return Statements::ThrowStatement; }
     Value* getResult();
+    /** @return  throw: ThrowStatement*. */
     void execute();
     operator std::string();
     ~ThrowStatement();

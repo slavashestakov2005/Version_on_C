@@ -54,7 +54,7 @@ namespace{
             if (values[0] -> type() != Values::ARRAY) throw new TypeException("Array expected in first argument");
             if (values[1] -> type() != Values::ARRAY) throw new TypeException("Array expected in second argument");
             ArrayValue* keys = (ArrayValue*)values[0], *value = (ArrayValue*)values[1];
-            int len = std::min(keys -> getSize(), value -> getSize());
+            int len = std::min(keys -> size(), value -> size());
             MapValue* map = new MapValue(len);
             for(int i = 0; i < len; ++i) map -> set(keys -> get(i), value -> get(i));
             return map;
@@ -88,8 +88,8 @@ namespace{
             std::string str = values[0] -> asString(), str2 = values[1] -> asString();
             int position = ((values.size() == 3) ? (int)values[2] -> asDouble() : 0);
             size_t x = str.find(str2, position);
-            if (x == std::string::npos) return new BigNumberValue(-1);
-            else return new BigNumberValue(x);
+            if (x == std::string::npos) return new NumberValue(-1);
+            else return new NumberValue(x);
         }
     };
 
@@ -101,9 +101,9 @@ namespace{
             std::string ans, delimiter = values[0] -> asString();
             if (values.size() == 2 && values[1] -> type() == Values::ARRAY){
                 ArrayValue* arr = (ArrayValue*) values[1];
-                for(int i = 0; i < arr -> getSize(); ++i){
+                for(int i = 0; i < arr -> size(); ++i){
                     ans += arr -> get(i) -> asString();
-                    if (i < arr -> getSize() - 1) ans += delimiter;
+                    if (i < arr -> size() - 1) ans += delimiter;
                 }
             }
             else{
@@ -122,9 +122,9 @@ namespace{
             if (values.size() != 1) throw new ArgumentsMismatchException("One argument expected");
             int length;
             switch(values[0] -> type()){
-                case Values::ARRAY : length = ((ArrayValue*)values[0]) -> getSize(); break;
-                case Values::MAP : length = ((MapValue*)values[0]) -> getSize(); break;
-                case Values::STRING : length = ((StringValue*)values[0]) -> getSize(); break;
+                case Values::ARRAY : length = ((ArrayValue*)values[0]) -> size(); break;
+                case Values::MAP : length = ((MapValue*)values[0]) -> size(); break;
+                case Values::STRING : length = ((StringValue*)values[0]) -> size(); break;
                 case Values::FUNCTION :{
                     if (((FunctionValue*)values[0]) -> getFunction() -> type) length = ((UserDefinedFunction*)(((FunctionValue*)values[0]) -> getFunction())) -> getArgsCount();
                     else length = 0;
@@ -132,7 +132,7 @@ namespace{
                 }
                 default : length = 0; break;
             }
-            return new BigNumberValue(length);
+            return new NumberValue(length);
         }
     };
 
@@ -153,8 +153,8 @@ namespace{
             if (values[0] -> type() != Values::MAP) throw new TypeException("Map expected in first argument");
             MapValue* map = (MapValue*)values[0];
             std::vector<Value*> keys;
-            int siz = map -> getSize();
-            std::map<Value*, Value*>::iterator iter = map -> iter();
+            int siz = map -> size();
+            auto iter = map -> begin();
             for(int i = 0; i < siz; ++i, ++iter) keys.push_back(iter -> first);
             return new ArrayValue(keys);
         }
@@ -167,8 +167,8 @@ namespace{
             if (values[0] -> type() != Values::MAP) throw new TypeException("Map expected in first argument");
             MapValue* map = (MapValue*)values[0];
             std::vector<Value*> keys;
-            int siz = map -> getSize();
-            std::map<Value*, Value*>::iterator iter = map -> iter();
+            int siz = map -> size();
+            auto iter = map -> begin();
             for(int i = 0; i < siz; ++i, ++iter) keys.push_back(iter -> second);
             return new ArrayValue(keys);
         }
@@ -214,7 +214,7 @@ namespace{
                 ans += current * power;
                 power *= radix;
             }
-            return new BigNumberValue(ans);
+            return new NumberValue(ans);
         }
     };
 
@@ -236,7 +236,7 @@ namespace{
             }
             std::ostringstream strs;
             strs << result;
-            return new BigNumberValue(strs.str());
+            return new NumberValue(strs.str());
         }
     };
 
@@ -277,8 +277,8 @@ namespace{
             std::string str = values[0] -> asString(), str2 = values[1] -> asString();
             int position = ((values.size() == 3) ? (int)values[2] -> asDouble() : 0);
             size_t x = str.rfind(str2, position);
-            if (x == std::string::npos) return new BigNumberValue(-1);
-            else return new BigNumberValue(x);
+            if (x == std::string::npos) return new NumberValue(-1);
+            else return new NumberValue(x);
         }
     };
 
@@ -300,7 +300,7 @@ namespace{
             if (values.size() < 1 || values.size() > 2) throw new ArgumentsMismatchException("One or two arguments expected");
             if (values[0] -> type() != Values::ARRAY) throw new TypeException("Array expected in first argument");
             ArrayValue* arr = (ArrayValue*)values[0];
-            for(int i = 0; i < arr -> getSize(); ++i) mas.push_back(arr -> get(i));
+            for(int i = 0; i < arr -> size(); ++i) mas.push_back(arr -> get(i));
             if (values.size() == 1) sort(mas.begin(), mas.end(), comparator);
             if (values.size() == 2){
                 if (values[1] -> type() != Values::FUNCTION) throw new TypeException("Function expected in second argument");
@@ -355,7 +355,7 @@ namespace{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() != 0) throw new ArgumentsMismatchException("Zero arguments expected");
-            return new BigNumberValue(clock());
+            return new NumberValue(clock());
         }
     };
 

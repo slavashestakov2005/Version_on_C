@@ -4,11 +4,11 @@
 #include "../Lib/classdeclaration.h"
 
 void ClassDeclarationsStatement::addField(AssignmentExpression* expr){
-    fields.push_back(new AssignmentExpression(*expr));
+    fields.push_back(expr);
 }
 
 void ClassDeclarationsStatement::addMethod(FunctionDefineStatement* statement){
-    methods.push_back(new FunctionDefineStatement(*statement));
+    methods.push_back(statement);
 }
 
 void ClassDeclarationsStatement::execute(){

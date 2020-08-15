@@ -34,25 +34,25 @@ FunctionValue::~FunctionValue(){
 }
 
 bool operator==(FunctionValue const& a, FunctionValue const& b){
-    throw new TypeException("Operator '==' cannot used for function and function");
+    throw new TypeException("Operator '==' cannot used for two functions");
 }
 
 bool operator!=(FunctionValue const& a, FunctionValue const& b){
-    throw new TypeException("Operator '!=' cannot used for function and function");
+    throw new TypeException("Operator '!=' cannot used for two functions");
 }
 
 bool operator<(FunctionValue const& a, FunctionValue const& b){
-    throw new TypeException("Operator '<' cannot used for function and function");
+    throw new TypeException("Operator '<' cannot used for two functions");
 }
 
 bool operator<=(FunctionValue const& a, FunctionValue const& b){
-    throw new TypeException("Operator '<=' cannot used for function and function");
+    throw new TypeException("Operator '<=' cannot used for two functions");
 }
 
 bool operator>(FunctionValue const& a, FunctionValue const& b){
-    throw new TypeException("Operator '>' cannot used for function and function");
+    throw new TypeException("Operator '>' cannot used for two functions");
 }
 
 bool operator>=(FunctionValue const& a, FunctionValue const& b){
-    throw new TypeException("Operator '>=' cannot used for function and function");
+    throw new TypeException("Operator '>=' cannot used for two functions");
 }

@@ -17,8 +17,11 @@ public:
     ContainerAccessExpression(Expression* root, std::vector<ContainerAccessElement> indices);
     Expressions type(){ return Expressions::ContainerAccessExpression; }
     Value* eval();
+    /** @return  throw: std::logic_error*, TypeException*. */
     Value* get();
+    /** @return  throw: std::logic_error*, TypeException*. */
     Value* set(Value* value);
+    /** @return  throw: std::logic_error*, TypeException*. */
     Value* getContainer();
     Value* lastIndex();
     bool lastDot();

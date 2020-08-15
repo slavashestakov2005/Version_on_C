@@ -23,7 +23,7 @@ void MapValue::setThisMap(bool thisMap){
     this -> thisMap = thisMap;
 }
 
-int MapValue::getSize(){
+int MapValue::size() const{
     return map.size();
 }
 
@@ -32,7 +32,7 @@ bool MapValue::containsKey(Value* key){
 }
 
 MapValue* MapValue::getCopyElement(){
-    MapValue* newMap = new MapValue(1);
+    MapValue* newMap = new MapValue();
     for(auto now : map){
         newMap -> set(now.first, now.second);
     }
@@ -40,14 +40,13 @@ MapValue* MapValue::getCopyElement(){
 }
 
 MapValue* MapValue::add(MapValue* map1, MapValue* map2){
-    MapValue* result = new MapValue(1);
+    MapValue* result = new MapValue();
     for(auto now : map1 -> map) result -> set(now.first, now.second);
     for(auto now : map2 -> map) result -> set(now.first, now.second);
     return result;
 }
 
-
-std::map<Value*, Value*>::iterator MapValue::iter(){
+std::map<Value*, Value*>::iterator MapValue::begin(){
     return map.begin();
 }
 
@@ -91,8 +90,8 @@ MapValue::operator std::string(){
     return asString();
 }
 
-bool operator==(MapValue a, MapValue b){
-    if (a.getSize() != b.getSize()) return false;
+bool operator==(MapValue const& a, MapValue const& b){
+    if (a.size() != b.size()) return false;
     auto nowa = a.map.begin();
     auto nowb = b.map.begin();
     while(nowa != a.map.end()){
@@ -106,15 +105,16 @@ bool operator==(MapValue a, MapValue b){
     return true;
 }
 
-bool operator!=(MapValue a, MapValue b){
+bool operator!=(MapValue const& a, MapValue const& b){
     return !(a == b);
 }
 
-bool operator<(MapValue a, MapValue b){
+bool operator<(MapValue const& a, MapValue const& b){
+    if (a.size() < b.size()) return true;
+    if (a.size() > b.size()) return false;
     auto nowa = a.map.begin();
     auto nowb = b.map.begin();
     while(nowa != a.map.end()){
-        if (nowb == b.map.end()) return false;
         if (nowa -> first -> type() < nowb -> first -> type()) return true;
         if (nowa -> first -> type() > nowb -> first -> type()) return false;
         if (*(nowa -> first) < *(nowb -> first)) return true;
@@ -126,18 +126,17 @@ bool operator<(MapValue a, MapValue b){
         ++nowa;
         ++nowb;
     }
-    if (nowb != b.map.end()) return true;
     return false;
 }
 
-bool operator<=(MapValue a, MapValue b){
+bool operator<=(MapValue const& a, MapValue const& b){
     return !(a > b);
 }
 
-bool operator>(MapValue a, MapValue b){
+bool operator>(MapValue const& a, MapValue const& b){
     return b < a;
 }
 
-bool operator>=(MapValue a, MapValue b){
+bool operator>=(MapValue const& a, MapValue const& b){
     return !(a < b);
 }

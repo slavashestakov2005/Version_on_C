@@ -7,7 +7,7 @@
 #include "../Value/nullvalue.h"
 
 int UserDefinedFunction::getArgsCount(){
-    return arguments.getSize();
+    return arguments.size();
 }
 
 std::string UserDefinedFunction::getArgsName(int index){
@@ -17,9 +17,9 @@ std::string UserDefinedFunction::getArgsName(int index){
 
 Value* UserDefinedFunction::execute(std::vector<Value*> values){
     int siz = values.size();
-    int requiredArgsCount = arguments.getRequiredCounter();
+    int requiredArgsCount = arguments.getRequiredCount();
     int total = getArgsCount();
-    int positionArguments = total - arguments.getArrayCounter();
+    int positionArguments = total - arguments.getArrayCount();
     int minimal = std::min(positionArguments, siz);
     if (siz < requiredArgsCount){
         std::string result = "Arguments count mismatch. ";
@@ -28,7 +28,7 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
         result += is.str();
         throw new ArgumentsMismatchException(result);
     }
-    if (siz > total && arguments.getArrayCounter() == 0){
+    if (siz > total && arguments.getArrayCount() == 0){
         std::string result = "Arguments count mismatch. ";
         std::ostringstream is;
         is << siz << " > " << total;
@@ -62,9 +62,9 @@ Value* UserDefinedFunction::execute(std::vector<Value*> values){
 
 UserDefinedFunction::operator std::string(){
     std::string result = "def (";
-    for(int i = 0; i < arguments.getSize(); ++i){
+    for(int i = 0; i < arguments.size(); ++i){
         result += std::string(arguments.get(i));
-        if (i < arguments.getSize() - 1) result += ", ";
+        if (i < arguments.size() - 1) result += ", ";
     }
     result += ") ";
     if(body -> type() == Statements::ReturnStatement) result += "= ";

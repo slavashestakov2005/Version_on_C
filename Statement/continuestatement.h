@@ -6,6 +6,7 @@
 class ContinueStatement : public Statement{
 public:
     Statements type(){ return Statements::ContinueStatement; }
+    /** @return  throw: ContinueStatement*. */
     void execute();
     operator std::string();
     void accept(Visitor* visitor);

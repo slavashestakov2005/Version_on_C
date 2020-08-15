@@ -8,12 +8,12 @@ void FunctionDefineStatement::execute(){
 }
 
 void FunctionDefineStatement::execute(bool set){
-    int start = arguments.getRequiredCounter();
-    int finish = arguments.getArrayCounter() == 1 ? 100 : arguments.getSize();
+    int start = arguments.getRequiredCount();
+    int finish = arguments.getArrayCount() == 1 ? 100 : arguments.size();
     bool add = Functions::add(name, new UserDefinedFunction(arguments, body), start, finish);
     if (!add){
         std::ostringstream cnt;
-        cnt << arguments.getSize();
+        cnt << arguments.size();
         throw std::logic_error("Cannot redefinition user's function \"" + name + "\" with " + cnt.str() + " arguments");
     }
 }
@@ -25,9 +25,9 @@ std::string FunctionDefineStatement::getName(){
 FunctionDefineStatement::operator std::string(){
     std::string result = name;
     result += " def (";
-    for(int i = 0; i < arguments.getSize(); ++i){
+    for(int i = 0; i < arguments.size(); ++i){
         result += std::string(arguments.get(i));
-        if (i < arguments.getSize() - 1) result += ", ";
+        if (i < arguments.size() - 1) result += ", ";
     }
     result += ") ";
     if(body -> type() == Statements::ReturnStatement) result += " = ";

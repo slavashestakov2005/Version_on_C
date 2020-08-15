@@ -8,8 +8,9 @@ ClassMethod::ClassMethod(Arguments args, Statement* body, ClassValue* classInsta
 Value* ClassMethod::execute(std::vector<Value*> values){
     Variables::push();
     Variables::set("this", classInstance -> getThisMap());
+    Value* result = nullptr;
     try{
-        UserDefinedFunction::execute(values);
+        result = UserDefinedFunction::execute(values);
     } catch(std::exception* ex){
         Variables::pop();
         throw ex;
@@ -18,4 +19,5 @@ Value* ClassMethod::execute(std::vector<Value*> values){
         throw ex;
     }
     Variables::pop();
+    return result;
 }

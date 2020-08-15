@@ -9,10 +9,10 @@ private:
     Statement* initialization;
     Expression* termination;
     Statement* increment;
-    Statement* statement;
+    Statement* body;
 public:
     ForStatement(Statement* initialization, Expression* termination, Statement* increment, Statement* statement)
-    : initialization(initialization), termination(termination), increment(increment), statement(statement) {}
+    : initialization(initialization), termination(termination), increment(increment), body(body) {}
     Statements type(){ return Statements::ForStatement; }
     void execute();
     operator std::string();

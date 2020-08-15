@@ -2,22 +2,12 @@
 #include "continuestatement.h"
 #include "switchstatement.h"
 
-namespace{
-    bool equals(Value* val1, Value* val2){
-        if (val1 -> type() != val2 -> type()) return false;
-        if (val1 -> type() == Values::ARRAY) return val1 -> asString() == val2 -> asString();
-        if (val1 -> type() == Values::NUMBER) return val1 -> asBignum() == val2 -> asBignum();
-        if (val1 -> type() == Values::STRING) return val1 -> asString() == val2 -> asString();
-        return false;
-    }
-}
-
 void SwitchStatement::execute(){
     bool trueCase = false;
     Value* val = start -> eval();
     try{
         for(int i = 0; i < body.size(); ++i){
-            if (equals(val, body[i].first -> eval())){
+            if (val == body[i].first -> eval()){
                 trueCase = true;
                 try{
                     body[i].second -> execute();

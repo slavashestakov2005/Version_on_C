@@ -1,6 +1,6 @@
 #include "containeraccessexpression.h"
 #include "../Lib/variables.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 #include "../Value/stringvalue.h"
 #include "../Value/classvalue.h"
 #include "../Exception/typeexception.h"

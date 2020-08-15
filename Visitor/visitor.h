@@ -9,7 +9,7 @@ class ContainerAccessExpression;
 class ContainerAssignmentExpression;
 class ContinueStatement;
 class DoWhileStatement;
-class ExprToStat;
+class ExprStatement;
 class ForeachArrayStatement;
 class ForeachMapStatement;
 class ForStatement;
@@ -49,7 +49,7 @@ public:
     void visit(ContainerAssignmentExpression* v);
     void visit(ContinueStatement* v);
     void visit(DoWhileStatement* v);
-    void visit(ExprToStat* v);
+    void visit(ExprStatement* v);
     void visit(ForeachArrayStatement* v);
     void visit(ForeachMapStatement* v);
     void visit(ForStatement* v);

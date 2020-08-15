@@ -6,6 +6,7 @@
 class BreakStatement : public Statement{
 public:
     Statements type(){ return Statements::BreakStatement; }
+    /** @return  throw: BreakStatement*. */
     void execute();
     operator std::string();
     void accept(Visitor* visitor);

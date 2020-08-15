@@ -25,10 +25,10 @@ Value* AssignmentExpression::calculate(AssignmentOperator operation, Value* left
         case AssignmentOperator::XOR : result = BinaryExpression::calculate(BinaryOperator::XOR, left, right); break;
         case AssignmentOperator::LSHIFT : result = BinaryExpression::calculate(BinaryOperator::LSHIFT, left, right); break;
         case AssignmentOperator::RSHIFT : result = BinaryExpression::calculate(BinaryOperator::RSHIFT, left, right); break;
-        case AssignmentOperator::_PLUSPLUS : result = BinaryExpression::calculate(BinaryOperator::ADD, left, new BigNumberValue(1)); break;
-        case AssignmentOperator::PLUSPLUS_ : result = BinaryExpression::calculate(BinaryOperator::ADD, left, new BigNumberValue(1)); break;
-        case AssignmentOperator::_MINUSMINUS : result = BinaryExpression::calculate(BinaryOperator::SUBSTRACT, left, new BigNumberValue(1)); break;
-        case AssignmentOperator::MINUSMINUS_ : result = BinaryExpression::calculate(BinaryOperator::SUBSTRACT, left, new BigNumberValue(1)); break;
+        case AssignmentOperator::_PLUSPLUS : result = BinaryExpression::calculate(BinaryOperator::ADD, left, new NumberValue(1)); break;
+        case AssignmentOperator::PLUSPLUS_ : result = BinaryExpression::calculate(BinaryOperator::ADD, left, new NumberValue(1)); break;
+        case AssignmentOperator::_MINUSMINUS : result = BinaryExpression::calculate(BinaryOperator::SUBSTRACT, left, new NumberValue(1)); break;
+        case AssignmentOperator::MINUSMINUS_ : result = BinaryExpression::calculate(BinaryOperator::SUBSTRACT, left, new NumberValue(1)); break;
         default: throw new OperationIsNotSupportedException(mas[(int)operation]);
     }
     return result;
@@ -42,16 +42,19 @@ Value* AssignmentExpression::eval(){
     if (operation == AssignmentOperator::_PLUSPLUS || operation == AssignmentOperator::_MINUSMINUS) result = left;
     return result;
 }
+
 AssignmentExpression::operator std::string(){
     if (operation == AssignmentOperator::MINUSMINUS_ || operation == AssignmentOperator::PLUSPLUS_){
         return mas[int(operation)] + " " + variable;
     }
     return variable + " " + mas[int(operation)] + " " + std::string(*expression);
 }
+
 AssignmentExpression::~AssignmentExpression(){
     delete expression;
     expression = nullptr;
 }
+
 void AssignmentExpression::accept(Visitor* visitor){
     visitor -> visit(this);
 }

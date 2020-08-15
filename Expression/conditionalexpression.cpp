@@ -21,7 +21,7 @@ namespace{
         switch(a.type()){
             case Values::ARRAY : return *(ArrayValue*)(&a) == *(ArrayValue*)(&b);
             case Values::BOOL : return *(BoolValue*)(&a) == *(BoolValue*)(&b);
-            case Values::NUMBER : return *(BigNumberValue*)(&a) == *(BigNumberValue*)(&b);
+            case Values::NUMBER : return *(NumberValue*)(&a) == *(NumberValue*)(&b);
             case Values::FUNCTION : return *(FunctionValue*)(&a) == *(FunctionValue*)(&b);
             case Values::MAP : return *(MapValue*)(&a) == *(MapValue*)(&b);
             case Values::STRING : return *(StringValue*)(&a) == *(StringValue*)(&b);
@@ -35,7 +35,7 @@ namespace{
         switch(a.type()){
             case Values::ARRAY : return *(ArrayValue*)(&a) < *(ArrayValue*)(&b);
             case Values::BOOL : return *(BoolValue*)(&a) < *(BoolValue*)(&b);
-            case Values::NUMBER : return *(BigNumberValue*)(&a) < *(BigNumberValue*)(&b);
+            case Values::NUMBER : return *(NumberValue*)(&a) < *(NumberValue*)(&b);
             case Values::FUNCTION : return *(FunctionValue*)(&a) < *(FunctionValue*)(&b);
             case Values::MAP : return *(MapValue*)(&a) < *(MapValue*)(&b);
             case Values::STRING : return *(StringValue*)(&a) < *(StringValue*)(&b);

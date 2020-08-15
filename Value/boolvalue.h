@@ -7,7 +7,7 @@ class BoolValue : public Value{
 private:
     bool value;
 public:
-    static BoolValue* TRUE_, *FALSE_;
+    static BoolValue *TRUE_, *FALSE_;
     BoolValue(bool value) : value(value) {}
     double asDouble();
     std::string asString();

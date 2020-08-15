@@ -7,21 +7,17 @@
 #include "../Expression/valueexpression.h"
 
 namespace {
-    std::string mas[] = {
-        "Bool", "Number", "String", "Array", "Map", "Null", "Function", "Class"
-    };
-
     class IsEmpty : public Function{
         public:
         Value* execute(std::vector<Value*> values){
-             return new BoolValue(((ArrayValue*)values[0]) -> getSize() == 0);
+             return new BoolValue(((ArrayValue*)values[0]) -> size() == 0);
         }
     };
 
     class Length : public Function{
         public:
         Value* execute(std::vector<Value*> values){
-             return new BigNumberValue(((ArrayValue*)values[0]) -> getSize());
+             return new NumberValue(((ArrayValue*)values[0]) -> size());
         }
     };
 }
@@ -73,8 +69,16 @@ ArrayValue* ArrayValue::add(ArrayValue* array1, ArrayValue* array2){
     return new ArrayValue(vec);
 }
 
-int ArrayValue::getSize() const{
+int ArrayValue::size() const{
     return elements -> size();
+}
+
+std::vector<Value*>::iterator ArrayValue::begin(){
+    elements -> begin();
+}
+
+std::vector<Value*>::iterator ArrayValue::end(){
+    return elements -> end();
 }
 
 Value* ArrayValue::accessDot(Value* property){
@@ -128,8 +132,8 @@ ArrayValue::~ArrayValue(){
 }
 
 bool operator==(ArrayValue const& a, ArrayValue const& b){
-    if (a.getSize() != b.getSize()) return false;
-    for(int i = 0; i < a.getSize(); ++i){
+    if (a.size() != b.size()) return false;
+    for(int i = 0; i < a.size(); ++i){
         Value* val1 = a.get(i);
         Value* val2 = b.get(i);
         if (val1 -> type() != val2 -> type()) return false;
@@ -143,9 +147,9 @@ bool operator!=(ArrayValue const& a, ArrayValue const& b){
 }
 
 bool operator<(ArrayValue const& a, ArrayValue const& b){
-    if (a.getSize() > b.getSize()) return false;
-    if (a.getSize() < b.getSize()) return true;
-    for(int i = 0; i < a.getSize(); ++i){
+    if (a.size() > b.size()) return false;
+    if (a.size() < b.size()) return true;
+    for(int i = 0; i < a.size(); ++i){
         Value* val1 = a.get(i);
         Value* val2 = b.get(i);
         if (val1 -> type() != val2 -> type()) return (int) val1 -> type() < (int) val2 -> type();

@@ -7,9 +7,9 @@
 class WhileStatement : public Statement{
 private:
     Expression* condition;
-    Statement* statement;
+    Statement* body;
 public:
-    WhileStatement(Expression* condition, Statement* statement) : condition(condition), statement(statement) {}
+    WhileStatement(Expression* condition, Statement* body) : condition(condition), body(body) {}
     Statements type(){ return Statements::WhileStatement; }
     void execute();
     operator std::string();

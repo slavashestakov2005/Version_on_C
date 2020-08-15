@@ -1,5 +1,5 @@
 #include "variables.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 #include "../Value/boolvalue.h"
 #include "../Value/nullvalue.h"
 #include "../Modules/global.h"

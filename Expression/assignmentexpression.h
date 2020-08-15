@@ -14,6 +14,7 @@ public:
     std::string variable;
     AssignmentExpression(AssignmentOperator operation, std::string variable, Expression* expression) : operation(operation), variable(variable), expression(expression) {}
     Expressions type(){ return Expressions::AssignmentExpression; }
+    /** @return  throw: OperationIsNotSupportedException*. */
     static Value* calculate(AssignmentOperator operation, Value* left, Value* right);
     Value* eval();
     operator std::string();

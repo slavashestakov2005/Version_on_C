@@ -15,9 +15,9 @@ public:
     void addOptional(std::string name, Expression* expression);
     void addArrayArgument(std::string name);
     Argument get(int index);
-    int getRequiredCounter();
-    int getArrayCounter();
-    int getSize();
+    int getRequiredCount();
+    int getArrayCount();
+    int size();
     operator std::string();
 };
 

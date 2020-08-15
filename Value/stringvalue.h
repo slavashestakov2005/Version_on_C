@@ -9,13 +9,17 @@ private:
     std::string value;
 public:
     StringValue(std::string value) : value(value) {}
-    int getSize();
+    int size();
     void set(int index, Value* val);
+    /** @return  throw: UnknownPropertyException*. */
     Value* accessDot(Value* property);
     Value* accessBracket(Value* property);
+    /** @return  throw: TypeException*. */
     double asDouble();
     std::string asString();
+    /** @return  throw: TypeException*. */
     bool asBool();
+    /** @return  throw: TypeException*. */
     Bignum asBignum();
     Values type() const;
     operator std::string();

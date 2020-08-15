@@ -15,6 +15,7 @@ public:
     static std::map<std::string, Function*> getNow();
     static void clear();
     static bool isExists(std::string key);
+    /** @return  throw: UnknownFunctionException*. */
     static Function* get(std::string key);
     static void set(std::string key, Function* function);
     static bool add(std::string key, Function* function, int start, int finish);

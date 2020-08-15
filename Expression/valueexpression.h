@@ -3,7 +3,7 @@
 
 #include "expression.h"
 #include "../Value/arrayvalue.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 #include "../Value/boolvalue.h"
 #include "../Value/functionvalue.h"
 #include "../Value/mapvalue.h"
@@ -19,7 +19,7 @@ public:
     ValueExpression(bool val){ value = new BoolValue(val); }
     ValueExpression(Function* val){ value = new FunctionValue(val); }
     ValueExpression(MapValue val){ value = new MapValue(val); }
-    ValueExpression(Bignum val){ value = new BigNumberValue(val); }
+    ValueExpression(Bignum val){ value = new NumberValue(val); }
     ValueExpression(NullValue null){ value = new NullValue(); }
     ValueExpression(Value* val);
     Expressions type(){ return Expressions::ValueExpression; }

@@ -5,7 +5,7 @@
 void DoWhileStatement::execute(){
     do{
         try{
-            statement -> execute();
+            body -> execute();
         }
         catch(BreakStatement* bs){
             break;
@@ -17,12 +17,12 @@ void DoWhileStatement::execute(){
 }
 
 DoWhileStatement::operator std::string(){
-    return "do " + std::string(*statement) + " while " + std::string(*condition);
+    return "do " + std::string(*body) + " while " + std::string(*condition);
 }
 
 DoWhileStatement::~DoWhileStatement(){
-    delete statement;
-    statement = nullptr;
+    delete body;
+    body = nullptr;
     delete condition;
     condition = nullptr;
 }

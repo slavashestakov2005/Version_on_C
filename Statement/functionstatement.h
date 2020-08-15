@@ -3,6 +3,7 @@
 
 #include "statement.h"
 #include "../Expression/functionalexpression.h"
+
 class FunctionStatement : public Statement{
 private:
     FunctionalExpression* function;

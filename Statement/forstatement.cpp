@@ -5,7 +5,7 @@
 void ForStatement::execute(){
     for(initialization -> execute(); termination -> eval() -> asBool(); increment -> execute()){
         try{
-            statement -> execute();
+            body -> execute();
         }
         catch(BreakStatement* bs){
             break;
@@ -17,7 +17,7 @@ void ForStatement::execute(){
 }
 
 ForStatement::operator std::string(){
-    return "for " + std::string(*initialization) + ", " + std::string(*termination) + ", " + std::string(*increment) + " " + std::string(*statement);
+    return "for " + std::string(*initialization) + ", " + std::string(*termination) + ", " + std::string(*increment) + " " + std::string(*body);
 }
 
 ForStatement::~ForStatement(){
@@ -27,8 +27,8 @@ ForStatement::~ForStatement(){
     termination = nullptr;
     delete increment;
     increment = nullptr;
-    delete statement;
-    statement = nullptr;
+    delete body;
+    body = nullptr;
 }
 
 void ForStatement::accept(Visitor* visitor){

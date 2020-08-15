@@ -6,7 +6,7 @@ ValueExpression::ValueExpression(Value* val){
     else if (val -> type() == Values::BOOL) value = new BoolValue(*(BoolValue*)val);
     else if (val -> type() == Values::FUNCTION) value = new FunctionValue(*(FunctionValue*)val);
     else if (val -> type() == Values::MAP) value = new MapValue(*(MapValue*)val);
-    else if (val -> type() == Values::NUMBER) value = new BigNumberValue(*(BigNumberValue*)val);
+    else if (val -> type() == Values::NUMBER) value = new NumberValue(*(NumberValue*)val);
     else if (val -> type() == Values::NULL_) value = NullValue::NULL_;
 }
 

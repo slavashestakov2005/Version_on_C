@@ -9,6 +9,7 @@ class FunctionalExpression : public Expression{
 private:
     Expression* functionExpr;
     std::vector<Expression*> arguments;
+    /** @return  throw: UnknownFunctionException*. */
     Function* getFunction(std::string name);
     Function* consumeFunction(Expression* expr);
 public:

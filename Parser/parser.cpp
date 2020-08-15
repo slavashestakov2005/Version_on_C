@@ -5,7 +5,7 @@
 #include "../Expression/all.h"
 #include "../Lib/userdefinedfunction.h"
 #include "../Statement/all.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 
 ParseErrors Parser::getParseErrors(){
     return parseErrors;
@@ -71,7 +71,7 @@ Statement* Parser::statement(){
     if (match(TokenType::IMPORT)) return importStatement();
     if (match(TokenType::SWITCH)) return switchStatement();
     if (lookMatch(0, TokenType::WORD) && lookMatch(1, TokenType::LPAREN)){
-        return new ExprToStat(functionChain(qualifiedName()));
+        return new ExprStatement(functionChain(qualifiedName()));
     }
     if (match(TokenType::THROW)) return new ThrowStatement(expression());
     if (match(TokenType::TRY)) return tryStatement();
@@ -81,7 +81,7 @@ Statement* Parser::statement(){
 
 Statement* Parser::assignmentStatement(){
     Expression* expr = expression();
-    if (expr != nullptr) return new ExprToStat(expr);
+    if (expr != nullptr) return new ExprStatement(expr);
     throw new ParseException("Unknown statement: " + std::string(*(get(0))));
 }
 
@@ -628,7 +628,7 @@ Expression* Parser::variable(){
 
 Expression* Parser::value(){
     Token* current = get(0);
-    if (match(TokenType::NUMBER)) return new ValueExpression(new BigNumberValue(current -> getText()));
+    if (match(TokenType::NUMBER)) return new ValueExpression(new NumberValue(current -> getText()));
     if (match(TokenType::HEX_NUMBER)){
         Bignum big = 0;
         std::string str = current -> getText();
@@ -638,7 +638,7 @@ Expression* Parser::value(){
             else if (str[i] >= 'A' && str[i] <= 'F') big += str[i] - 'A' + 10;
             else if (str[i] >= 'a' && str[i] <= 'f') big += str[i] - 'a' + 10;
         }
-        return new ValueExpression(BigNumberValue(big));
+        return new ValueExpression(NumberValue(big));
     }
     if (match(TokenType::TEXT)){
         ValueExpression* stringExpr = new ValueExpression(current -> getText());
@@ -646,7 +646,7 @@ Expression* Parser::value(){
             if (lookMatch(1, TokenType::WORD) && lookMatch(2, TokenType::LPAREN)){
                 match(TokenType::DOT);
                 return functionChain(new ContainerAccessExpression(stringExpr, std::vector<ContainerAccessElement>{
-                    ContainerAccessElement(new ValueExpression(consume(TokenType::WORD) -> getText()), false)
+                    ContainerAccessElement(new ValueExpression(consume(TokenType::WORD) -> getText()), true)
                     }));
             }
             std::vector<ContainerAccessElement> indices = variableSuffix();

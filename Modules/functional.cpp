@@ -5,7 +5,7 @@
 #include "../Value/functionvalue.h"
 #include "../Value/arrayvalue.h"
 #include "../Value/mapvalue.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 
 namespace{
     std::vector<Value*> mas;
@@ -69,14 +69,14 @@ namespace{
             Function* function = ((FunctionValue*) values[1]) -> getFunction();
             ArrayValue* array = (ArrayValue*) values[0];
             int skipCount = 0;
-            for(int i = 0; i < array -> getSize(); ++i){
+            for(int i = 0; i < array -> size(); ++i){
                 Value* value = array -> get(i);
                 std::vector<Value*> vec = { value };
                 if (function -> execute(vec) -> asBool()) ++skipCount;
                 else break;
             }
             std::vector<Value*> vec;
-            for(int i = skipCount; i < array -> getSize(); ++i){
+            for(int i = skipCount; i < array -> size(); ++i){
                 vec.push_back(array -> get(i));
             }
             return new ArrayValue(vec);
@@ -84,7 +84,7 @@ namespace{
     };
 
     Value* filterArray(ArrayValue* arr, Function* consumer){
-        int size = arr -> getSize();
+        int size = arr -> size();
         std::vector<Value*> value;
         for(int i = 0; i < size; ++i){
             std::vector<Value*> temp;
@@ -97,8 +97,8 @@ namespace{
     Value* filterMap(MapValue* map, Function* consumer){
         int i = 0;
         MapValue* value;
-        std::map<Value*, Value*>::iterator iter = map -> iter();
-        while (i < map -> getSize()){
+        auto iter = map -> begin();
+        while (i < map -> size()){
             std::vector<Value*> args = { iter -> first, iter -> second };
             if (consumer -> execute(args)) value -> set(iter -> first, iter -> second);
             ++iter;
@@ -121,14 +121,14 @@ namespace{
     };
 
     Value* FlatmapArray(ArrayValue* arr, Function* mapper){
-        int siz = arr -> getSize();
+        int siz = arr -> size();
         std::vector<Value*> values;
         for(int i = 0; i < siz; ++i){
             std::vector<Value*> temp = { arr -> get(i) };
             Value* inner = mapper -> execute(temp);
             if (inner -> type() != Values::ARRAY) throw new TypeException("Array expected " + std::string(*inner));
             ArrayValue* valArr = (ArrayValue*) inner;
-            for(int i = 0; i < valArr -> getSize(); ++i){
+            for(int i = 0; i < valArr -> size(); ++i){
                 values.push_back(valArr -> get(i));
             }
         }
@@ -154,7 +154,7 @@ namespace{
             Value* container = values[0];
             if (container -> type() == Values::ARRAY){
                 ArrayValue* arr = (ArrayValue*)container;
-                for(int i = 0; i < arr -> getSize(); ++i){
+                for(int i = 0; i < arr -> size(); ++i){
                     std::vector<Value*> args = {arr -> get(i)};
                     function -> execute(args);
                 }
@@ -162,8 +162,8 @@ namespace{
             else if (container -> type() == Values::MAP){
                 MapValue map = *(MapValue*)container;
                 int i = 0;
-                std::map<Value*, Value*>::iterator iter = map.iter();
-                while (i < map.getSize()){
+                auto iter = map.begin();
+                while (i < map.size()){
                     std::vector<Value*> args = { iter -> first, iter -> second };
                     function -> execute(args);
                     ++iter;
@@ -171,12 +171,12 @@ namespace{
                 }
             }
             else throw new TypeException("Invalid first argument. Array or map expected");
-            return new BigNumberValue(0);
+            return new NumberValue(0);
         }
     };
 
     Value* mapArray(ArrayValue* arr, Function* consumer){
-        int size = arr -> getSize();
+        int size = arr -> size();
         std::vector<Value*> value;
         for(int i = 0; i < size; ++i){
             std::vector<Value*> temp;
@@ -189,8 +189,8 @@ namespace{
     Value* mapMap(MapValue* map, Function* consumer, Function* consumer2){
         int i = 0;
         MapValue* value;
-        std::map<Value*, Value*>::iterator iter = map -> iter();
-        while (i < map -> getSize()){
+        auto iter = map -> begin();
+        while (i < map -> size()){
             std::vector<Value*> args1 = { iter -> first};
             std::vector<Value*> args2 = { iter -> second};
             value -> set(consumer -> execute(args1), consumer2 -> execute(args2));
@@ -200,7 +200,7 @@ namespace{
         return value;
     }
 
-    class _Map : public Function{
+    class Map_ : public Function{
     public:
         Value* execute(std::vector<Value*> values){
             if (values.size() < 2 || values.size() > 3) throw new ArgumentsMismatchException("At least two arguments excepted");
@@ -228,7 +228,7 @@ namespace{
             if (container -> type() == Values::ARRAY){
                 Value* result = identy;
                 ArrayValue* arr = (ArrayValue*) container;
-                for(int i = 0; i < arr -> getSize(); ++i){
+                for(int i = 0; i < arr -> size(); ++i){
                     std::vector<Value*> args = {result, arr -> get(i)};
                     result = accumulator -> execute(args);
                 }
@@ -238,8 +238,8 @@ namespace{
                 Value* result = identy;
                 MapValue map = *(MapValue*)container;
                 int i = 0;
-                std::map<Value*, Value*>::iterator iter = map.iter();
-                while (i < map.getSize()){
+                auto iter = map.begin();
+                while (i < map.size()){
                     std::vector<Value*> args = { result, iter -> first, iter -> second };
                     result = accumulator -> execute(args);
                     ++iter;
@@ -259,7 +259,7 @@ namespace{
             if (values[0] -> type() != Values::ARRAY) throw new TypeException("Array expected in first argument");
             if (values[1] -> type() != Values::FUNCTION) throw new TypeException("Function expected in second argument");
             ArrayValue* arr = (ArrayValue*)values[0];
-            for(int i = 0; i < arr -> getSize(); ++i) mas.push_back(arr -> get(i));
+            for(int i = 0; i < arr -> size(); ++i) mas.push_back(arr -> get(i));
             func = ((FunctionValue*)values[1]) -> getFunction();
             if (!mas.size()) return new ArrayValue(mas);
             qweek_sort(0, mas.size() - 1);
@@ -276,7 +276,7 @@ namespace{
             Function* function = ((FunctionValue*) values[1]) -> getFunction();
             if (container -> type() == Values::ARRAY) {
                 ArrayValue* array = (ArrayValue*) container;
-                int size = array -> getSize();
+                int size = array -> size();
                 std::vector<Value*> vals;
                 for(int i = 0; i < size; ++i) {
                     Value* value = array -> get(i);
@@ -289,10 +289,10 @@ namespace{
             }
             if (container -> type() == Values::MAP) {
                 MapValue* map = (MapValue*) container;
-                MapValue* result = new MapValue(map -> getSize());
-                for (auto x = map -> iter(); x != map -> end(); ++x) {
+                MapValue* result = new MapValue(map -> size());
+                for (auto x = map -> begin(); x != map -> end(); ++x) {
                     std::vector<Value*> vals = {x -> first, x -> second};
-                    if (function -> execute(vals) != new BigNumberValue(0)){
+                    if (function -> execute(vals) != new NumberValue(0)){
                         result -> set(x -> first, x -> second);
                     } else break;
                 }
@@ -310,7 +310,7 @@ void Functional::initFunctions(){
     Functions::set("filter", new Filter());
     Functions::set("flat_map", new Flatmap());
     Functions::set("foreach", new Foreach());
-    Functions::set("map", new _Map());
+    Functions::set("map", new Map_());
     Functions::set("reduce", new Reduce());
     Functions::set("sortby", new Sortby());
     Functions::set("take_while", new TakeWhile());

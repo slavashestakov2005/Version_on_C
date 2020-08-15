@@ -18,30 +18,34 @@ private:
     bool thisMap = false;
 public:
     MapValue(int size){}
+    MapValue(){}
     Value* get(Value* key);
     void set(Value* key, Value* value);
     void set(Value* key, Function* value);
     bool isThisMap();
     void setThisMap(bool thisMap);
-    int getSize();
+    int size() const;
     bool containsKey(Value* key);
     MapValue* getCopyElement();
     static MapValue* add(MapValue* map1, MapValue* map2);
-    std::map<Value*, Value*>::iterator iter();
+    std::map<Value*, Value*>::iterator begin();
     std::map<Value*, Value*>::iterator end();
+    /** @return  throw: TypeException*. */
     double asDouble();
     std::string asString();
+    /** @return  throw: TypeException*. */
     bool asBool();
+    /** @return  throw: TypeException*. */
     Bignum asBignum();
     Values type() const;
     operator std::string();
     ~MapValue(){}
-    friend bool operator==(MapValue a, MapValue b);
-    friend bool operator!=(MapValue a, MapValue b);
-    friend bool operator<(MapValue a, MapValue b);
-    friend bool operator<=(MapValue a, MapValue b);
-    friend bool operator>(MapValue a, MapValue b);
-    friend bool operator>=(MapValue a, MapValue b);
+    friend bool operator==(MapValue const& a, MapValue const& b);
+    friend bool operator!=(MapValue const& a, MapValue const& b);
+    friend bool operator<(MapValue const& a, MapValue const& b);
+    friend bool operator<=(MapValue const& a, MapValue const& b);
+    friend bool operator>(MapValue const& a, MapValue const& b);
+    friend bool operator>=(MapValue const& a, MapValue const& b);
 };
 
 #endif // MAPVALUE_H_INCLUDED

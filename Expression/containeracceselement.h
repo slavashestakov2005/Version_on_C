@@ -5,7 +5,7 @@
 
 class ContainerAccessElement {
 private:
-   bool dot;
+    bool dot;
 public:
     Expression* expression;
     ContainerAccessElement(Expression* expression, bool dot) : dot(dot), expression(expression) { }

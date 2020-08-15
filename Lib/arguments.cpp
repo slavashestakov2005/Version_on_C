@@ -18,15 +18,15 @@ Argument Arguments::get(int index){
     return arguments[index];
 }
 
-int Arguments::getRequiredCounter(){
+int Arguments::getRequiredCount(){
     return requiredCount;
 }
 
-int Arguments::getArrayCounter(){
+int Arguments::getArrayCount(){
     return arrayCount;
 }
 
-int Arguments::getSize(){
+int Arguments::size(){
     return arguments.size();
 }
 

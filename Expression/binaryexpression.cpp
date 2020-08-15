@@ -1,5 +1,5 @@
 #include "binaryexpression.h"
-#include "../Value/bignumbervalue.h"
+#include "../Value/numbervalue.h"
 #include "../Value/stringvalue.h"
 #include "../Value/arrayvalue.h"
 #include "valueexpression.h"
@@ -59,20 +59,20 @@ Value* BinaryExpression::calculate(BinaryOperator operation, Value* left, Value*
     Bignum result;
     ///long long lon1 = num1, lon2 = num2;
     switch(operation){
-        case BinaryOperator::ADD : result = BigNumberValue(num1 + num2); break;
-        case BinaryOperator::SUBSTRACT : result = BigNumberValue(num1 - num2); break;
-        case BinaryOperator::MULTIPLY : result = BigNumberValue(num1 * num2); break;
-        case BinaryOperator::DIVIDE : result = BigNumberValue(num1 / num2); break;
-        case BinaryOperator::REMAINDER : result = BigNumberValue(num1 % num2); break;
+        case BinaryOperator::ADD : result = NumberValue(num1 + num2); break;
+        case BinaryOperator::SUBSTRACT : result = NumberValue(num1 - num2); break;
+        case BinaryOperator::MULTIPLY : result = NumberValue(num1 * num2); break;
+        case BinaryOperator::DIVIDE : result = NumberValue(num1 / num2); break;
+        case BinaryOperator::REMAINDER : result = NumberValue(num1 % num2); break;
         case BinaryOperator::POWER : result = pow(num1, num2); break;
-///        case BinaryOperator::AND: return new BigNumber(lon1 & lon2);
-///        case BinaryOperator::OR: return new BigNumber(lon1 | lon2);
-///        case BinaryOperator::XOR: return new BigNumber(lon1 ^ lon2);
-///        case BinaryOperator::LSHIFT: return new BigNumber(lon1 << lon2);
-///        case BinaryOperator::RSHIFT: return new BigNumber(lon1 >> lon2);
+///        case BinaryOperator::AND: return new NumberValue(lon1 & lon2);
+///        case BinaryOperator::OR: return new NumberValue(lon1 | lon2);
+///        case BinaryOperator::XOR: return new NumberValue(lon1 ^ lon2);
+///        case BinaryOperator::LSHIFT: return new NumberValue(lon1 << lon2);
+///        case BinaryOperator::RSHIFT: return new NumberValue(lon1 >> lon2);
         default: throw new OperationIsNotSupportedException(mas[(int)operation]);
     }
-    return new BigNumberValue(result);
+    return new NumberValue(result);
 }
 
 Value* BinaryExpression::eval(){

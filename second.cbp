@@ -136,6 +136,8 @@
 		<Unit filename="Modules/math.cpp" />
 		<Unit filename="Modules/math.h" />
 		<Unit filename="Modules/module.h" />
+		<Unit filename="Modules/modules.cpp" />
+		<Unit filename="Modules/modules.h" />
 		<Unit filename="Modules/std.cpp" />
 		<Unit filename="Modules/std.h" />
 		<Unit filename="Modules/types.cpp" />
@@ -162,8 +164,8 @@
 		<Unit filename="Statement/continuestatement.h" />
 		<Unit filename="Statement/dowhilestatement.cpp" />
 		<Unit filename="Statement/dowhilestatement.h" />
-		<Unit filename="Statement/exprtostat.cpp" />
-		<Unit filename="Statement/exprtostat.h" />
+		<Unit filename="Statement/exprstatement.cpp" />
+		<Unit filename="Statement/exprstatement.h" />
 		<Unit filename="Statement/foreacharraystatement.cpp" />
 		<Unit filename="Statement/foreacharraystatement.h" />
 		<Unit filename="Statement/foreachmapstatement.cpp" />
@@ -199,8 +201,6 @@
 		<Unit filename="Value/bignumbers/bignum.h" />
 		<Unit filename="Value/bignumbers/smath.cpp" />
 		<Unit filename="Value/bignumbers/smath.h" />
-		<Unit filename="Value/bignumbervalue.cpp" />
-		<Unit filename="Value/bignumbervalue.h" />
 		<Unit filename="Value/boolvalue.cpp" />
 		<Unit filename="Value/boolvalue.h" />
 		<Unit filename="Value/classvalue.cpp" />
@@ -212,10 +212,13 @@
 		<Unit filename="Value/mapvalue.h" />
 		<Unit filename="Value/nullvalue.cpp" />
 		<Unit filename="Value/nullvalue.h" />
+		<Unit filename="Value/numbervalue.cpp" />
+		<Unit filename="Value/numbervalue.h" />
 		<Unit filename="Value/stringvalue.cpp" />
 		<Unit filename="Value/stringvalue.h" />
 		<Unit filename="Value/value.cpp" />
 		<Unit filename="Value/value.h" />
+		<Unit filename="Value/values.cpp" />
 		<Unit filename="Value/values.h" />
 		<Unit filename="Visitor/assignvalidator.cpp" />
 		<Unit filename="Visitor/assignvalidator.h" />

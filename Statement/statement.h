@@ -10,7 +10,7 @@ enum class Statements{
     ClassDeclarationsStatement,
     ContinueStatement,
     DoWhileStatement,
-    ExprToStat,
+    ExprStatement,
     ForeachArrayStatement,
     ForeachMapStatement,
     ForStatement,

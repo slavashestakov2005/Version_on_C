@@ -7,9 +7,9 @@
 class DoWhileStatement : public Statement{
 private:
     Expression* condition;
-    Statement* statement;
+    Statement* body;
 public:
-    DoWhileStatement(Expression* condition, Statement* statement) : condition(condition), statement(statement) {}
+    DoWhileStatement(Expression* condition, Statement* body) : condition(condition), body(body) {}
     Statements type(){ return Statements::DoWhileStatement; }
     void execute();
     operator std::string();

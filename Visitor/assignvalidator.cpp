@@ -13,5 +13,5 @@ void AssignValidator::visit(AssignmentExpression* v){
 void AssignValidator::visit(ContainerAssignmentExpression* v){
     v -> containerExpr -> accept(this);
     v -> expression -> accept(this);
-    if (v -> containerExpr -> type() == Expressions::VariableExpression && Variables::isExists(((VariableExpression*) v -> containerExpr -> root) -> name)) throw std::logic_error("Cannot assign value to constant");
+    if (v -> containerExpr -> root -> type() == Expressions::VariableExpression && Variables::isExists(((VariableExpression*) v -> containerExpr -> root) -> name)) throw std::logic_error("Cannot assign value to constant");
 }

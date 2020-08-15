@@ -10,6 +10,7 @@ private:
 public:
     static void clear();
     static bool isExists(std::string key);
+    /** @return  throw: UnknownClassException*. */
     static ClassDeclarationsStatement* get(std::string key);
     static void set(std::string key, ClassDeclarationsStatement* classDef);
 };

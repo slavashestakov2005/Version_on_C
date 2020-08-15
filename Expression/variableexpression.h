@@ -9,6 +9,7 @@ public:
     std::string name;
     VariableExpression(std::string name) : name(name) {}
     Expressions type(){ return Expressions::VariableExpression; }
+    /** @return  throw: VariableDoesNotExistsException*. */
     Value* eval();
     operator std::string();
     void accept(Visitor* visitor);

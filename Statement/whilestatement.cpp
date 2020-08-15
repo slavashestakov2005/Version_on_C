@@ -5,7 +5,7 @@
 void WhileStatement::execute(){
     while(condition -> eval() -> asBool()){
         try{
-            statement -> execute();
+            body -> execute();
         }
         catch(BreakStatement* bs){
             break;
@@ -17,14 +17,14 @@ void WhileStatement::execute(){
 }
 
 WhileStatement::operator std::string(){
-    return "while " + std::string(*condition) + " " + std::string(*statement);
+    return "while " + std::string(*condition) + " " + std::string(*body);
 }
 
 WhileStatement::~WhileStatement(){
     delete condition;
     condition = nullptr;
-    delete statement;
-    statement = nullptr;
+    delete body;
+    body = nullptr;
 }
 
 void WhileStatement::accept(Visitor* visitor){

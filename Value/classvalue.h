@@ -16,11 +16,16 @@ public:
     void addMethod(std::string name, ClassMethod* method);
     void callConstructor(std::vector<Value*> values);
     Value* access(Value* value);
+    /** @return  throw: std::logic_error*. */
     void set(Value* key, Value* value);
+    /** @return  throw: std::logic_error*. */
     Value* get(Value* key);
+    /** @return  throw: TypeException*. */
     double asDouble();
     std::string asString();
+    /** @return  throw: TypeException*. */
     bool asBool();
+    /** @return  throw: TypeException*. */
     Bignum asBignum();
     Values type() const;
     operator std::string();

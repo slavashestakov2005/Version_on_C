@@ -14,6 +14,7 @@ public:
     int getArgsCount();
     std::string getArgsName(int index);
     operator std::string();
+    /** @return  throw: ArgumentsMismatchException*. */
     Value* execute(std::vector<Value*> values);
 };
 

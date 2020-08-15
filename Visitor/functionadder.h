@@ -7,6 +7,7 @@ class FunctionDefineStatement;
 
 class FunctionAdder : public Visitor{
 public:
+    /** @return  throw: std::logic_error. */
     void visit(FunctionDefineStatement* v);
 };
 

@@ -12,6 +12,7 @@ private:
 public:
     ImportStatement(std::vector<std::string> names, std::string moduleName) : names(names), moduleName(moduleName) {}
     Statements type(){ return Statements::ImportStatement; }
+    /** @return  throw: UnknownModuleException*. */
     void execute();
     operator std::string();
     ~ImportStatement();

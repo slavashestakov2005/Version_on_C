@@ -8,5 +8,6 @@
 #include "types.h"
 #include "functional.h"
 #include "chemistry.h"
+#include "global.h"
 
 #endif // ALL_H_INCLUDED
